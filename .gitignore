@@ -1,0 +1,7 @@
+/target
+/core/target
+/ltm/target
+/project/target
+ltm-server/target
+
+.idea
