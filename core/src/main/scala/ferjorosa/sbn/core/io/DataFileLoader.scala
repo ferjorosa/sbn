@@ -1,8 +1,8 @@
 package ferjorosa.sbn.core.io
 
 import ferjorosa.sbn.core.data.{ImmutableDataSet, MutableDataSet}
-import ferjorosa.sbn.core.data.filereaders.DataFileReader
-import ferjorosa.sbn.core.data.filereaders.arffFileReader.ARFFDataFileReader
+import ferjorosa.sbn.core.io.filereaders.DataFileReader
+import ferjorosa.sbn.core.io.filereaders.arffFileReader.ARFFDataFileReader
 
 /**
   * Created by fer on 27/10/16.

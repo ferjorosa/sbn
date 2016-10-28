@@ -1,4 +1,4 @@
-package ferjorosa.sbn.core.data.filereaders.arffFileReader
+package ferjorosa.sbn.core.io.filereaders.arffFileReader
 
 import ferjorosa.sbn.core.data.Attributes
 

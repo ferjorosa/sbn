@@ -1,10 +1,10 @@
-package ferjorosa.sbn.core.data.filereaders.arffFileReader
+package ferjorosa.sbn.core.io.filereaders.arffFileReader
 
 import java.io.File
 import java.nio.file.Paths
 
 import ferjorosa.sbn.core.data._
-import ferjorosa.sbn.core.data.filereaders.DataFileReader
+import ferjorosa.sbn.core.io.filereaders.DataFileReader
 import ferjorosa.sbn.core.variables.{FiniteStateSpace, RealStateSpace, SparseFiniteStateSpace}
 
 import scala.io.BufferedSource
@@ -96,6 +96,7 @@ object ARFFDataFileReader extends DataFileReader{
       .filter(line => !line.startsWith("%"))
       .filter(line => !line.startsWith("@"))
       .map(line => new DataRowWeka(attributes, line))
+      .toList
   }
 
   override def loadMutableDataSet(path: String): MutableDataSet = ???
