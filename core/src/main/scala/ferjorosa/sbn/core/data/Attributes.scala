@@ -15,5 +15,9 @@ case class Attributes(attributeList: List[Attribute]){
   def getAttributeByName(name: String): Option[Attribute] ={
     this.attributeList.find(attr => attr.name.equals(name))
   }
+
+  def size: Int = this.attributeList.size
+
+  def apply(attributeIndex: Int): Attribute = this.attributeList(attributeIndex)
 }
 

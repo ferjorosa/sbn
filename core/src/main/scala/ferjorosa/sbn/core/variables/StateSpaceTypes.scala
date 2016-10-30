@@ -7,7 +7,9 @@ package ferjorosa.sbn.core.variables
   * @param stateNames
   * @param mapStatesNames
   */
-case class FiniteStateSpace(numberOfStates: Int, stateNames :List[String], mapStatesNames: Map[String, Int]) extends StateSpaceType
+case class FiniteStateSpace(numberOfStates: Int, stateNames :List[String], mapStatesNames: Map[String, Int]) extends StateSpaceType{
+  def getIndexOfState (stateName : String): Int = this.mapStatesNames(stateName)
+}
 
 object FiniteStateSpace{
 
