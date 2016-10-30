@@ -1,6 +1,6 @@
 package ferjorosa.sbn.core.io.filereaders
 
-import ferjorosa.sbn.core.data.{Attribute, Attributes}
+import ferjorosa.sbn.core.data.attributes.{Attribute, Attributes}
 
 
 /**

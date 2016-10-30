@@ -2,7 +2,7 @@ package ferjorosa.sbn.core.data
 
 import java.util.NoSuchElementException
 
-import ferjorosa.sbn.core.variables.{SparseFiniteStateSpace, FiniteStateSpace, RealStateSpace}
+import ferjorosa.sbn.core.data.attributes.{Attributes, FiniteStateSpace, RealStateSpace, SparseFiniteStateSpace}
 
 import scala.collection.mutable.ArrayBuffer
 import scala.util.Try

@@ -1,5 +1,4 @@
-package ferjorosa.sbn.core.variables
-
+package ferjorosa.sbn.core.data.attributes
 
 /**
   * @constructor

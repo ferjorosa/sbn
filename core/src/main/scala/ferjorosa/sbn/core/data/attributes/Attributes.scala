@@ -1,6 +1,4 @@
-package ferjorosa.sbn.core.data
-
-import ferjorosa.sbn.core.variables.StateSpaceType
+package ferjorosa.sbn.core.data.attributes
 
 /**
   * Created by fer on 26/10/16.

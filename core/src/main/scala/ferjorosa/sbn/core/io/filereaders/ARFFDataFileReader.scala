@@ -3,7 +3,7 @@ package ferjorosa.sbn.core.io.filereaders
 import java.io.File
 
 import ferjorosa.sbn.core.data._
-import ferjorosa.sbn.core.variables.{FiniteStateSpace, RealStateSpace, SparseFiniteStateSpace}
+import ferjorosa.sbn.core.data.attributes._
 
 import scala.io.BufferedSource
 import scala.util.{Failure, Success, Try}
@@ -13,10 +13,12 @@ import scala.util.{Failure, Success, Try}
   */
 object ARFFDataFileReader extends DataFileReader{
 
+  // TODO un dataSet tiene un nombre identificativo, en el caso de provenir de un ARFF, es el @relationName
   override def loadImmutableDataSet(path: String): Try[List[DataInstance]] = Try{
     val bufferedSource = io.Source.fromFile(path)
 
-    getRelationName(bufferedSource) match{
+    val relationName = getRelationName(bufferedSource) match{
+      case Success(name) => name
       case Failure(e) => throw e
     }
 

@@ -2,7 +2,7 @@ package ferjorosa.sbn.core.io
 
 import java.io.File
 
-import ferjorosa.sbn.core.data.{ImmutableDataSet, MutableDataSet}
+import ferjorosa.sbn.core.data.{DataInstance, ImmutableDataSet, MutableDataSet}
 import ferjorosa.sbn.core.io.filereaders.{ARFFDataFileReader, DataFileReader}
 
 import scala.util.{Failure, Success, Try}
@@ -12,11 +12,10 @@ import scala.util.{Failure, Success, Try}
   */
 object DataFileLoader {
 
-  def loadDataSet(path: String): Try[ImmutableDataSet] =  Try {
-    selectDataFileReader(path) match{
+  // TODO modificar return a ImmutableDataSet
+  def loadDataSet(path: String): Try[List[DataInstance]] =  selectDataFileReader(path) match{
       case Success(fileReader) => fileReader.loadImmutableDataSet(path)
       case Failure(e) => throw e
-    }
   }
 
   def loadMutableDataSet(path: String): MutableDataSet = ???
