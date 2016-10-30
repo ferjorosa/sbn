@@ -10,10 +10,15 @@ val commonSettings = Seq(
 lazy val core = project.in(file("core"))
   .settings(commonSettings:_*)
 
+lazy val core_examples = project.in(file("core-examples"))
+  .settings(commonSettings:_*)
+
 lazy val ltm = project.in(file("ltm"))
+  .dependsOn(core)
   .settings(commonSettings:_*)
 
 lazy val ltm_server = project.in(file("ltm-server"))
+  .dependsOn(ltm)
   .settings(commonSettings:_*)
 
 lazy val main = project.in(file("."))
