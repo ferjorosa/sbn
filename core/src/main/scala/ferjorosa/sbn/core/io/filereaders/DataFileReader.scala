@@ -1,6 +1,6 @@
 package ferjorosa.sbn.core.io.filereaders
 
-import ferjorosa.sbn.core.data.{DataInstance, MutableDataSet}
+import ferjorosa.sbn.core.data.{ImmutableDataSet, DataInstance, MutableDataSet}
 
 import scala.util.Try
 
@@ -9,7 +9,7 @@ import scala.util.Try
   */
 trait DataFileReader {
 
-  def loadImmutableDataSet(path: String): Try[List[DataInstance]]
+  def loadImmutableDataSet(path: String): Try[ImmutableDataSet]
 
   def loadMutableDataSet(path: String): MutableDataSet
 
