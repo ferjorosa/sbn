@@ -1,5 +1,7 @@
 package ferjorosa.sbn.core.data.attributes
 
+//TODO: Properly create the SparseStateSpace class and seal the StateSpaceType trait.
+
 /**
  * Base trait for the state-space types.
  */

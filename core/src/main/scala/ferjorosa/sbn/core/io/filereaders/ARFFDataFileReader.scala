@@ -96,16 +96,16 @@ object ARFFDataFileReader extends DataFileReader with Logging{
           parts(3) = line.substring(line.indexOf("[")).replaceAll("\t", "")
           val min: Double = parts(3).substring(parts(3).indexOf("[") + 1, parts(3).indexOf(",")).toDouble
           val max: Double = parts(3).substring(parts(3).indexOf(",") + 1, parts(3).indexOf("]")).toDouble
-          Attribute(name, RealStateSpace(min, max))
+          ManifestAttribute(name, RealStateSpace(min, max))
         }
         else
-          Attribute(name, new RealStateSpace)
+          ManifestAttribute(name, new RealStateSpace)
 
       }else if (parts(2).startsWith("{")) {
         parts(2) = line.substring(line.indexOf("{")).replaceAll("\t", "")
         val attStates = parts(2).substring(1, parts(2).length - 1).split(",")
         val stateNames = attStates.map(state => state.trim).toList
-        Attribute(name, FiniteStateSpace(stateNames))
+        ManifestAttribute(name, FiniteStateSpace(stateNames))
 
       }else
         throw new IllegalArgumentException("Not able to create an attribute from this line: " + line)

@@ -1,14 +1,6 @@
 package ferjorosa.sbn.core.data.attributes
 
 /**
- * An attribute represents a column in the data matrix. It contains the name and type of the elements it contains
- * (discrete, continuous, etc.).
- * @param name the name of the attribute.
- * @param stateSpaceType the [[StateSpaceType]] object that represents its type.
- */
-case class Attribute(name: String, stateSpaceType: StateSpaceType)
-
-/**
  * Represents a custom collection of [[Attribute]] objects.
  * @constructor Creates an [[Attributes]] object if there are no repeated attribute names.
  * @param attributeList the native collection containing the [[Attribute]] objects.
