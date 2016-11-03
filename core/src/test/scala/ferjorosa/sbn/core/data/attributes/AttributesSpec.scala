@@ -10,6 +10,10 @@ class AttributesSpec extends CustomSpec{
   "Attributes constructor" should "throw an IllegalArgumentException if there are repeated attribute names" in {
   }
 
+  "Attributes constructor" should "throw an IllegalArgumentException if there are order values out of bound" in {
+
+  }
+
   "Attributes.getAttributeByName" should "return the corresponding Attribute object if present" in {
 
   }

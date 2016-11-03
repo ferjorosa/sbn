@@ -8,7 +8,7 @@ import ferjorosa.sbn.core.CustomSpec
 class StateSpaceTypeSpec extends CustomSpec{
 
   "FiniteStateSpace.getIndexOfState" should "throw NoSuchElementException if the state is not correct" in {
-
+    val finite = FiniteStateSpace(2)
   }
 
 }

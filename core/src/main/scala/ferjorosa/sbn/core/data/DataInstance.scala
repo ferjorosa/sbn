@@ -7,13 +7,15 @@ import ferjorosa.sbn.core.data.attributes.{Attributes, FiniteStateSpace, RealSta
 import scala.util.Try
 
 /**
- *
- * @param attributes
- * @param values
+ * This class represents a data sample. It consists of a number of Attributes and its corresponding values.
+ * @param attributes the [[Attributes]] object representing the columns of the data instance.
+ * @param values the values assigned to the columns.
  */
-case class DataInstance(attributes: Attributes, values: Vector[Double])
+case class DataInstance(attributes: Attributes, values: Vector[Double]){
+  require(attributes.size == values.size)
+}
 
-/** */
+/** The companion object that contains factory methods for creating [[DataInstance]] objects. */
 object DataInstanceFactory {
 
   @throws[IllegalArgumentException]
@@ -42,10 +44,10 @@ object DataInstanceFactory {
   }
 
   /**
-   *
-   * @param attributes
-   * @param line
-   * @return
+   * Factory method that produces a new DataInstance from an ARFF data line.
+   * @param attributes the attributes corresponding to the data values.
+   * @param line the data file line.
+   * @return a Success(DataInstance) object or a Failure(e: Exception) if an exception was thrown in the process.
    */
   def fromARFFDataLine(attributes: Attributes, line: String): Try[DataInstance] = Try {
     var values = Vector.empty[Double]

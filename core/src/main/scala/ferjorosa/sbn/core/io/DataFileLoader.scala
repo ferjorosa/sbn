@@ -12,6 +12,11 @@ import scala.util.{Failure, Success, Try}
   */
 object DataFileLoader {
 
+  /**
+   *
+   * @param path
+   * @return
+   */
   def loadImmutableDataSet(path: String): Try[ImmutableDataSet] =  selectDataFileReader(path) match{
       case Success(fileReader) => fileReader.loadImmutableDataSet(path)
       case Failure(e) => throw e

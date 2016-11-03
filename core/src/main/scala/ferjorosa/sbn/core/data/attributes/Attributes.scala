@@ -3,23 +3,25 @@ package ferjorosa.sbn.core.data.attributes
 /**
  * An attribute represents a column in the data matrix. It contains the name and type of the elements it contains
  * (discrete, continuous, etc.).
- * @param index the column index of the attribute.
  * @param name the name of the attribute.
  * @param stateSpaceType the [[StateSpaceType]] object that represents its type.
  */
-case class Attribute(index: Int, name: String, stateSpaceType: StateSpaceType)
+case class Attribute(name: String, stateSpaceType: StateSpaceType)
 
 /**
  * Represents a custom collection of [[Attribute]] objects.
  * @constructor Creates an [[Attributes]] object if there are no repeated attribute names.
  * @param attributeList the native collection containing the [[Attribute]] objects.
- * @throws IllegalArgumentException if there are repeated attribute names in the [[attributeList]].
+ * @param order the specific order of the attributes.
+ * @throws IllegalArgumentException if there are repeated attribute names in the [[attributeList]]
+ *                                  or if the [[order]] contains values out of bound.
  */
 @throws[IllegalArgumentException]
-case class Attributes(
-                       private val attributeList: List[Attribute]){
+case class Attributes(attributeList: List[Attribute], order: Set[Int]){
   if(attributeList.map(attr => attr.name).distinct.size != attributeList.size)
     throw new IllegalArgumentException("Attribute names cannot be repeated")
+  if(order.exists(x => x >= attributeList.size))
+    throw new IllegalArgumentException("Order value out of bounds")
 
   /**
    * Returns an Option containing the requested Attribute or 'None'.
@@ -45,5 +47,19 @@ case class Attributes(
   @throws[IndexOutOfBoundsException]
   def apply(attributeIndex: Int): Attribute = this.attributeList(attributeIndex)
 
+}
+
+/** Attributes auxiliary factory */
+object Attributes{
+
+  /**
+   * Auxiliary constructor used when no special order is provided.
+   * @param attributeList the native collection containing the [[Attribute]] objects.
+   * @return a ew [[Attributes]] object with an order by default.
+   */
+  def apply(attributeList: List[Attribute]): Attributes = {
+    val attributeListOrder = attributeList.zipWithIndex.map{case (attr, index) => index}.toSet
+    new Attributes(attributeList, attributeListOrder)
+  }
 }
 

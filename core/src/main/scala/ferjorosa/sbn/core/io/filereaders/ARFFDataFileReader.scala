@@ -10,10 +10,15 @@ import scala.io.BufferedSource
 import scala.util.{Failure, Success, Try}
 
 /**
-  * Created by fer on 27/10/16.
+  * The DataFileReader for ARFF files.
   */
 object ARFFDataFileReader extends DataFileReader with Logging{
 
+  /**
+   * Tries to load an [[ImmutableDataSet]] from an ARFF file.
+   * @param path the path to the ARFF file.
+   * @return a [[Success]]([[ImmutableDataSet]]) or a [[Failure]]([[Exception]]) if an exception occurred during the process.
+   */
   override def loadImmutableDataSet(path: String): Try[ImmutableDataSet] = Try{
 
     val relationName = getRelationName(path) match{
@@ -30,6 +35,11 @@ object ARFFDataFileReader extends DataFileReader with Logging{
 
   override def loadMutableDataSet(path: String): MutableDataSet = ???
 
+  /**
+   *
+   * @param fileName
+   * @return
+   */
   override def doesItReadThisFile(fileName: String): Boolean = {
     if (new File(fileName).isDirectory)
       return false
@@ -38,6 +48,11 @@ object ARFFDataFileReader extends DataFileReader with Logging{
     parts(parts.length - 1) == "arff"
   }
 
+  /**
+   * This method reads the file and tries to return the @relation string.
+   * @param path the path to the file, needed to create a reading source.
+   * @return a [[Success]]([[String]]) or a [[Failure]]([[Exception]]) if an exception occurred during the process.
+   */
   private def getRelationName(path: String): Try[String] = Try {
 
     val atRelation: Option[String] = io.Source.fromFile(path).getLines()
@@ -51,6 +66,12 @@ object ARFFDataFileReader extends DataFileReader with Logging{
     atRelation.get.split(" ")(1)
   }
 
+  /**
+   * This method reads the file and tries to generate a [[Attributes]] object containing all the [[Attribute]] objects
+   * that refer to the @attribute lines.
+   * @param path the path to the file, needed to create a reading source.
+   * @return a [[Success]]([[Attributes]]) or a [[Failure]]([[Exception]]) if an exception occurred during the process.
+   */
   private def getAttributes(path: String): Try[Attributes] = Try {
     val attributeLines: List[String] = io.Source.fromFile(path).getLines()
       .withFilter(line => !line.isEmpty)
@@ -75,16 +96,16 @@ object ARFFDataFileReader extends DataFileReader with Logging{
           parts(3) = line.substring(line.indexOf("[")).replaceAll("\t", "")
           val min: Double = parts(3).substring(parts(3).indexOf("[") + 1, parts(3).indexOf(",")).toDouble
           val max: Double = parts(3).substring(parts(3).indexOf(",") + 1, parts(3).indexOf("]")).toDouble
-          Attribute(index, name, RealStateSpace(min, max))
+          Attribute(name, RealStateSpace(min, max))
         }
         else
-          Attribute(index, name, new RealStateSpace)
+          Attribute(name, new RealStateSpace)
 
       }else if (parts(2).startsWith("{")) {
         parts(2) = line.substring(line.indexOf("{")).replaceAll("\t", "")
         val attStates = parts(2).substring(1, parts(2).length - 1).split(",")
         val stateNames = attStates.map(state => state.trim).toList
-        Attribute(index, name, FiniteStateSpace(stateNames))
+        Attribute(name, FiniteStateSpace(stateNames))
 
       }else
         throw new IllegalArgumentException("Not able to create an attribute from this line: " + line)
@@ -106,6 +127,13 @@ object ARFFDataFileReader extends DataFileReader with Logging{
     Attributes(optionalAttributeList.map(_.get))
   }
 
+  /**
+   * This method reads the file and returns a [[Vector]] of [[DataInstance]] objects containing all the ones that
+   * have been created without errors.
+   * @param path the path to the file, needed to create a reading source.
+   * @param attributes the [[Attributes]] object needed to create a [[DataInstance]]
+   * @return the [[Vector]] containing the [[DataInstance]] objects that have been created without errors.
+   */
   private def getDataInstances(path: String, attributes: Attributes): Vector[DataInstance] = {
 
     io.Source.fromFile(path).getLines()
