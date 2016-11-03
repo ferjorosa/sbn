@@ -3,7 +3,7 @@ name := "sbn"
 val commonSettings = Seq(
 	organization := "ferjorosa",
 	version := "0.0.1",
-	scalaVersion := "2.11.6",
+	scalaVersion := "2.11.8",
 	scalacOptions := Seq("-unchecked", "-deprecation", "-encoding", "utf8")
 )
 
