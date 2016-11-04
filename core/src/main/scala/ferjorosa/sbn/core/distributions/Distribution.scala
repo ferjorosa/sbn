@@ -38,7 +38,7 @@ trait ConditionalDistribution extends Distribution{
 
 trait UnivariateDistribution extends Distribution{
 
-  def sample(threadLocalRandom: ThreadLocalRandom): Double
+  def sample(): Double
 
   def getLogProbability(value: Double): Double
 
