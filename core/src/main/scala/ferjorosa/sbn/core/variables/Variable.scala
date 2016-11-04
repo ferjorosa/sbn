@@ -2,7 +2,7 @@ package ferjorosa.sbn.core.variables
 
 import java.util.UUID
 
-import ferjorosa.sbn.core.data.attributes.{FiniteStateSpace, LatentAttribute, ManifestAttribute}
+import ferjorosa.sbn.core.data.attributes._
 
 /**
   * This trait defines an interface for both manifest and latent variables.
@@ -26,6 +26,12 @@ trait Variable{
     * @return the variable's ID.
     */
   def id: UUID
+
+  /**
+    *
+    * @return
+    */
+  def attribute: Attribute
 }
 
 /**
@@ -47,6 +53,9 @@ class ManifestVariable private (val _attribute: ManifestAttribute,
 
   /** @inheritdoc */
   override def id = this._id
+
+  /** @inheritdoc */
+  override def attribute: Attribute = this._attribute
 }
 
 
@@ -65,6 +74,9 @@ class LatentVariable private (val _attribute: LatentAttribute,
 
   /** @inheritdoc */
   override def id = this._id
+
+  /** @inheritdoc */
+  override def attribute: Attribute = this._attribute
 }
 
 /**
@@ -77,9 +89,13 @@ object VariableFactory {
   /**
     * Creates a manifest multinomial variable from a manifest attribute.
     * @param attribute the [[ManifestAttribute]].
+    * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not finite.
     * @return a new [[ManifestVariable]] of multinomial type.
     */
+  @throws[IllegalArgumentException]
   def newMultinomialVariable(attribute: ManifestAttribute): ManifestVariable = {
+    require(attribute.stateSpaceType.isInstanceOf[FiniteStateSpace], "attribute's state space must be finite")
+
     new ManifestVariable(attribute, new MultinomialType)
   }
 
@@ -92,6 +108,40 @@ object VariableFactory {
   def newMultinomialVariable(name: String, nStates: Int): LatentVariable = {
     val attribute = LatentAttribute(name, FiniteStateSpace(nStates))
     new LatentVariable(attribute, new MultinomialType)
+  }
+
+  /**
+    * Creates a manifest gaussian variable from a manifest attribute.
+    * @param attribute the [[ManifestAttribute]].
+    * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not real.
+    * @return a new [[ManifestVariable]] of gaussian type.
+    */
+  @throws[IllegalArgumentException]
+  def newGaussianVariable(attribute: ManifestAttribute): ManifestVariable = {
+    require(attribute.stateSpaceType.isInstanceOf[RealStateSpace], "attribute's state space must be real")
+    new ManifestVariable(attribute, new GaussianType)
+  }
+
+  /**
+    * Creates a latent gaussian variable by specifying its value intervals.
+    * @param name the name of the latent variable.
+    * @param min the minimum value of the interval.
+    * @param max the maximum value of the interval.
+    * @return a new [[LatentVariable]] of gaussian type.
+    */
+  def newGaussianVariable(name: String, min: Double, max: Double): LatentVariable = {
+    val attribute = LatentAttribute(name, RealStateSpace(min, max))
+    new LatentVariable(attribute, new GaussianType)
+  }
+
+  /**
+    * Creates a latent gaussian variable with inifinite value intervals.
+    * @param name the name of the latent variable.
+    * @return a new [[LatentVariable]] of gaussian type.
+    */
+  def newGaussianVariable(name: String): LatentVariable = {
+    val attribute = LatentAttribute(name, RealStateSpace())
+    new LatentVariable(attribute, new GaussianType)
   }
 
 }
