@@ -24,7 +24,7 @@ sealed trait Attribute{
   * @param name the name of the attribute.
   * @param stateSpaceType the [[StateSpaceType]] object that represents its type.
   */
-case class ManifestAttribute(name: String, stateSpaceType: StateSpaceType) extends Attribute
+case class ManifestAttribute (name: String, stateSpaceType: StateSpaceType) extends Attribute
 
 /**
   * This class represents a special case. It represents an attribute that has been created inside a latent variable.
@@ -34,4 +34,4 @@ case class ManifestAttribute(name: String, stateSpaceType: StateSpaceType) exten
   * @param name the name of the attribute.
   * @param stateSpaceType the [[StateSpaceType]] object that represents its type.
   */
-case class LatentAttribute(name: String, stateSpaceType: StateSpaceType) extends Attribute
+case class LatentAttribute (name: String, stateSpaceType: StateSpaceType) extends Attribute

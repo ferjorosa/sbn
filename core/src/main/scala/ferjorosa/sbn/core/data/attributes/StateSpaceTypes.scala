@@ -13,7 +13,7 @@ trait StateSpaceType
  * @param stateNames the collection of state names.
  * @param mapStatesNames the map between the index of the state and its name.
  */
-case class FiniteStateSpace(numberOfStates: Int, stateNames :List[String], mapStatesNames: Map[String, Int]) extends StateSpaceType{
+case class FiniteStateSpace (numberOfStates: Int, stateNames :List[String], mapStatesNames: Map[String, Int]) extends StateSpaceType{
 
   /**
    * Returns the index associated to the state name.
@@ -25,11 +25,12 @@ case class FiniteStateSpace(numberOfStates: Int, stateNames :List[String], mapSt
   def getIndexOfState (stateName : String): Int = this.mapStatesNames(stateName)
 }
 
-/** Auxiliary factory for the [[FiniteStateSpace]] class. */
+/** Factory for the [[FiniteStateSpace]] class. Its main factory method is created by default. */
 object FiniteStateSpace{
 
   /**
-    * Auxiliary constructor.
+    * Auxiliary factory method. It will generate the state names the following way (s0, s1, s2, etc)
+    * and the mappings between the state names and their indexes.
     * @param numberOfStates the number of states of the attribute.
     * @return a new FiniteStateSpace instance.
     */
@@ -42,21 +43,21 @@ object FiniteStateSpace{
       _mapStatesNames = _mapStatesNames + ("s"+i -> i)
     }
 
-    new FiniteStateSpace(numberOfStates, _stateNames, _mapStatesNames)
+    FiniteStateSpace(numberOfStates, _stateNames, _mapStatesNames)
   }
 
   /**
-    * Auxiliary constructor.
+    * Auxiliary factory method. It will generate the mappings between the state names and their indexes.
     * @param stateNames the state names of the attribute.
     * @return a new finiteStateSpace instance.
     */
-  def apply(stateNames :List[String]) = {
+  def apply(stateNames :List[String]): FiniteStateSpace = {
     var _mapStatesNames: Map[String, Int] = Map.empty
 
     for(i <- stateNames.indices)
       _mapStatesNames = _mapStatesNames + (stateNames(i) -> i)
 
-    new FiniteStateSpace(stateNames.size, stateNames, _mapStatesNames)
+    FiniteStateSpace(stateNames.size, stateNames, _mapStatesNames)
   }
 }
 
@@ -65,14 +66,14 @@ object FiniteStateSpace{
   * @param minInterval the minimum value of the interval.
   * @param maxInterval the maximum value of the interval.
   */
-case class RealStateSpace(minInterval: Double, maxInterval: Double) extends StateSpaceType
+case class RealStateSpace (minInterval: Double, maxInterval: Double) extends StateSpaceType
 
-/** Auxiliary factory for the [[RealStateSpace]] class. */
+/** Factory for the [[RealStateSpace]] class. Its main factory method is created by default. */
 object RealStateSpace{
 
   /**
-    * Parameterless auxiliary constructor.
+    * Parameterless auxiliary factory method. It will generate a real-state space object whose intervals are infinite.
     * @return a real-state space object whose intervals are infinite.
     */
-  def apply(): RealStateSpace = new RealStateSpace(Double.NegativeInfinity, Double.PositiveInfinity)
+  def apply(): RealStateSpace = RealStateSpace(Double.NegativeInfinity, Double.PositiveInfinity)
 }

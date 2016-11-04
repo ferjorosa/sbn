@@ -11,11 +11,11 @@ import scala.util.Try
  * @param attributes the [[Attributes]] object representing the columns of the data instance.
  * @param values the values assigned to the columns.
  */
-case class DataInstance(attributes: Attributes, values: Vector[Double]){
+case class DataInstance (attributes: Attributes, values: Vector[Double]){
   require(attributes.size == values.size)
 }
 
-/** The companion object that contains factory methods for creating [[DataInstance]] objects. */
+/** A factory object containing specific methods for creating [[DataInstance]] objects. */
 object DataInstanceFactory {
 
   @throws[IllegalArgumentException]
@@ -40,7 +40,7 @@ object DataInstanceFactory {
         }
     }
 
-    new DataInstance(attributes, values)
+    DataInstance(attributes, values)
   }
 
   /**
@@ -65,7 +65,7 @@ object DataInstanceFactory {
       }
     }
 
-    new DataInstance(attributes, values)
+    DataInstance(attributes, values)
   }
 
 }

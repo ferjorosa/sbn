@@ -1,18 +1,17 @@
 package ferjorosa.sbn.core.data.attributes
 
 /**
- * Represents a custom collection of [[Attribute]] objects.
- * @constructor Creates an [[Attributes]] object if there are no repeated attribute names.
- * @param attributeList the native collection containing the [[Attribute]] objects.
- * @param order the specific order of the attributes.
- * @throws IllegalArgumentException if there are repeated attribute names in the [[attributeList]]
- *                                  or if the [[order]] contains values out of bound.
- */
+  * Represents a custom collection of [[Attribute]] objects.
+  * @param attributeList the native collection containing the [[Attribute]] objects.
+  * @param attributeOrder the specific order of the attributes.
+  * @throws IllegalArgumentException if there are repeated attribute names in the [[attributeList]]
+  *                                  or if the [[attributeOrder]] contains values out of bound.
+  */
 @throws[IllegalArgumentException]
-case class Attributes(attributeList: List[Attribute], order: Set[Int]){
+case class Attributes (attributeList: List[Attribute], attributeOrder: Set[Int]){
   if(attributeList.map(attr => attr.name).distinct.size != attributeList.size)
     throw new IllegalArgumentException("Attribute names cannot be repeated")
-  if(order.exists(x => x >= attributeList.size))
+  if (attributeOrder.exists(x => x >= attributeList.size))
     throw new IllegalArgumentException("Order value out of bounds")
 
   /**
@@ -41,17 +40,17 @@ case class Attributes(attributeList: List[Attribute], order: Set[Int]){
 
 }
 
-/** Attributes auxiliary factory */
+/** Factory for the [[Attributes]] class. Its main factory method is created by default. */
 object Attributes{
 
   /**
-   * Auxiliary constructor used when no special order is provided.
+   * Auxiliary factory method. It is used when no special attribute order is provided.
    * @param attributeList the native collection containing the [[Attribute]] objects.
-   * @return a ew [[Attributes]] object with an order by default.
+   * @return a new [[Attributes]] object with a default attribute order.
    */
   def apply(attributeList: List[Attribute]): Attributes = {
     val attributeListOrder = attributeList.zipWithIndex.map{case (attr, index) => index}.toSet
-    new Attributes(attributeList, attributeListOrder)
+    Attributes(attributeList, attributeListOrder)
   }
 }
 

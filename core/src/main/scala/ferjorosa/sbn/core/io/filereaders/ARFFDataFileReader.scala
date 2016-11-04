@@ -99,7 +99,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
           ManifestAttribute(name, RealStateSpace(min, max))
         }
         else
-          ManifestAttribute(name, new RealStateSpace)
+          ManifestAttribute(name, RealStateSpace())
 
       }else if (parts(2).startsWith("{")) {
         parts(2) = line.substring(line.indexOf("{")).replaceAll("\t", "")

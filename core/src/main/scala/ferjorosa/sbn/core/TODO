@@ -1,2 +1,0 @@
-DataInstanceFromDataRow es un wrapper para los diferentes tipos de DataRow, quizas se puede eliminar
-una de las dos clases y conseguir asi un mejor entendimiento
