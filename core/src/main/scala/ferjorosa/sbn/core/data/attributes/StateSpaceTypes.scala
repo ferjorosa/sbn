@@ -65,11 +65,14 @@ object FiniteStateSpace{
   * @param minInterval the minimum value of the interval.
   * @param maxInterval the maximum value of the interval.
   */
-case class RealStateSpace(minInterval: Double, maxInterval: Double) extends StateSpaceType{
+case class RealStateSpace(minInterval: Double, maxInterval: Double) extends StateSpaceType
+
+/** Auxiliary factory for the [[RealStateSpace]] class. */
+object RealStateSpace{
 
   /**
-   * Parameterless auxiliary constructor.
-   * @return a real-state space object whose intervals are infinite.
-   */
-  def this() = this(Double.NegativeInfinity, Double.PositiveInfinity)
+    * Parameterless auxiliary constructor.
+    * @return a real-state space object whose intervals are infinite.
+    */
+  def apply(): RealStateSpace = new RealStateSpace(Double.NegativeInfinity, Double.PositiveInfinity)
 }
