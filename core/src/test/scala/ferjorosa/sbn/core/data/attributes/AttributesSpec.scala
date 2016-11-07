@@ -2,9 +2,6 @@ package ferjorosa.sbn.core.data.attributes
 
 import ferjorosa.sbn.core.CustomSpec
 
-/**
- * Created by Fernando on 31/10/2016.
- */
 class AttributesSpec extends CustomSpec{
 
   "Attributes constructor" should "throw an IllegalArgumentException if there are repeated attribute names" in {
@@ -91,7 +88,7 @@ class AttributesSpec extends CustomSpec{
     assert(attributes.getAttributeByName("attribute3").isEmpty)
   }
 
-  "Attributes.getAttributeByName" should "return None if no Attribute object corresponds to the name" in {
+  "Attributes.getAttributeByName" should "return 'None' if no Attribute object corresponds to the name" in {
     val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
     val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
     val attributeList = List(manifestAttr0,manifestAttr1)

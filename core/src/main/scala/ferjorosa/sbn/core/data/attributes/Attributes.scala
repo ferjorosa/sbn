@@ -5,19 +5,18 @@ package ferjorosa.sbn.core.data.attributes
   * @param attributeList the native collection containing the [[Attribute]] objects.
   * @param attributeOrder the specific order of the attributes.
   * @throws IllegalArgumentException if there are repeated attribute names in the [[attributeList]]
+  *                                  or if the [[attributeList]].size != [[attributeOrder]].size
   *                                  or if the [[attributeOrder]] contains values out of bound
   *                                  or if the [[attributeOrder]] contains repeated values.
   */
 @throws[IllegalArgumentException]
 case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]) extends Iterable[Attribute]{
-  if(attributeList.map(_.name).distinct.size != attributeList.size)
-    throw new IllegalArgumentException("Attribute names cannot be repeated")
-  if(attributeList.size != attributeOrder.size)
-    throw new IllegalArgumentException("The size of the attribute list should be the same of the attribute order collection")
-  if (attributeOrder.exists( _ >= attributeList.size))
-    throw new IllegalArgumentException("Order value out of bounds")
-  if(attributeOrder.groupBy(identity).collect{case (attr, repetitionList) if repetitionList.lengthCompare(1) > 0 => attr}.nonEmpty)
-    throw new IllegalArgumentException("Repeated values in the attributeOrder collection")
+  require(attributeList.map(_.name).distinct.size == attributeList.size, "Attribute names cannot be repeated")
+  require(attributeList.size == attributeOrder.size, "The size of the attribute list should be the same of the attribute order collection")
+  require(!attributeOrder.exists( _ >= attributeList.size), "Order value out of bounds")
+  require(attributeOrder.groupBy(identity).collect{
+    case (attr, attrRepetitionsList)  if attrRepetitionsList.lengthCompare(1) > 0 => attr
+  }.isEmpty, "Repeated values in the attributeOrder collection")
 
   /**
     * Returns the attributeList ordered by the [[attributeOrder]].
