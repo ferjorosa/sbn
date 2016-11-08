@@ -1,0 +1,10 @@
+@relation badlyFormattedAttribute1
+
+% 8 variables
+@attribute var1 [0,1]
+@attribute var2 {0,1}
+
+@data
+0,0
+0,0
+0,0

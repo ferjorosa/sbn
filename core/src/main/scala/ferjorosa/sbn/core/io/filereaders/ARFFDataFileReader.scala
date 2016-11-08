@@ -15,10 +15,11 @@ import scala.util.{Failure, Success, Try}
 object ARFFDataFileReader extends DataFileReader with Logging{
 
   /**
-   * Tries to load an [[ImmutableDataSet]] from an ARFF file.
-   * @param path the path to the ARFF file.
-   * @return a [[Success]]([[ImmutableDataSet]]) or a [[Failure]]([[Exception]]) if an exception occurred during the process.
-   */
+    * Tries to load an [[ImmutableDataSet]] from an ARFF file.
+    * @param path the path to the ARFF file.
+    * @return a [[Success]]([[ImmutableDataSet]]) or
+    *         a [[Failure]]([[Exception]]) if an exception occurred during the process.
+    */
   override def loadImmutableDataSet(path: String): Try[ImmutableDataSet] = Try{
 
     val relationName = getRelationName(path) match{
@@ -33,12 +34,13 @@ object ARFFDataFileReader extends DataFileReader with Logging{
 
   }
 
+  // TODO
   override def loadMutableDataSet(path: String): MutableDataSet = ???
 
   /**
-   *
-   * @param fileName
-   * @return
+   * Tests if this DataFileReader can read the filename.
+   * @param fileName the filename.
+   * @return true if the filename can be read, false otherwise.
    */
   override def doesItReadThisFile(fileName: String): Boolean = {
     if (new File(fileName).isDirectory)
@@ -61,7 +63,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
       .find(line => line.startsWith("@relation"))
 
     if(atRelation.isEmpty)
-      throw new IllegalArgumentException("ARFF file does not start with a @relation line.")
+      throw new IllegalArgumentException("ARFF file does not start with a @relation line")
 
     atRelation.get.split(" ")(1)
   }
@@ -80,7 +82,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
       .toList
 
     if(attributeLines.isEmpty)
-      throw new IllegalArgumentException("ARFF File does not contain @attribute lines.")
+      throw new IllegalArgumentException("ARFF File does not contain @attribute lines")
 
     def createAttributeFromLine(index: Int, line: String): Try[Attribute] = Try{
       val parts: Array[String] = line.split("\\s+|\t+")
@@ -116,13 +118,13 @@ object ARFFDataFileReader extends DataFileReader with Logging{
         case Success(attribute) => Success(attribute)
         case Failure(e) =>
           // Log the error with its associated file line index
-          logger.error(path + " (line "+ lineIndex + "): "+ e.getMessage)
+          logger.error(path + " (attribute line "+ lineIndex + "): "+ e.getMessage)
           throw e
       }
     }
 
     if (optionalAttributeList.exists(_.isFailure))
-      throw new IllegalArgumentException("ARFF file contains errors in the the @attribute lines.")
+      throw new IllegalArgumentException("ARFF file contains errors in the the @attribute lines")
 
     Attributes(optionalAttributeList.map(_.get))
   }
@@ -145,7 +147,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
           case Success(instance) => Success(instance)
           case Failure(e) =>
             // Log the error with its associated file line index
-            logger.error(path + " (line "+ lineIndex + ") ignored. An error occurred when trying to create a DataInstance")
+            logger.error(path + " (data line "+ lineIndex + ") ignored. An error occurred when trying to create a DataInstance")
             logger.error("Associated error: "+ e.getMessage)
             throw e
         }}

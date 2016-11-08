@@ -1,0 +1,8 @@
+@relation repeatedAttributes
+
+% attributes
+@attribute vVisitToAsia {0,1}
+@attribute vVisitToAsia {0,1}
+@attribute vTuberculosis {0,1}
+@attribute vSmoking {0,1}
+@attribute vLungCancer {0,1}

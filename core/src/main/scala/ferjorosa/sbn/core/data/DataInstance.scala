@@ -27,7 +27,7 @@ object DataInstanceFactory {
     val parts: Array[String] = line.split(",").map(_.trim)
 
     if (parts.length != attributes.size)
-      throw new IllegalArgumentException("The number of columns does not match the number of attributes.")
+      throw new IllegalArgumentException("The number of columns does not match the number of attributes")
 
     for(i <- parts.indices) {
       if (parts(i) == "?")

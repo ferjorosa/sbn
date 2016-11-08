@@ -15,8 +15,8 @@ import java.util.NoSuchElementException
 @throws[IllegalArgumentException]
 case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]) extends Iterable[Attribute]{
   require(attributeList.map(_.name).distinct.size == attributeList.size, "Attribute names cannot be repeated")
-  require(attributeList.size == attributeOrder.size, "The size of the attribute list should be the same of the attribute order collection")
-  require(!attributeOrder.exists( _ >= attributeList.size), "Order value out of bounds")
+  require(attributeList.size == attributeOrder.size, "The size of the attribute list should be the same of the attribute order collection.")
+  require(!attributeOrder.exists( _ >= attributeList.size), "Order value out of bounds.")
   require(attributeOrder.groupBy(identity).collect{
     case (attr, attrRepetitionsList)  if attrRepetitionsList.lengthCompare(1) > 0 => attr
   }.isEmpty, "Repeated values in the attributeOrder collection")

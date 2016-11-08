@@ -1,6 +1,6 @@
 package ferjorosa.sbn.core.io.filereaders
 
-import ferjorosa.sbn.core.data.{ImmutableDataSet, DataInstance, MutableDataSet}
+import ferjorosa.sbn.core.data.{ImmutableDataSet, MutableDataSet}
 
 import scala.util.Try
 
@@ -10,23 +10,25 @@ import scala.util.Try
 trait DataFileReader {
 
   /**
-   *
-   * @param path
-   * @return
-   */
+    * Tries to load an [[ImmutableDataSet]] from a file path.
+    * @param path the path.
+    * @return a [[scala.util.Success]]([[ImmutableDataSet]]) or
+    *         a [[scala.util.Failure]]([[Exception]]) if an exception occurred during the process.
+    */
   def loadImmutableDataSet(path: String): Try[ImmutableDataSet]
 
   /**
-   *
-   * @param path
-   * @return
+    * Tries to load an [[MutableDataSet]] from a file path.
+    * @param path the path.
+    * @return a [[scala.util.Success]]([[MutableDataSet]]) or
+    *         a [[scala.util.Failure]]([[Exception]]) if an exception occurred during the process.
    */
   def loadMutableDataSet(path: String): MutableDataSet
 
   /**
-   *
-   * @param fileName
-   * @return
+    * Tests if this DataFileReader can read the filename.
+    * @param fileName the filename.
+    * @return true if the filename can be read, false otherwise.
    */
   def doesItReadThisFile(fileName: String): Boolean
 
