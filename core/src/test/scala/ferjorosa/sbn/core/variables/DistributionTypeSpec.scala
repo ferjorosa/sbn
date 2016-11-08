@@ -2,9 +2,6 @@ package ferjorosa.sbn.core.variables
 
 import ferjorosa.sbn.core.CustomSpec
 
-/**
-  * Created by fer on 8/11/16.
-  */
 class DistributionTypeSpec extends CustomSpec{
 
   "MultinomialType.isParentCompatible" should "return true if the parent is also MultinomialType" in {

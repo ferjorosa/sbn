@@ -49,19 +49,6 @@ case class ManifestVariable (attribute: ManifestAttribute,
   override def name: String = this.attribute.name
 }
 
-/** Factory for the [[ManifestVariable]] class. */
-object ManifestVariable {
-
-  /**
-    * Auxiliary factory method. It is used when no ID is provided.
-    * @param attribute the [[ManifestAttribute]] used to create the variable.
-    * @param distributionType the distribution type of the variable.
-    * @return a new [[ManifestVariable]] with a random ID.
-    */
-  def apply(attribute: ManifestAttribute, distributionType: DistributionType): ManifestVariable =
-    ManifestVariable(attribute, distributionType,UUID.randomUUID())
-}
-
 /**
   * This class represents a latent variable.
   * @param attribute the [[LatentAttribute]] used to create the variable.
@@ -74,19 +61,6 @@ case class LatentVariable (attribute: LatentAttribute,
 
   /** @inheritdoc */
   override def name: String = this.attribute.name
-}
-
-/** Factory for the [[LatentVariable]] class. */
-object LatentVariable {
-
-  /**
-    * Auxiliary factory method. It is used when no ID is provided.
-    * @param attribute the [[LatentAttribute]] used to create the variable.
-    * @param distributionType the distribution type of the variable.
-    * @return a new [[LatentVariable]] with a random ID.
-    */
-  def apply(attribute: LatentAttribute, distributionType: DistributionType): LatentVariable =
-    LatentVariable(attribute, distributionType, UUID.randomUUID())
 }
 
 /**
@@ -106,7 +80,7 @@ object VariableFactory {
   def newMultinomialVariable(attribute: ManifestAttribute): ManifestVariable = {
     require(attribute.stateSpaceType.isInstanceOf[FiniteStateSpace], "attribute's state space must be finite")
 
-    ManifestVariable(attribute, new MultinomialType)
+    ManifestVariable(attribute, new MultinomialType, UUID.randomUUID())
   }
 
   /**
@@ -117,7 +91,7 @@ object VariableFactory {
     */
   def newMultinomialVariable(name: String, nStates: Int): LatentVariable = {
     val attribute = LatentAttribute(name, FiniteStateSpace(nStates))
-    LatentVariable(attribute, new MultinomialType)
+    LatentVariable(attribute, new MultinomialType, UUID.randomUUID())
   }
 
   /**
@@ -129,7 +103,7 @@ object VariableFactory {
   @throws[IllegalArgumentException]
   def newGaussianVariable(attribute: ManifestAttribute): ManifestVariable = {
     require(attribute.stateSpaceType.isInstanceOf[RealStateSpace], "attribute's state space must be real")
-    ManifestVariable(attribute, new GaussianType)
+    ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
   }
 
   /**
@@ -141,7 +115,7 @@ object VariableFactory {
     */
   def newGaussianVariable(name: String, min: Double, max: Double): LatentVariable = {
     val attribute = LatentAttribute(name, RealStateSpace(min, max))
-    LatentVariable(attribute, new GaussianType)
+    LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }
 
   /**
@@ -151,7 +125,7 @@ object VariableFactory {
     */
   def newGaussianVariable(name: String): LatentVariable = {
     val attribute = LatentAttribute(name, RealStateSpace())
-    LatentVariable(attribute, new GaussianType)
+    LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }
 
 }
