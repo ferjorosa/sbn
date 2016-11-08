@@ -104,7 +104,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
       }else if (parts(2).startsWith("{")) {
         parts(2) = line.substring(line.indexOf("{")).replaceAll("\t", "")
         val attStates = parts(2).substring(1, parts(2).length - 1).split(",")
-        val stateNames = attStates.map(state => state.trim).toList
+        val stateNames = attStates.map(state => state.trim).toVector
         ManifestAttribute(name, FiniteStateSpace(stateNames))
 
       }else

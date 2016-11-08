@@ -12,26 +12,26 @@ class StateSpaceTypeSpec extends CustomSpec{
 
   "FiniteStateSpace constructor" should "throw IllegalArgumentException if stateNames.size != numberOfStates" in {
     a[IllegalArgumentException] should be thrownBy{
-      FiniteStateSpace(1, List("s0", "s1"), Map("s0" -> 0, "s1" -> 1))
+      FiniteStateSpace(1, Vector("s0", "s1"), Map("s0" -> 0, "s1" -> 1))
     }
   }
 
   "FiniteStateSpace constructor" should "throw IllegalArgumentException if mapStatesNames.keys.size != numberOfStates" in {
     a[IllegalArgumentException] should be thrownBy{
       FiniteStateSpace(2,
-        List("s0", "s1"), // size 2
+        Vector("s0", "s1"), // size 2
         Map("s0" -> 0)) // size 1
     }
   }
 
   "FiniteStateSpace constructor" should "throw IllegalArgumentException if there are repeated mapStateNames values" in {
     a[IllegalArgumentException] should be thrownBy{
-      FiniteStateSpace(2, List("s0", "s1"), Map("s0" -> 0, "s1" -> 0))
+      FiniteStateSpace(2, Vector("s0", "s1"), Map("s0" -> 0, "s1" -> 0))
     }
   }
 
   "FiniteStateSpace.getIndexOfState" should "throw a NoSuchElementException if the passed name is incorrect" in {
-    val finite = FiniteStateSpace(List("state1", "estado2", "s3"))
+    val finite = FiniteStateSpace(Vector("state1", "estado2", "s3"))
     val finite2 = FiniteStateSpace(4)
 
     a[NoSuchElementException] should be thrownBy{finite.getIndexOfState("sssss")}
@@ -39,7 +39,7 @@ class StateSpaceTypeSpec extends CustomSpec{
   }
 
   "FiniteStateSpace.getIndexOfState" should "return the index of the state if the passed name is correct" in {
-    val finite = FiniteStateSpace(List("state1", "estado2", "s3"))
+    val finite = FiniteStateSpace(Vector("state1", "estado2", "s3"))
     val finite2 = FiniteStateSpace(4)
 
     assert(finite.getIndexOfState("estado2") == 1)

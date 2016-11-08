@@ -19,7 +19,7 @@ trait StateSpaceType
   *                                  or if there are repeated [[mapStatesNames]].values.
   */
 @throws[IllegalArgumentException]
-case class FiniteStateSpace (numberOfStates: Int, stateNames :List[String], mapStatesNames: Map[String, Int]) extends StateSpaceType{
+case class FiniteStateSpace (numberOfStates: Int, stateNames :Vector[String], mapStatesNames: Map[String, Int]) extends StateSpaceType{
   require(numberOfStates > 0, "Number of states > 0")
   require(numberOfStates == stateNames.size, "The stateNames collection must have the same size as the number of states")
   require(mapStatesNames.keys.size == numberOfStates, "Mapping collection size and the numberOfStates doesn't coincide")
@@ -45,11 +45,11 @@ object FiniteStateSpace{
     * @return a new FiniteStateSpace instance.
     */
   def apply(numberOfStates: Int): FiniteStateSpace ={
-    var _stateNames: List[String] = List.empty
+    var _stateNames: Vector[String] = Vector.empty
     var _mapStatesNames: Map[String, Int] = Map.empty
 
     for(i<-0 until numberOfStates){
-      _stateNames = _stateNames.::("s" + i)
+      _stateNames = _stateNames.:+("s" + i)
       _mapStatesNames = _mapStatesNames + ("s"+i -> i)
     }
 
@@ -61,7 +61,7 @@ object FiniteStateSpace{
     * @param stateNames the state names of the attribute.
     * @return a new finiteStateSpace instance.
     */
-  def apply(stateNames :List[String]): FiniteStateSpace = {
+  def apply(stateNames :Vector[String]): FiniteStateSpace = {
     var _mapStatesNames: Map[String, Int] = Map.empty
 
     for(i <- stateNames.indices)
