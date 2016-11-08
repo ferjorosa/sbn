@@ -1,7 +1,10 @@
 package ferjorosa.sbn.core.data.attributes
 
+import java.util.NoSuchElementException
+
 /**
   * Represents a custom immutable collection of [[Attribute]] objects.
+  *
   * @param attributeList the native collection containing the [[Attribute]] objects.
   * @param attributeOrder the specific order of the attributes.
   * @throws IllegalArgumentException if there are repeated attribute names in the [[attributeList]]
@@ -25,12 +28,17 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
   def orderedAttributeList: List[Attribute] = attributeOrder.map(x => attributeList(x))
 
   /**
-   * Returns an Option containing the requested Attribute or 'None'.
-   * @param name the requested attribute's name.
-   * @return an Option containing the requested Attribute or 'None'.
-   */
-  def getAttributeByName(name: String): Option[Attribute] ={
-    this.attributeList.find(attr => attr.name.equals(name))
+    * Returns the requested [[Attribute]] object.
+    * @param name the requested attribute's name.
+    * @throws NoSuchElementException if the requested name doesn't exists.
+    * @return the requested Attribute.
+    */
+  @throws[NoSuchElementException]
+  def getAttributeByName(name: String): Attribute ={
+    this.attributeList.find(attr => attr.name.equals(name)) match{
+      case Some(attribute) => attribute
+      case None => throw new NoSuchElementException("the provided name doesn't coincide with an attribute")
+    }
   }
 
   /**

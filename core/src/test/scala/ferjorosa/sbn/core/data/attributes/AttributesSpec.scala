@@ -1,5 +1,7 @@
 package ferjorosa.sbn.core.data.attributes
 
+import java.util.NoSuchElementException
+
 import ferjorosa.sbn.core.CustomSpec
 
 class AttributesSpec extends CustomSpec{
@@ -85,7 +87,9 @@ class AttributesSpec extends CustomSpec{
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 
-    assert(attributes.getAttributeByName("attribute3").isEmpty)
+    val attribute: Attribute = attributes.getAttributeByName("manifestAttr1")
+
+    assert(attribute equals manifestAttr1)
   }
 
   "Attributes.getAttributeByName" should "return 'None' if no Attribute object corresponds to the name" in {
@@ -94,9 +98,10 @@ class AttributesSpec extends CustomSpec{
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 
-    val attribute: Attribute = attributes.getAttributeByName("manifestAttr1").get
+    a[NoSuchElementException] should be thrownBy {
+      attributes.getAttributeByName("Attribute3")
+    }
 
-    assert(attribute equals manifestAttr1)
   }
 
   "Attributes.apply(index)" should "return the corresponding Attribute object if present" in {
