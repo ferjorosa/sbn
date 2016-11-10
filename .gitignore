@@ -6,6 +6,6 @@
 /core/project
 /ltm/target
 /examples/target
-/ltm-server/target
+/ltm_server/target
 
 .idea

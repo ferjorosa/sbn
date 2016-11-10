@@ -11,10 +11,11 @@ val commonSettings = Seq(
 lazy val core = project.in(file("core"))
   .settings(commonSettings:_*)
   .settings(libraryDependencies ++= Seq (
-    "org.scalatest" %% "scalatest" % "3.0.0" % "test",
-    "org.scalactic" %% "scalactic" % "3.0.0",
+    "org.scala-lang.modules" % "scala-xml_2.11" % "1.0.5",
+    "org.scalatest" %% "scalatest" % "3.0.0",
     "ch.qos.logback" %  "logback-classic" % "1.1.7",
-    "com.typesafe.scala-logging" % "scala-logging_2.11" % "3.5.0")
+    "com.typesafe.scala-logging" % "scala-logging_2.11" % "3.5.0",
+    "org.scala-graph" %% "graph-core" % "1.11.3")
   )
 
 // ===========  Module 'Ltm'  ============ //
@@ -28,7 +29,7 @@ lazy val examples = project.in(file("examples"))
   .settings(commonSettings:_*)
 
 // ========  Module 'Ltm-Server'  ======== //
-lazy val ltm_server = project.in(file("ltm-server"))
+lazy val ltm_server = project.in(file("ltm_server"))
   .dependsOn(ltm)
   .settings(commonSettings:_*)
 
