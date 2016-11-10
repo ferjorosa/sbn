@@ -10,23 +10,37 @@ import scalax.collection.immutable.Graph
   * This class wraps the [[Graph]] class and offers an easier interface when working with variables.
   * For a more advanced use, just access the wrapped graph.
   */
-case class DirectedGraph(self: Graph[Variable, DiEdge]) extends BaseGraph{
+case class DirectedGraph(self: Graph[Variable, DiEdge]) {
 
-  /** @inheritdoc */
+  /**
+    * Returns the Set of [[Variable]] belonging to the graph.
+    * @return the Set of [[Variable]] belonging to the graph.
+    */
   def nodes: Set[Variable] = self.nodes.toOuter
 
-  /** @inheritdoc */
-  override def edges: Set[DiEdge[Variable]] = self.edges.toOuter
+  /**
+    * Returns the set of edges belonging to the graph.
+    * @return the set of edges belonging to the graph.
+    */
+  def edges: Set[DiEdge[Variable]] = self.edges.toOuter
 
-  /** @inheritdoc */
+  /**
+    * Returns the number nodes.
+    * @return the number nodes.
+    */
   def numberOfNodes: Int = this.nodes.size
 
-  /** @inheritdoc */
+  /**
+    * Returns the number of edges
+    * @return the number of edges
+    */
   def numberOfEdges : Int = this.edges.size
 
-  /** @inheritdoc */
+  /**
+    * Returns if the graph is acyclic of not.
+    * @return if the graph is acyclic of not.
+    */
   def isAcyclic: Boolean = this.self.isAcyclic
-
 }
 
 /** Factory for the [[DirectedGraph]] class. Its main factory method is created by default. */

@@ -10,23 +10,37 @@ import scalax.collection.immutable.Graph
   * This class wraps the [[Graph]] class and offers an easier interface when working with variables.
   * For a more advanced use, just access the wrapped graph.
   */
-case class UndirectedGraph(self: Graph[Variable, UnDiEdge]) extends BaseGraph{
+case class UndirectedGraph(self: Graph[Variable, UnDiEdge]){
 
-  /** @inheritdoc */
+  /**
+    * Returns the Set of [[Variable]] belonging to the graph.
+    * @return the Set of [[Variable]] belonging to the graph.
+    */
   def nodes: Set[Variable] = self.nodes.toOuter
 
-  /** @inheritdoc */
-  override def edges: Set[UnDiEdge[Variable]] = self.edges.toOuter
+  /**
+    * Returns the set of edges belonging to the graph.
+    * @return the set of edges belonging to the graph.
+    */
+  def edges: Set[UnDiEdge[Variable]] = self.edges.toOuter
 
-  /** @inheritdoc */
+  /**
+    * Returns the number nodes.
+    * @return the number nodes.
+    */
   def numberOfNodes: Int = this.nodes.size
 
-  /** @inheritdoc */
+  /**
+    * Returns the number of edges
+    * @return the number of edges
+    */
   def numberOfEdges : Int = this.edges.size
 
-  /** @inheritdoc */
+  /**
+    * Returns if the graph is acyclic of not.
+    * @return if the graph is acyclic of not.
+    */
   def isAcyclic: Boolean = this.self.isAcyclic
-
 }
 
 /** Factory for the [[UndirectedGraph]] class. Its main factory method is created by default. */
