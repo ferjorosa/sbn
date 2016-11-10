@@ -1,4 +1,4 @@
-package ferjorosa.sbn.core.models
+package ferjorosa.sbn.ltm.models
 
 import ferjorosa.sbn.core.models.graph.UndirectedGraph
 
