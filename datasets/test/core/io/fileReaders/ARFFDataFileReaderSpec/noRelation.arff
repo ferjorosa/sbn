@@ -1,0 +1,15 @@
+% @relation converted_data
+
+% attributes
+@attribute vVisitToAsia {0,1}
+@attribute vTuberculosis {0,1}
+@attribute vSmoking {0,1}
+@attribute vLungCancer {0,1}
+
+% data
+0,0,0,0
+1,0,0,0
+0,1,0,0
+0,0,1,0
+0,0,0,1
+1,1,1,1
