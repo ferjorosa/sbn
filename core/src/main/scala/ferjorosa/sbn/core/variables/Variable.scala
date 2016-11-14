@@ -3,17 +3,12 @@ package ferjorosa.sbn.core.variables
 import java.util.UUID
 
 import ferjorosa.sbn.core.data.attributes._
+import ferjorosa.sbn.core.distributions.{ConditionalDistribution, UnivariateDistribution}
 
 /**
   * This trait defines an interface for both manifest and latent variables.
   */
 trait Variable{
-
-  /**
-    * The variable's name.
-    * @return the variable's name.
-    */
-  def name: String
 
   /**
     * The variable's distribution type (Multinomial, Gaussian, Exponential, etc.).
@@ -32,6 +27,25 @@ trait Variable{
     * @return the attribute it was created from.
     */
   def attribute: Attribute
+
+  /**
+    * The variable's name.
+    * @return the variable's name.
+    */
+  def name: String = this.attribute.name
+
+  /**
+    * Creates a new [[UnivariateDistribution]] of the distribution type.
+    * @return a new [[UnivariateDistribution]] of the distribution type.
+    */
+  def newUnivariateDistribution: UnivariateDistribution = distributionType.newUnivariateDistribution(this)
+
+  /**
+    * Creates a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
+    * @param parents the parents of the variable.
+    * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
+    */
+  def newConditionalDistribution(parents: Set[Variable]): ConditionalDistribution = distributionType.newConditionalDistribution(this, parents)
 }
 
 /**
@@ -43,11 +57,8 @@ trait Variable{
   */
 case class ManifestVariable (attribute: ManifestAttribute,
                              distributionType: DistributionType,
-                             id: UUID) extends Variable{
+                             id: UUID) extends Variable
 
-  /** @inheritdoc */
-  override def name: String = this.attribute.name
-}
 
 /**
   * This class represents a latent variable.
@@ -57,11 +68,8 @@ case class ManifestVariable (attribute: ManifestAttribute,
   */
 case class LatentVariable (attribute: LatentAttribute,
                            distributionType: DistributionType,
-                           id: UUID) extends Variable{
+                           id: UUID) extends Variable
 
-  /** @inheritdoc */
-  override def name: String = this.attribute.name
-}
 
 /**
   * The [[Variable]] factory. It is designed to create manifest and latent variables in a different way. Manifest variables
