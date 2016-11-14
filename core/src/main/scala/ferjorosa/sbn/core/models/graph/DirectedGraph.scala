@@ -41,6 +41,13 @@ case class DirectedGraph(self: Graph[Variable, DiEdge]) {
     * @return if the graph is acyclic of not.
     */
   def isAcyclic: Boolean = this.self.isAcyclic
+
+  /**
+    * Returns the Set of [[Variable]] that represent the parents of a given variable (it has incoming edges from them).
+    * @param variable the given variable.
+    * @return the Set of [[Variable]] representing the parents of a given variable.
+    */
+  def parents(variable: Variable): Set[Variable] = this.self.get(variable).inNeighbors.map(_.value)
 }
 
 /** Factory for the [[DirectedGraph]] class. Its main factory method is created by default. */
