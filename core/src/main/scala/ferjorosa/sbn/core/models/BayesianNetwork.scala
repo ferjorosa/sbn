@@ -1,6 +1,6 @@
 package ferjorosa.sbn.core.models
 
-import ferjorosa.sbn.core.distributions.{Distribution, Multinomial, Multinomial_MultinomialParents}
+import ferjorosa.sbn.core.distributions.Distribution
 import ferjorosa.sbn.core.models.graph.DirectedGraph
 import ferjorosa.sbn.core.variables.Variable
 
@@ -19,7 +19,6 @@ case class BayesianNetwork(name: String, dag: DirectedGraph, distributions: Set[
 }
 
 object BayesianNetwork {
-
 
   def apply(name: String, dag: DirectedGraph): BayesianNetwork = {
 

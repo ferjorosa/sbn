@@ -5,10 +5,12 @@ import ferjorosa.sbn.core.data.attributes.{Attributes, FiniteStateSpace, RealSta
 import scala.util.Try
 
 /**
- * This class represents a data sample. It consists of a number of Attributes and its corresponding values.
- * @param attributes the [[Attributes]] object representing the columns of the data instance.
- * @param values the values assigned to the columns.
- */
+  * This class represents a data sample. It consists of a number of Attributes and its corresponding values.
+  * @param attributes the [[Attributes]] object representing the columns of the data instance.
+  * @param values the values assigned to the columns.
+  * @throws IllegalArgumentException if [[attributes]].size != [[values]].size
+  */
+@throws[IllegalArgumentException]
 case class DataInstance (attributes: Attributes, values: Vector[Double]){
   require(attributes.size == values.size, "attributes and values sizes differ")
 }

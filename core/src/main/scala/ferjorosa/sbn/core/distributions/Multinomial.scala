@@ -6,7 +6,16 @@ import ferjorosa.sbn.core.utils.Utils
 import ferjorosa.sbn.core.variables.{MultinomialType, Variable}
 
 /**
-  * Created by fer on 3/11/16.
+  * This class represents the Multinomial distribution. This distribution can be used to compute the probabilities in situations
+  * in which there are a limited set of possible outcomes. It has a parameter for each of these states. For more information
+  * about this distribution, visit https://en.wikipedia.org/wiki/Multinomial_distribution).
+  *
+  * @param variable the associated variable.
+  * @param nStates the number of possible outcomes of the variable.
+  * @param probabilities the parameters of the distributions. Each state of the variable has an associated probability value.
+  * @throws IllegalArgumentException if the variable is not of [[MultinomialType]] or
+  *                                  if [[nStates]] != [[probabilities]].size or
+  *                                  if [[probabilities.sum]] != 0
   */
 @throws[IllegalArgumentException]
 case class Multinomial(variable: Variable, nStates: Int, probabilities: Vector[Double]) extends UnivariateDistribution{
@@ -14,15 +23,30 @@ case class Multinomial(variable: Variable, nStates: Int, probabilities: Vector[D
   require(nStates == probabilities.size, "One probability per state")
   require(probabilities.sum == 1.0, "Probabilities must sum 1.0")
 
+  /** @inheritdoc */
   override def label: String = "Multinomial"
 
+  /**
+    * Returns a vector containing the parameters of the distribution (the probability associated to each state).
+    * @return A collection of [[Double]] values corresponding to the parameters of the distribution.
+    */
   override def parameters: Vector[Double] = this.probabilities
 
+  /** @inheritdoc */
   override def numberOfParameters: Int = this.nStates
 
-  override def getLogProbability(value: Double): Double = Math.log(this.getProbabilityOfState(value.asInstanceOf[Int]))
+  /**
+    * Returns the logProbability for a given state of the distribution.
+    * @param value a [[Double]] value representing a given state of the Multinomial distribution.
+    * @return the logProbability for a given state of the distribution.
+    */
+  override def getLogProbability(value: Double): Double = Math.log(this.probabilities(value.asInstanceOf[Int]))
 
-  override def sample(): Double = {
+  /**
+    * Returns a randomly smapled value that represents an index of the variable states.
+    * @return a randomly sampled double value.
+    */
+  override def sample: Double = {
     val randomValue = ThreadLocalRandom.current().nextDouble()
     var probability = 0.0
     for(i <- this.probabilities.indices){
@@ -32,12 +56,17 @@ case class Multinomial(variable: Variable, nStates: Int, probabilities: Vector[D
     }
     this.probabilities.length - 1
   }
-
-  def getProbabilityOfState(state: Int): Double = this.probabilities(state)
 }
 
+/** The factory that contains specific methods for creating [[Multinomial]] objects. */
 object Multinomial{
 
+  /**
+    * Factory method that produces a new Multinomial distribution with randomly created parameter values.
+    * @param variable the variable used to create the distribution.
+    * @throws IllegalArgumentException if the variable's state space is not finite.
+    * @return a new Multinomial distribution with randomly created parameter values.
+    */
   @throws[IllegalArgumentException]
   def apply(variable: Variable): Multinomial = {
 
