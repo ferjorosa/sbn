@@ -1,6 +1,6 @@
 package ferjorosa.sbn.core.variables
 
-import ferjorosa.sbn.core.distributions.{ConditionalDistribution, Gaussian, Multinomial, UnivariateDistribution}
+import ferjorosa.sbn.core.distributions._
 
 /**
   * Represents the univariate distribution type of a variable.
@@ -34,7 +34,7 @@ trait DistributionType{
 /**
   * This class represents a multinomial distribution type.
   */
-class MultinomialType extends DistributionType{
+case class MultinomialType() extends DistributionType{
 
   /** @inheritdoc */
   override def isParentCompatible(distributionType: DistributionType): Boolean = distributionType match {
@@ -46,14 +46,32 @@ class MultinomialType extends DistributionType{
   /** @inheritdoc */
   override def newUnivariateDistribution(variable: Variable): Multinomial = Multinomial(variable)
 
-  /** @inheritdoc */
-  override def newConditionalDistribution(variable: Variable, parents: Set[Variable]): ConditionalDistribution = ???
+  /**
+    * Creates a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
+    * @param variable the variable used as base for the distribution.
+    * @param parents the parents of the variable.
+    * @throws IllegalArgumentException if the parent set is empty or
+    *                                  if the parent set is not compatible.
+    * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
+    */
+  @throws[IllegalArgumentException]
+  override def newConditionalDistribution(variable: Variable, parents: Set[Variable]): ConditionalDistribution = {
+    require(parents.nonEmpty, "The parent set cannot be empty")
+
+    val distributionTypes = parents.map(_.distributionType)
+
+    if(distributionTypes.size == 1) distributionTypes.head match {
+        case _: MultinomialType => Multinomial_MultinomialParents(variable, parents)
+        case _ => throw new IllegalArgumentException("The parent set is not compatible")
+      }
+    else throw new IllegalArgumentException("The parent set is not compatible")
+  }
 }
 
 /**
   * This class represents a gaussian distribution type.
   */
-class GaussianType extends DistributionType{
+case class GaussianType() extends DistributionType{
 
   /** @inheritdoc */
   override def isParentCompatible(distributionType: DistributionType): Boolean = false
