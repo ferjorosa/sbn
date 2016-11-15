@@ -12,27 +12,39 @@ trait Variable{
 
   /**
     * The variable's distribution type (Multinomial, Gaussian, Exponential, etc.).
+    *
     * @return the variable's distribution type.
     */
   def distributionType: DistributionType
 
   /**
     * The variable's ID.
+    *
     * @return the variable's ID.
     */
   def id: UUID
 
   /**
     * The [[Attribute]] it was created from.
+    *
     * @return the attribute it was created from.
     */
   def attribute: Attribute
 
   /**
     * The variable's name.
+    *
     * @return the variable's name.
     */
   def name: String = this.attribute.name
+
+  /**
+    * Returns a [[Boolean]] indicating if the passed value is belongs to the variable's domain (its state space limits).
+    *
+    * @param value the passed value.
+    * @return a [[Boolean]] value indicating if the value belongs to the variable's domain and therefore is permitted.
+    */
+  def isValuePermitted(value: Double): Boolean = attribute.isValuePermitted(value)
 
   /**
     * Creates a new [[UnivariateDistribution]] of the distribution type.
@@ -42,6 +54,7 @@ trait Variable{
 
   /**
     * Creates a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
+    *
     * @param parents the parents of the variable.
     * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
     */
@@ -51,6 +64,7 @@ trait Variable{
 /**
   * This class represents a variable that can be observed and directly measured. Manifest variables should be created from
   * data attributes, because they are their direct representation in the model.
+  *
   * @param attribute the [[ManifestAttribute]] used to create the variable.
   * @param distributionType the distribution type of the variable.
   * @param id the variable's ID.
@@ -62,6 +76,7 @@ case class ManifestVariable (attribute: ManifestAttribute,
 
 /**
   * This class represents a latent variable.
+  *
   * @param attribute the [[LatentAttribute]] used to create the variable.
   * @param distributionType the distribution type of the variable.
   * @param id the variable's ID.
@@ -80,6 +95,7 @@ object VariableFactory {
 
   /**
     * Creates a manifest multinomial variable from a manifest attribute.
+    *
     * @param attribute the [[ManifestAttribute]].
     * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not finite.
     * @return a new [[ManifestVariable]] of multinomial type.
@@ -93,6 +109,7 @@ object VariableFactory {
 
   /**
     * Creates a latent multinomial variable by specifying its number of states.
+    *
     * @param name the name of the latent variable.
     * @param nStates the number of states of its associated univariate multinomial distribution.
     * @return a new [[LatentVariable]] of multinomial type.
@@ -104,6 +121,7 @@ object VariableFactory {
 
   /**
     * Creates a manifest gaussian variable from a manifest attribute.
+    *
     * @param attribute the [[ManifestAttribute]].
     * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not real.
     * @return a new [[ManifestVariable]] of gaussian type.
@@ -116,6 +134,7 @@ object VariableFactory {
 
   /**
     * Creates a latent gaussian variable by specifying its value intervals.
+    *
     * @param name the name of the latent variable.
     * @param min the minimum value of the interval.
     * @param max the maximum value of the interval.
@@ -128,6 +147,7 @@ object VariableFactory {
 
   /**
     * Creates a latent gaussian variable with inifinite value intervals.
+    *
     * @param name the name of the latent variable.
     * @return a new [[LatentVariable]] of gaussian type.
     */

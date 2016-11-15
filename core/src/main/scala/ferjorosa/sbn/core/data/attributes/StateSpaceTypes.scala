@@ -5,10 +5,20 @@ package ferjorosa.sbn.core.data.attributes
 /**
  * Base trait for the state-space types.
  */
-trait StateSpaceType
+trait StateSpaceType{
+
+  /**
+    * Checks if the provided value belongs to the state space or not.
+    *
+    * @param value the provided value.
+    * @return a [[Boolean]] value representing the answer.
+    */
+  def isValuePermitted(value: Double): Boolean
+}
 
 /**
   * This class defines the finite state-space. The state-space for discrete attributes & variables.
+  *
   * @param numberOfStates the number of states.
   * @param stateNames the collection of state names.
   * @param mapStatesNames the map between the index of the state and its name.
@@ -25,8 +35,12 @@ case class FiniteStateSpace (numberOfStates: Int, stateNames :Vector[String], ma
   require(mapStatesNames.keys.size == numberOfStates, "Mapping collection size and the numberOfStates doesn't coincide")
   require(mapStatesNames.values.toSet.size == mapStatesNames.values.size, "Repeated mapStatesNames values")
 
+  /** @inheritdoc */
+  override def isValuePermitted(value: Double): Boolean = value.asInstanceOf[Int] >= this.numberOfStates
+
   /**
     * Returns the index associated to the state name.
+    *
     * @param stateName the provided state name.
     * @throws NoSuchElementException if the state name doesn't correspond to an index.
     * @return the index associated to the state name.
@@ -41,6 +55,7 @@ object FiniteStateSpace{
   /**
     * Auxiliary factory method. It will generate the state names the following way (s0, s1, s2, etc)
     * and the mappings between the state names and their indexes.
+    *
     * @param numberOfStates the number of states of the attribute.
     * @return a new FiniteStateSpace instance.
     */
@@ -58,6 +73,7 @@ object FiniteStateSpace{
 
   /**
     * Auxiliary factory method. It will generate the mappings between the state names and their indexes.
+    *
     * @param stateNames the state names of the attribute.
     * @return a new finiteStateSpace instance.
     */
@@ -73,16 +89,22 @@ object FiniteStateSpace{
 
 /**
   * This class defines the real state-space. The state-space for continuous attributes & variables.
+  *
   * @param minInterval the minimum value of the interval.
   * @param maxInterval the maximum value of the interval.
   */
-case class RealStateSpace (minInterval: Double, maxInterval: Double) extends StateSpaceType
+case class RealStateSpace (minInterval: Double, maxInterval: Double) extends StateSpaceType {
+
+  /** @inheritdoc */
+  override def isValuePermitted(value: Double): Boolean = value > maxInterval || value < minInterval
+}
 
 /** Factory for the [[RealStateSpace]] class. Its main factory method is created by default. */
 object RealStateSpace{
 
   /**
     * Parameterless auxiliary factory method. It will generate a real-state space object whose intervals are infinite.
+    *
     * @return a real-state space object whose intervals are infinite.
     */
   def apply(): RealStateSpace = RealStateSpace(Double.NegativeInfinity, Double.PositiveInfinity)
