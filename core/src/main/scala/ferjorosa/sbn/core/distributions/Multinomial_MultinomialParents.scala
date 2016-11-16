@@ -58,7 +58,8 @@ case class Multinomial_MultinomialParents(variable: Variable,
     * Returns a collection
     * @return
     */
-  override def parents: List[Distribution] = this.multinomialParents.toList
+  // TODO: Set is invariant in its type
+  override def parents: Set[Distribution] = ??? //this.multinomialParents
 
   /** @inheritdoc */
   override def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution = ???
@@ -100,10 +101,11 @@ object Multinomial_MultinomialParents {
     }
     val parentsMultinomialDistributions = multinomialParents.map(Multinomial(_))
 
-    Multinomial_MultinomialParents(variable, parentsMultinomialDistributions, distributions)
+    //Multinomial_MultinomialParents(variable, parentsMultinomialDistributions, distributions)
+    null
   }
 
   private def generateAssignmentCombinations(variables: Set[Variable]): Assignments = {
-
+    null
   }
 }
