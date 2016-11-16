@@ -55,6 +55,6 @@ object UndirectedGraph {
     implicit val config = CoreConfig()
     val graphBuilder = Graph.newBuilder[Variable, UnDiEdge]
     edges.map(graphBuilder += _)
-    UndirectedGraph(graphBuilder.result())
+    UndirectedGraph(graphBuilder.result)
   }
 }
