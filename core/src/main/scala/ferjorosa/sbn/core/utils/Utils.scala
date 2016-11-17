@@ -9,4 +9,9 @@ object Utils {
     val sum = values.sum
     values.map(x => x/sum).asInstanceOf[T]
   }
+
+  def cartesianProduct[A](xs: Traversable[Traversable[A]]): Seq[Seq[A]] = {
+    xs.foldLeft(Seq(Seq.empty[A])){
+      (x, y) => for (a <- x.view; b <- y) yield a :+ b }
+  }
 }

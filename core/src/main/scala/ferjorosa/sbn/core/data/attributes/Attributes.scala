@@ -34,11 +34,9 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
     * @return the requested Attribute.
     */
   @throws[NoSuchElementException]
-  def getAttributeByName(name: String): Attribute ={
-    this.attributeList.find(attr => attr.name.equals(name)) match{
-      case Some(attribute) => attribute
-      case None => throw new NoSuchElementException("the provided name doesn't coincide with an attribute")
-    }
+  def getAttributeByName(name: String): Attribute = {
+    this.attributeList.find(attr => attr.name.equals(name))
+      .getOrElse(throw new NoSuchElementException("the provided name doesn't coincide with an attribute"))
   }
 
   /**

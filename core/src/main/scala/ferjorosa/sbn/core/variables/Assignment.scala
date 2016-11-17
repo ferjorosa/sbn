@@ -8,7 +8,15 @@ package ferjorosa.sbn.core.variables
   * @param value the variable's assigned value.
   */
 case class Assignment(variable: Variable, value: Double) {
-  require(variable.isValuePermitted(value), "The assigned value is not permitted")
+  require(variable.isValuePermitted(value), variable.name + " = " + value + " is not permitted")
+
+  override def toString = "" + variable.name + " = " + value
+}
+
+object Assignment{
+
+  // TODO: define as implicit conversion?
+  def apply(tupledAssignment: (Variable, Double)): Assignment = Assignment(tupledAssignment._1, tupledAssignment._2)
 }
 
 /**
@@ -21,4 +29,10 @@ case class Assignment(variable: Variable, value: Double) {
 @throws[IllegalArgumentException]
 case class Assignments(assignments: Set[Assignment]) {
   require(assignments.map(_.variable).size == assignments.size, "There cannot exist repeated variables in the Assignments")
+
+  override def toString: String = {
+    val sb: StringBuilder = new StringBuilder("| ")
+    assignments.foreach(x => sb.append(x.toString + " | "))
+    sb.toString()
+  }
 }

@@ -36,7 +36,7 @@ case class FiniteStateSpace (numberOfStates: Int, stateNames :Vector[String], ma
   require(mapStatesNames.values.toSet.size == mapStatesNames.values.size, "Repeated mapStatesNames values")
 
   /** @inheritdoc */
-  override def isValuePermitted(value: Double): Boolean = value.asInstanceOf[Int] >= this.numberOfStates
+  override def isValuePermitted(value: Double): Boolean = value.asInstanceOf[Int] < this.numberOfStates
 
   /**
     * Returns the index associated to the state name.
@@ -47,6 +47,12 @@ case class FiniteStateSpace (numberOfStates: Int, stateNames :Vector[String], ma
     */
   @throws[NoSuchElementException]
   def getIndexOfState (stateName : String): Int = this.mapStatesNames(stateName)
+
+  /**
+    * Returns a collection of the state indexes, same size as the [[stateNames]].
+    * @return a collection of the state indexes, same size as the [[stateNames]].
+    */
+  def stateIndexes: Vector[Int] = (for( i<-0 until numberOfStates) yield i).toVector
 }
 
 /** Factory for the [[FiniteStateSpace]] class. Its main factory method is created by default. */
