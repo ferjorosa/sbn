@@ -14,4 +14,9 @@ object Utils {
     xs.foldLeft(Seq(Seq.empty[A])){
       (x, y) => for (a <- x.view; b <- y) yield a :+ b }
   }
+
+  def eqDouble(a: Double, b: Double): Boolean = eqDouble(a, b, 1.11e-15) // IEEE standard fir binary 64
+
+  def eqDouble(a: Double, b: Double, epsilon: Double): Boolean = Math.abs(a/b - 1) < epsilon
+
 }
