@@ -1,0 +1,9 @@
+@relation only_attributes
+
+@attribute continuousNoBounds numeric
+@attribute continuousWithBounds numeric [-5,5]
+@attribute binomial {s0,s1}
+@attribute multinomial {s0,s1,s2}
+
+@data
+5.84, 2.32, s0, s2
