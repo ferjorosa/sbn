@@ -1,6 +1,8 @@
 package ferjorosa.sbn.core.distributions
+
 import ferjorosa.sbn.core.data.attributes.FiniteStateSpace
-import ferjorosa.sbn.core.variables.{Assignments, MultinomialType, Variable}
+import ferjorosa.sbn.core.utils.Utils
+import ferjorosa.sbn.core.variables.{Assignment, Assignments, MultinomialType, Variable}
 
 /**
   * This class defines the conditional distribution of a variable of [[MultinomialType]] whose parents are all also of [[MultinomialType]].
@@ -37,37 +39,37 @@ import ferjorosa.sbn.core.variables.{Assignments, MultinomialType, Variable}
   * @param parameterizedConditionalDistributions the resulting multinomial distributions of the variable.
   */
 case class Multinomial_MultinomialParents(variable: Variable,
-                                          multinomialParents: Set[Multinomial],
-                                          parameterizedConditionalDistributions: Set[ParameterizedConditionalDistribution[Multinomial]]) extends ConditionalDistribution {
+                                          multinomialParents: Set[Variable],
+                                          parameterizedConditionalDistributions: Map[Assignments, Multinomial]) extends ConditionalDistribution {
 
-  /**
-    * Returns the label of the distribution.
-    *
-    * @return The label of the distribution.
-    */
+  /** @inheritdoc */
   override def label: String = "Multinomial | Multinomial"
 
+  /** @inheritdoc */
+  override def numberOfParameters: Int = this.parameterizedConditionalDistributions.values.map(_.numberOfParameters).sum
+
+  /** @inheritdoc */
+  override def parents: Set[Variable] = this.multinomialParents
+
+  /** @inheritdoc */
+  @throws[IllegalArgumentException]
+  override def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution = getMultinomial(assignments)
+
+  /** @inheritdoc */
+  @throws[IllegalArgumentException]
+  override def getLogConditionalProbability(assignments: Assignments, value: Double): Double = getMultinomial(assignments).getLogProbability(value)
+
   /**
-    * Returns the number of parameters of the distribution.
+    * Returns the requested Multinomial distribution associated to the provided [[Assignments]] object.
     *
-    * @return The number of parameters of the distribution.
+    * @param assignments the parent variables and its values.
+    * @throws NoSuchElementException if the provided [[Assignments]] object is not valid.
+    * @return the requested [[Multinomial]] distribution
     */
-  override def numberOfParameters: Int = ???
-
-  /**
-    * Returns a collection
-    * @return
-    */
-  // TODO: Set is invariant in its type
-  override def parents: Set[Distribution] = ??? //this.multinomialParents
-
-  /** @inheritdoc */
-  override def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution = ???
-
-  /** @inheritdoc */
-  override def getLogConditionalProbability(assignments: Assignments, value: Double): Double = ???
-
-  def getMultinomial(assignments: Assignments) = ???
+  @throws[NoSuchElementException]
+  def getMultinomial(assignments: Assignments): Multinomial = try {
+    parameterizedConditionalDistributions(assignments)
+  } catch{ case nse: NoSuchElementException => throw new IllegalArgumentException("Invalid assignments for the distribution")}
 }
 
 /** The factory containing specific methods for creating [[Multinomial_MultinomialParents]] distribution objects */
@@ -87,25 +89,32 @@ object Multinomial_MultinomialParents {
     require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
     require(!multinomialParents.exists(_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
 
+    val parametrizedMultinomialDistributions = generateAssignmentCombinations(multinomialParents)
+      // .view makes it much faster because it avoids creating intermediate results.
+      .view.map(assignments => assignments -> Multinomial(variable)).toMap
 
-
-    // TODO: Es neceario programar las combinaciones.
-    val distributions = multinomialParents.flatMap{
-      variable => variable.attribute.stateSpaceType match {
-        case finite: FiniteStateSpace => for(i <-0 until finite.numberOfStates) yield {
-
-          Multinomial(variable)
-        }
-        case _ => throw new IllegalArgumentException("Parents must be of multinomial type")
-      }
-    }
-    val parentsMultinomialDistributions = multinomialParents.map(Multinomial(_))
-
-    //Multinomial_MultinomialParents(variable, parentsMultinomialDistributions, distributions)
-    null
+    Multinomial_MultinomialParents(variable, multinomialParents, parametrizedMultinomialDistributions)
   }
 
-  private def generateAssignmentCombinations(variables: Set[Variable]): Assignments = {
-    null
+  /**
+    * Auxiliary method that makes use of [[Utils.cartesianProduct]] to generate
+    * @param parents the multinomial parents of the variable.
+    * @throws IllegalArgumentException if the parents state space is not finite.
+    * @return the sequence of possible parent assignments that will be used to create the internal distributions.
+    */
+  @throws[IllegalArgumentException]
+  private def generateAssignmentCombinations(parents: Set[Variable]): Seq[Assignments] = {
+    val stateSequences: Set[Vector[Int]] = parents.map(v => v.attribute.stateSpaceType match {
+      case finite: FiniteStateSpace => finite.stateIndexes
+      case _ => throw new IllegalArgumentException("Parents state space must be finite")
+    })
+    // First we obtain the cartesian product (all the combinations) of the parents state space values
+    Utils.cartesianProduct(stateSequences)
+    // and then we zip each state value with its parent variable reference
+      .map(stateCombination => parents.zip(stateCombination))
+    // After that we create a Seq[Set[Assignment]] objects
+      .map(combination => combination. map(variableAndValue => Assignment(variableAndValue._1, variableAndValue._2)))
+    // Finally we generate the Seq[Assignments] object that we return
+      .map(x => Assignments(x))
   }
 }

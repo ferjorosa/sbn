@@ -28,6 +28,7 @@ case class Multinomial(variable: Variable, nStates: Int, probabilities: Vector[D
 
   /**
     * Returns a vector containing the parameters of the distribution (the probability associated to each state).
+    *
     * @return A collection of [[Double]] values corresponding to the parameters of the distribution.
     */
   override def parameters: Vector[Double] = this.probabilities
@@ -37,13 +38,16 @@ case class Multinomial(variable: Variable, nStates: Int, probabilities: Vector[D
 
   /**
     * Returns the logProbability for a given state of the distribution.
+    *
     * @param value a [[Double]] value representing a given state of the Multinomial distribution.
     * @return the logProbability for a given state of the distribution.
     */
+  // TODO check with indexes that are not allowed (probability == 0 ???)
   override def getLogProbability(value: Double): Double = Math.log(this.probabilities(value.asInstanceOf[Int]))
 
   /**
     * Returns a randomly smapled value that represents an index of the variable states.
+    *
     * @return a randomly sampled double value.
     */
   override def sample: Double = {
@@ -63,6 +67,7 @@ object Multinomial{
 
   /**
     * Factory method that produces a new Multinomial distribution with randomly created parameter values.
+    *
     * @param variable the variable used to create the distribution.
     * @throws IllegalArgumentException if the variable's state space is not finite.
     * @return a new Multinomial distribution with randomly created parameter values.

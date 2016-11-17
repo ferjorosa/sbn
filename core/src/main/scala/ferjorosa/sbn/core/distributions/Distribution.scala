@@ -1,9 +1,9 @@
 package ferjorosa.sbn.core.distributions
 
-import ferjorosa.sbn.core.variables.{Assignment, Assignments}
+import ferjorosa.sbn.core.variables.{Assignment, Assignments, Variable}
 
 /**
-  * Created by fer on 3/11/16.
+  * This trait defines the intrinsic methods of every kind of distribution.
   */
 trait Distribution extends Product with Serializable{
 
@@ -30,11 +30,11 @@ trait Distribution extends Product with Serializable{
 trait ConditionalDistribution extends Distribution{
 
   /**
-    * Returns a collection containing the parent distributions that condition it.
+    * Returns a collection containing the parent variables that condition it.
     *
-    * @return a collection containing the parent distributions that condition it.
+    * @return a collection containing the parent variables that condition it.
     */
-  def parents: Set[Distribution]
+  def parents: Set[Variable]
 
   /**
     * Returns the univariate distribution of an [[Assignment]] given a conditional distribution. If we think of the
@@ -42,8 +42,10 @@ trait ConditionalDistribution extends Distribution{
     * a row of this matrix, which corresponds o a [[UnivariateDistribution]].
     *
     * @param assignments the values of the conditioning variables.
+    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
     * @return a new [[UnivariateDistribution]] object associated to the [[Assignment]]
     */
+  @throws[IllegalArgumentException]
   def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution
 
   /**
@@ -53,8 +55,10 @@ trait ConditionalDistribution extends Distribution{
     *
     * @param assignments the values assigned to the conditioning variables.
     * @param value the value of the main variable.
+    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the log conditional probability represented by a [[Double]] value.
     */
+  @throws[IllegalArgumentException]
   def getLogConditionalProbability(assignments: Assignments, value: Double): Double
 
   /**
@@ -64,8 +68,10 @@ trait ConditionalDistribution extends Distribution{
     *
     * @param assignments the values assigned to the conditioning variables.
     * @param value the value of the main variable.
+    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the conditional probability represented by a [[Double]] value.
     */
+  @throws[IllegalArgumentException]
   def getConditionalProbability(assignments: Assignments, value: Double): Double = Math.exp(getLogConditionalProbability(assignments, value))
 }
 
