@@ -11,17 +11,24 @@ import ferjorosa.sbn.core.variables.{MultinomialType, Variable}
   * about this distribution, visit https://en.wikipedia.org/wiki/Multinomial_distribution).
   *
   * @param variable the associated variable.
-  * @param nStates the number of possible outcomes of the variable.
   * @param probabilities the parameters of the distributions. Each state of the variable has an associated probability value.
-  * @throws IllegalArgumentException if the variable is not of [[MultinomialType]] or
-  *                                  if [[nStates]] != [[probabilities]].size or
-  *                                  if [[probabilities.sum]] != 0
+  * @throws IllegalArgumentException if [[variable.distributionType]] is not [[MultinomialType]] or
+  *                                  if nStates != [[probabilities.size]] or
+  *                                  if [[probabilities.sum]] != 1.0
   */
 @throws[IllegalArgumentException]
-case class Multinomial(variable: Variable, nStates: Int, probabilities: Vector[Double]) extends UnivariateDistribution{
+case class Multinomial(variable: Variable, probabilities: Vector[Double]) extends UnivariateDistribution{
+
+  /** The number of possible outcomes of the multinomial variable. */
+  val nStates: Int = variable.attribute.stateSpaceType match {
+    case finite: FiniteStateSpace => finite.numberOfStates
+    // Note: This is a special case, technically is impossible to have a multinomial variable with a continuous state space when using its factory.
+    case _ => throw new IllegalArgumentException("state space of the variable must be finite")
+  }
+
   require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
   require(nStates == probabilities.size, "One probability per state")
-  require(probabilities.sum == 1.0, "Probabilities must sum 1.0")
+  require(Utils.eqDouble(probabilities.sum, 1.0), "Probabilities must sum 1.0 (sum = " + probabilities.sum + ")")
 
   /** @inheritdoc */
   override def label: String = "Multinomial"
@@ -37,13 +44,26 @@ case class Multinomial(variable: Variable, nStates: Int, probabilities: Vector[D
   override def numberOfParameters: Int = this.nStates
 
   /**
+    * Returns the Probability for a given state of the distribution.
+    *
+    * @param value a [[Double]] value representing a given state of the Multinomial distribution.
+    * @throws IllegalArgumentException if value < 0 or value > nStates
+    * @return the Probability for a given state of the distribution.
+    */
+  @throws[IllegalArgumentException]
+  override def getProbability(value: Double): Double = try {
+    this.probabilities(value.asInstanceOf[Int])
+  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value")}
+
+  /**
     * Returns the logProbability for a given state of the distribution.
     *
     * @param value a [[Double]] value representing a given state of the Multinomial distribution.
+    * @throws IllegalArgumentException if value < 0 or value > nStates
     * @return the logProbability for a given state of the distribution.
     */
-  // TODO check with indexes that are not allowed (probability == 0 ???)
-  override def getLogProbability(value: Double): Double = Math.log(this.probabilities(value.asInstanceOf[Int]))
+  @throws[IllegalArgumentException]
+  override def getLogProbability(value: Double): Double = Math.log(getProbability(value))
 
   /**
     * Returns a randomly smapled value that represents an index of the variable states.
@@ -69,11 +89,13 @@ object Multinomial{
     * Factory method that produces a new Multinomial distribution with randomly created parameter values.
     *
     * @param variable the variable used to create the distribution.
-    * @throws IllegalArgumentException if the variable's state space is not finite.
-    * @return a new Multinomial distribution with randomly created parameter values.
+    * @throws IllegalArgumentException if the variable's state space is not [[FiniteStateSpace]] or
+    *                                  if the variable's distributionType is not [[MultinomialType]].
+    * @return a new [[Multinomial]] distribution with randomly created parameter values.
     */
   @throws[IllegalArgumentException]
   def apply(variable: Variable): Multinomial = {
+    require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
 
     val nStates: Int = variable.attribute.stateSpaceType match {
       case finite: FiniteStateSpace => finite.numberOfStates
@@ -81,7 +103,7 @@ object Multinomial{
     }
 
     val threadLocalRandom = ThreadLocalRandom.current()
-    val probabilities: IndexedSeq[Double] = for(i <- 0 to nStates) yield threadLocalRandom.nextDouble(100)/100
-    Multinomial(variable, nStates, Utils.normalize[IndexedSeq[Double]](probabilities).toVector)
+    val probabilities: IndexedSeq[Double] = for(i <- 0 until nStates) yield threadLocalRandom.nextDouble(100)/100
+    Multinomial(variable, Utils.normalize[IndexedSeq[Double]](probabilities).toVector)
   }
 }
