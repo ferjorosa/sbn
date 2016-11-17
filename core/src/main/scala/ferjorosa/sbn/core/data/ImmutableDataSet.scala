@@ -1,8 +1,12 @@
 package ferjorosa.sbn.core.data
 
+import ferjorosa.sbn.core.data.attributes.Attributes
+
 /**
- * The class represents a collection of [[DataInstance]]] objects that represents its data.
- * @param name the name of the DataSet.
- * @param data the collection of [[DataInstance]] objects that represent its data.
- */
-case class ImmutableDataSet(name: String, data: Vector[DataInstance])
+  * The class represents a collection of [[DataInstance]]] objects that represents its data.
+  *
+  * @param name the name of the DataSet.
+  * @param attributes the [[Attributes]] object representing the data instance's columns.
+  * @param data the collection of [[DataInstance]] objects that represent its data.
+  */
+case class ImmutableDataSet(name: String, attributes: Attributes, data: Vector[DataInstance])

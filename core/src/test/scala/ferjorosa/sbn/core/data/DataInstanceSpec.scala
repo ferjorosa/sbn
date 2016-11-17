@@ -1,15 +1,15 @@
 package ferjorosa.sbn.core.data
 
 import ferjorosa.sbn.core.CustomSpec
-import ferjorosa.sbn.core.data.attributes.{Attributes, FiniteStateSpace, ManifestAttribute, RealStateSpace}
+import ferjorosa.sbn.core.data.attributes.{Attributes, FiniteStateSpace, Attribute, RealStateSpace}
 
 class DataInstanceSpec extends CustomSpec {
 
   "DataInstanceFactory.fromARFFDataLine" should "return a Success[DataInstance] if the line is correctly formatted" in {
-    val finiteAttr1 = ManifestAttribute("finiteAttr1", FiniteStateSpace(2, Vector("0", "1"), Map("0" -> 0, "1" -> 1)))
-    val finiteAttr2 = ManifestAttribute("finiteAttr2", FiniteStateSpace(4))
-    val realAttr1 = ManifestAttribute("realAttr1", RealStateSpace())
-    val realAttr2 = ManifestAttribute("realAttr2", RealStateSpace())
+    val finiteAttr1 = Attribute("finiteAttr1", FiniteStateSpace(2, Vector("0", "1"), Map("0" -> 0, "1" -> 1)))
+    val finiteAttr2 = Attribute("finiteAttr2", FiniteStateSpace(4))
+    val realAttr1 = Attribute("realAttr1", RealStateSpace())
+    val realAttr2 = Attribute("realAttr2", RealStateSpace())
 
     val finiteAttributes = Attributes(List(finiteAttr1, finiteAttr2))
     val realAttributes = Attributes(List(realAttr1, realAttr2))
@@ -35,10 +35,10 @@ class DataInstanceSpec extends CustomSpec {
   }
 
   "DataInstanceFactory.fromARFFDataLine" should "return a Failure if the line is badly formatted" in {
-    val finiteAttr1 = ManifestAttribute("finiteAttr1", FiniteStateSpace(2, Vector("0", "1"), Map("0" -> 0, "1" -> 1)))
-    val finiteAttr2 = ManifestAttribute("finiteAttr2", FiniteStateSpace(2))
-    val realAttr1 = ManifestAttribute("realAttr1", RealStateSpace())
-    val realAttr2 = ManifestAttribute("realAttr2", RealStateSpace())
+    val finiteAttr1 = Attribute("finiteAttr1", FiniteStateSpace(2, Vector("0", "1"), Map("0" -> 0, "1" -> 1)))
+    val finiteAttr2 = Attribute("finiteAttr2", FiniteStateSpace(2))
+    val realAttr1 = Attribute("realAttr1", RealStateSpace())
+    val realAttr2 = Attribute("realAttr2", RealStateSpace())
 
     val finiteAttributes = Attributes(List(finiteAttr1, finiteAttr2))
     val realAttributes = Attributes(List(finiteAttr1, finiteAttr2))
@@ -59,7 +59,7 @@ class DataInstanceSpec extends CustomSpec {
   }
 
   "DataInstanceFactory.fromARFFDataLine" should "return a Failure if number of columns does not match the number of attributes" in {
-    val attr1 = ManifestAttribute("attr1", FiniteStateSpace(2))
+    val attr1 = Attribute("attr1", FiniteStateSpace(2))
     val attributes = Attributes(List(attr1))
 
     val manualArffDataLine = "s0, s1, s0, s0"

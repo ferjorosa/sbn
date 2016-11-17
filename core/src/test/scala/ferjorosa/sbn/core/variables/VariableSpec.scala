@@ -1,20 +1,20 @@
 package ferjorosa.sbn.core.variables
 
 import ferjorosa.sbn.core.CustomSpec
-import ferjorosa.sbn.core.data.attributes.{FiniteStateSpace, ManifestAttribute, RealStateSpace}
+import ferjorosa.sbn.core.data.attributes.{FiniteStateSpace, Attribute, RealStateSpace}
 
 class VariableSpec extends CustomSpec{
 
   "VariableFactory.newMultinomialVariable" should "throw an IllegalArgumentException if its attribute's state space is not finite" in {
-    val manifestAttribute = ManifestAttribute("attr", RealStateSpace())
+    val attribute = Attribute("attr", RealStateSpace())
     a[IllegalArgumentException] should be thrownBy{
-      VariableFactory.newMultinomialVariable(manifestAttribute)
+      VariableFactory.newMultinomialVariable(attribute)
     }
   }
 
-  "VariableFactory.newMultinomialVariable" should "return a new multinomial ManifestVariable when a correct ManifestAttribute is provided" in {
-    val manifestAttribute = ManifestAttribute("attr", FiniteStateSpace(10))
-    val multinomialManifestVariable = VariableFactory.newMultinomialVariable(manifestAttribute)
+  "VariableFactory.newMultinomialVariable" should "return a new multinomial ManifestVariable when a correct Attribute is provided" in {
+    val attribute = Attribute("attr", FiniteStateSpace(10))
+    val multinomialManifestVariable = VariableFactory.newMultinomialVariable(attribute)
   }
 
   "VariableFactory.newMultinomialVariable" should "return a new multinomial LatentVariable when a correct configuration is provided" in {
@@ -26,15 +26,15 @@ class VariableSpec extends CustomSpec{
   }
 
   "VariableFactory.newGaussianVariable" should "throw an IllegalArgumentException if its attribute's state space is not real" in {
-    val manifestAttribute = ManifestAttribute("attr", FiniteStateSpace(2))
+    val attribute = Attribute("attr", FiniteStateSpace(2))
     a[IllegalArgumentException] should be thrownBy{
-      VariableFactory.newGaussianVariable(manifestAttribute)
+      VariableFactory.newGaussianVariable(attribute)
     }
   }
 
-  "VariableFactory.newGaussianVariable" should "return a new gaussian ManifestVariable when a correct ManifestAttribute is provided" in {
-    val manifestAttribute = ManifestAttribute("attr", RealStateSpace())
-    val gaussianManifestVariable = VariableFactory.newGaussianVariable(manifestAttribute)
+  "VariableFactory.newGaussianVariable" should "return a new gaussian ManifestVariable when a correct Attribute is provided" in {
+    val attribute = Attribute("attr", RealStateSpace())
+    val gaussianManifestVariable = VariableFactory.newGaussianVariable(attribute)
 
   }
 

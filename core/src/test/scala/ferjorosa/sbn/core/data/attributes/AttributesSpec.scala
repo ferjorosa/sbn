@@ -7,8 +7,8 @@ import ferjorosa.sbn.core.CustomSpec
 class AttributesSpec extends CustomSpec{
 
   "Attributes constructor" should "throw an IllegalArgumentException if there are repeated attribute names" in {
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", RealStateSpace())
-    val manifestAttr2 = ManifestAttribute("manifestAttr1", FiniteStateSpace(2))
+    val manifestAttr1 = Attribute("manifestAttr1", RealStateSpace())
+    val manifestAttr2 = Attribute("manifestAttr1", FiniteStateSpace(2))
 
     a[IllegalArgumentException] should be thrownBy{
       Attributes(List(manifestAttr1, manifestAttr2))
@@ -16,10 +16,10 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes constructor" should "throw an IllegalArgumentException if there are order values out of bound" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
-    val manifestAttr2 = ManifestAttribute("manifestAttr2", RealStateSpace(0, 2))
-    val manifestAttr3 = ManifestAttribute("manifestAttr3", FiniteStateSpace(2))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
+    val manifestAttr3 = Attribute("manifestAttr3", FiniteStateSpace(2))
 
     // Size = 4
     val attributeList = List(manifestAttr0,manifestAttr1,manifestAttr2,manifestAttr3)
@@ -32,10 +32,10 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes constructor" should "throw an IllegalArgumentException if the sizes of attributeList and attributeOrder differ" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
-    val manifestAttr2 = ManifestAttribute("manifestAttr2", RealStateSpace(0, 2))
-    val manifestAttr3 = ManifestAttribute("manifestAttr3", FiniteStateSpace(2))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
+    val manifestAttr3 = Attribute("manifestAttr3", FiniteStateSpace(2))
 
     // Size = 4
     val attributeList = List(manifestAttr0,manifestAttr1,manifestAttr2,manifestAttr3)
@@ -48,10 +48,10 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes constructor" should "throw an IllegalArgumentException if there are repeated values in the attributeOrder collection" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
-    val manifestAttr2 = ManifestAttribute("manifestAttr2", RealStateSpace(0, 2))
-    val manifestAttr3 = ManifestAttribute("manifestAttr3", FiniteStateSpace(2))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
+    val manifestAttr3 = Attribute("manifestAttr3", FiniteStateSpace(2))
 
     // Size = 4
     val attributeList = List(manifestAttr0,manifestAttr1,manifestAttr2,manifestAttr3)
@@ -64,10 +64,10 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.orderedAttributeList" should "return the attributeList following the specified order" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
-    val manifestAttr2 = ManifestAttribute("manifestAttr2", RealStateSpace(0, 2))
-    val manifestAttr3 = ManifestAttribute("manifestAttr3", FiniteStateSpace(2))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
+    val manifestAttr3 = Attribute("manifestAttr3", FiniteStateSpace(2))
 
     // Size = 4
     val attributeList = List(manifestAttr0,manifestAttr1,manifestAttr2,manifestAttr3)
@@ -82,8 +82,8 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.getAttributeByName" should "return the corresponding Attribute object if present" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 
@@ -93,8 +93,8 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.getAttributeByName" should "return 'None' if no Attribute object corresponds to the name" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 
@@ -106,10 +106,10 @@ class AttributesSpec extends CustomSpec{
 
   "Attributes.apply(index)" should "return the corresponding Attribute object if present" in {
     // With an order by default
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
-    val manifestAttr2 = ManifestAttribute("manifestAttr2", RealStateSpace(0, 2))
-    val manifestAttr3 = ManifestAttribute("manifestAttr3", FiniteStateSpace(2))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
+    val manifestAttr3 = Attribute("manifestAttr3", FiniteStateSpace(2))
 
     val attributeList = List(manifestAttr0,manifestAttr1,manifestAttr2,manifestAttr3)
     val defaultOrderAttributes = Attributes(attributeList)
@@ -125,8 +125,8 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.apply(index)" should "throw an IndexOutOfBoundsException if the index doesn't correspond to an Attribute object" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 
@@ -136,8 +136,8 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.size" should "return the contents size" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 
@@ -145,8 +145,8 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.iterator" should "work properly" in {
-    val manifestAttr0 = ManifestAttribute("manifestAttr0", RealStateSpace())
-    val manifestAttr1 = ManifestAttribute("manifestAttr1", FiniteStateSpace(3))
+    val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
+    val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 

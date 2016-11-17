@@ -65,11 +65,11 @@ trait Variable{
   * This class represents a variable that can be observed and directly measured. Manifest variables should be created from
   * data attributes, because they are their direct representation in the model.
   *
-  * @param attribute the [[ManifestAttribute]] used to create the variable.
+  * @param attribute the [[Attribute]] used to create the variable.
   * @param distributionType the distribution type of the variable.
   * @param id the variable's ID.
   */
-case class ManifestVariable (attribute: ManifestAttribute,
+case class ManifestVariable (attribute: Attribute,
                              distributionType: DistributionType,
                              id: UUID) extends Variable
 
@@ -77,31 +77,31 @@ case class ManifestVariable (attribute: ManifestAttribute,
 /**
   * This class represents a latent variable.
   *
-  * @param attribute the [[LatentAttribute]] used to create the variable.
+  * @param attribute the [[Attribute]] used to create the variable.
   * @param distributionType the distribution type of the variable.
   * @param id the variable's ID.
   */
-case class LatentVariable (attribute: LatentAttribute,
+case class LatentVariable (attribute: Attribute,
                            distributionType: DistributionType,
                            id: UUID) extends Variable
 
 
 /**
   * The [[Variable]] factory. It is designed to create manifest and latent variables in a different way. Manifest variables
-  * are created from a [[ManifestAttribute]], which comes from a DataSource, while Latent variables are created by the user,
+  * are created from a [[Attribute]], which comes from a DataSource, while Latent variables are created by the user,
   * specifying its parameters.
   */
 object VariableFactory {
 
   /**
-    * Creates a manifest multinomial variable from a manifest attribute.
+    * Creates a manifest multinomial variable from an attribute.
     *
-    * @param attribute the [[ManifestAttribute]].
+    * @param attribute the [[Attribute]].
     * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not finite.
     * @return a new [[ManifestVariable]] of multinomial type.
     */
   @throws[IllegalArgumentException]
-  def newMultinomialVariable(attribute: ManifestAttribute): ManifestVariable = {
+  def newMultinomialVariable(attribute: Attribute): ManifestVariable = {
     require(attribute.stateSpaceType.isInstanceOf[FiniteStateSpace], "attribute's state space must be finite")
 
     ManifestVariable(attribute, new MultinomialType, UUID.randomUUID())
@@ -115,19 +115,19 @@ object VariableFactory {
     * @return a new [[LatentVariable]] of multinomial type.
     */
   def newMultinomialVariable(name: String, nStates: Int): LatentVariable = {
-    val attribute = LatentAttribute(name, FiniteStateSpace(nStates))
+    val attribute = Attribute(name, FiniteStateSpace(nStates))
     LatentVariable(attribute, new MultinomialType, UUID.randomUUID())
   }
 
   /**
-    * Creates a manifest gaussian variable from a manifest attribute.
+    * Creates a manifest gaussian variable from an attribute.
     *
-    * @param attribute the [[ManifestAttribute]].
+    * @param attribute the [[Attribute]].
     * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not real.
     * @return a new [[ManifestVariable]] of gaussian type.
     */
   @throws[IllegalArgumentException]
-  def newGaussianVariable(attribute: ManifestAttribute): ManifestVariable = {
+  def newGaussianVariable(attribute: Attribute): ManifestVariable = {
     require(attribute.stateSpaceType.isInstanceOf[RealStateSpace], "attribute's state space must be real")
     ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
   }
@@ -141,7 +141,7 @@ object VariableFactory {
     * @return a new [[LatentVariable]] of gaussian type.
     */
   def newGaussianVariable(name: String, min: Double, max: Double): LatentVariable = {
-    val attribute = LatentAttribute(name, RealStateSpace(min, max))
+    val attribute = Attribute(name, RealStateSpace(min, max))
     LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }
 
@@ -152,7 +152,7 @@ object VariableFactory {
     * @return a new [[LatentVariable]] of gaussian type.
     */
   def newGaussianVariable(name: String): LatentVariable = {
-    val attribute = LatentAttribute(name, RealStateSpace())
+    val attribute = Attribute(name, RealStateSpace())
     LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }
 
