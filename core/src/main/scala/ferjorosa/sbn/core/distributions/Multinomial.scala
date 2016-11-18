@@ -19,15 +19,15 @@ import ferjorosa.sbn.core.variables.{MultinomialType, Variable}
 @throws[IllegalArgumentException]
 case class Multinomial(variable: Variable, probabilities: Vector[Double]) extends UnivariateDistribution{
 
-  /** The number of possible outcomes of the multinomial variable. */
-  val nStates: Int = variable.attribute.stateSpaceType match {
-    case finite: FiniteStateSpace => finite.numberOfStates
+  /** The state space of the multinomial variable. */
+  private val variableStateSpace: FiniteStateSpace = variable.attribute.stateSpaceType match {
+    case finite: FiniteStateSpace => finite
     // Note: This is a special case, technically is impossible to have a multinomial variable with a continuous state space when using its factory.
     case _ => throw new IllegalArgumentException("state space of the variable must be finite")
   }
 
   require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
-  require(nStates == probabilities.size, "One probability per state")
+  require(variableStateSpace.numberOfStates == probabilities.size, "One probability per state")
   require(Utils.eqDouble(probabilities.sum, 1.0), "Probabilities must sum 1.0 (sum = " + probabilities.sum + ")")
 
   /** @inheritdoc */
@@ -41,7 +41,7 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
   override def parameters: Vector[Double] = this.probabilities
 
   /** @inheritdoc */
-  override def numberOfParameters: Int = this.nStates
+  override def numberOfParameters: Int = this.variableStateSpace.numberOfStates
 
   /**
     * Returns the Probability for a given state of the distribution.
@@ -59,7 +59,7 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
     * Returns the logProbability for a given state of the distribution.
     *
     * @param value a [[Double]] value representing a given state of the Multinomial distribution.
-    * @throws IllegalArgumentException if value < 0 or value > nStates
+    * @throws IllegalArgumentException if value < 0 or value > numberOfParameters
     * @return the logProbability for a given state of the distribution.
     */
   @throws[IllegalArgumentException]
@@ -71,6 +71,7 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
     * @return a randomly sampled double value.
     */
   override def sample: Double = {
+    // randomValue ranges [0, 1]
     val randomValue = ThreadLocalRandom.current().nextDouble()
     var probability = 0.0
     for(i <- this.probabilities.indices){
@@ -80,6 +81,18 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
     }
     this.probabilities.length - 1
   }
+
+  /**
+    * Returns the state name of the associated multinomial variable for a given index.
+    *
+    * @param index the stste's index.
+    * @throws IllegalArgumentException if index < 0 or index >= numberOfParameters.
+    * @return the corresponding state name.
+    */
+  @throws[IllegalArgumentException]
+  def getStateName(index: Int): String = try {
+    this.variableStateSpace.stateNames(index)
+  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid index")}
 }
 
 /** The factory that contains specific methods for creating [[Multinomial]] objects. */

@@ -8,7 +8,7 @@ import ferjorosa.sbn.core.distributions.{ConditionalDistribution, UnivariateDist
 /**
   * This trait defines an interface for both manifest and latent variables.
   */
-trait Variable{
+trait Variable extends Product with Serializable{
 
   /**
     * The variable's distribution type (Multinomial, Gaussian, Exponential, etc.).

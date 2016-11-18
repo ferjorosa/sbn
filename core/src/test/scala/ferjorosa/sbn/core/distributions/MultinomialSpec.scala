@@ -30,7 +30,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.apply" should "create a Multinomial distribution with random probabilities from a finite state variable" in {
     val distribution = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3))
 
-    assert(distribution.numberOfParameters == 3 && distribution.numberOfParameters == distribution.nStates)
+    assert(distribution.numberOfParameters == 3)
     assert(Utils.eqDouble(distribution.probabilities.sum, 1.0))
   }
 
@@ -56,19 +56,28 @@ class MultinomialSpec extends CustomSpec{
 
   "Multinomial.getLogProbability" should "return a valid value" in {
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
+    val distProb1 = dist.getProbability(1)
 
-    assert(dist.getProbability(1) == 0.5)
-    val distProb = dist.getProbability(0)
+    assert(Utils.eqDouble(distProb1, 0.5))
+    assert(Utils.eqDouble(Math.log(distProb1), dist.getLogProbability(1)))
+    assert(Utils.eqDouble(Math.exp(dist.getLogProbability(1)), dist.getProbability(1)))
   }
 
   "Multinomial.getProbability" should "return a valid value" in {
-    Multinomial(VariableFactory.newMultinomialVariable("multinomial", 2), Vector(0.5, 0.5))
+    val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
+    val distProb0 = dist.getProbability(0)
+
+    assert(Utils.eqDouble(distProb0, 0.2))
+    assert(Utils.eqDouble(Math.log(distProb0), dist.getLogProbability(0)))
+    assert(Utils.eqDouble(Math.exp(dist.getLogProbability(0)), dist.getProbability(0)))
   }
 
   "Multinomial.sample" should "return a valid value" in {
-    // Test it a 1000 times
-    for(i<-0 to 100000)
-      Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3))
+    val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 4))
+    val sampledValues: Seq[Double] = for(i<-0 until 100) yield dist.sample
+
+    // No sampled value can be an state index that is out of bounds
+    assert(sampledValues.filter(_ >= 4).count(_ < 0) == 0)
   }
 
 }
