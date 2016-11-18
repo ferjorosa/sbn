@@ -59,7 +59,7 @@ trait ConditionalDistribution extends Distribution{
     * @return the log conditional probability represented by a [[Double]] value.
     */
   @throws[IllegalArgumentException]
-  def getLogConditionalProbability(assignments: Assignments, value: Double): Double
+  def logConditionalProbability(assignments: Assignments, value: Double): Double
 
   /**
     * Returns the conditional probability of an [[Assignment]] and a specific value. Tf we think of the
@@ -72,13 +72,20 @@ trait ConditionalDistribution extends Distribution{
     * @return the conditional probability represented by a [[Double]] value.
     */
   @throws[IllegalArgumentException]
-  def getConditionalProbability(assignments: Assignments, value: Double): Double = Math.exp(getLogConditionalProbability(assignments, value))
+  def conditionalProbability(assignments: Assignments, value: Double): Double = Math.exp(logConditionalProbability(assignments, value))
 }
 
 /**
   * This trait defines a univariate distribution, which is a probability distribution of only one random variable.
   */
 trait UnivariateDistribution extends Distribution{
+
+  /**
+    * Returns a vector containing the parameters of the distribution.
+    *
+    * @return A collection of [[Double]] values corresponding to the parameters of the distribution.
+    */
+  def parameters: Vector[Double]
 
   /**
     * Returns a randomly sampled double value.
@@ -88,25 +95,67 @@ trait UnivariateDistribution extends Distribution{
   def sample: Double
 
   /**
-    * Returns the logProbability for a given input value.
+    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
+    * {@code P(X = x)}. In other  words, this method represents the probability mass function (PMF) for the distribution.
     *
-    * @param value the value. Depending on the univariate distribution, it will be codified differently.
-    * @return the logProbability for a given input value.
+    * @param x the provided point at which the PMF is evaluated. Depending on the univariate distribution, it will
+    *              be codified differently.
+    * @return the value of the PMF at the provided point.
     */
-  def getLogProbability(value: Double): Double
+  def probability(x: Double): Double
 
   /**
-    * Returns the probability for a given input value.
+    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
+    * {@code log(P(X = x))}, where {@code log} is the natural logarithm. In other words, this method represents the
+    * logarithm of the probability mass function (PMF) for the distribution.
     *
-    * @param value the value. Depending on the univariate distribution, it will be codified differently.
-    * @return the probability for a given input value.
+    * @param x the provided point at which the PMF is evaluated. Depending on the univariate distribution, it will
+    *              be codified differently.
+    * @return the value of the log(PMF) at the provided point.
     */
-  def getProbability(value: Double): Double = Math.exp(getLogProbability(value))
+  def logProbability(x: Double): Double
 
   /**
-    * Returns a vector containing the parameters of the distribution.
+    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
+    * {@code P(x0 < X <= x1)}.
     *
-    * @return A collection of [[Double]] values corresponding to the parameters of the distribution.
+    * @param x0 the lower bound.
+    * @param x1 the upper bound
+    * @throws IllegalArgumentException if x0 > x1
+    * @return the probability that this distribution will take a value in the interval (x0, x1]
     */
-  def parameters: Vector[Double]
+  @throws[IllegalArgumentException]
+  def probability(x0: Double, x1: Double): Double
+
+  /**
+    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
+    * {@code P(X <= x)}. In other words, this method represents the (cumulative) distribution function (CDF)
+    * for this distribution.
+    *
+    * @param x the point at which the CDF is evaluated.
+    * @return the probability that a variable with this distribution will take a value less than or equal to x.
+    */
+  def cumulativeProbability(x: Double): Double
+
+  /**
+    * Returns the probability density function (PDF) of this distribution evaluated at the specified point {@code x}.
+    * In general, the PDF is the derivative of the {@link #cumulativeProbability(double) CDF}. If the derivative does not
+    * exist at {@code x}, then an appropriate replacement should be returned, e.g. {@code Double.POSITIVE_INFINITY},
+    * {@code Double.NaN}, or the limit inferior or limit superior of the difference quotient.
+    *
+    * @param x the point at which the PDF is evaluated
+    * @return the value of the probability density function at point x
+    */
+  def density(x: Double): Double
+
+  /**
+    * Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the
+    * specified point {@code x}. In general, the PDF is the derivative of the {@link #cumulativeProbability(double) CDF}.
+    * If the derivative does not exist at {@code x}, then an appropriate replacement should be returned,
+    * e.g. {@code Double.POSITIVE_INFINITY}, {@code Double.NaN}, or the limit inferior or limit superior of the difference quotient.
+    *
+    * @param x the point at which the PDF is evaluated
+    * @return the logarithm of the value of the probability density function at point x.
+    */
+  def logDensity(x: Double): Double
 }

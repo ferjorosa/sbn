@@ -57,7 +57,7 @@ case class Multinomial_MultinomialParents(variable: Variable,
 
   /** @inheritdoc */
   @throws[IllegalArgumentException]
-  override def getLogConditionalProbability(assignments: Assignments, value: Double): Double = getMultinomial(assignments).getLogProbability(value)
+  override def logConditionalProbability(assignments: Assignments, value: Double): Double = getMultinomial(assignments).logProbability(value)
 
   /**
     * Returns the requested Multinomial distribution associated to the provided [[Assignments]] object.

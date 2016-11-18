@@ -4,6 +4,7 @@ import java.util.concurrent.ThreadLocalRandom
 import ferjorosa.sbn.core.data.attributes.FiniteStateSpace
 import ferjorosa.sbn.core.utils.Utils
 import ferjorosa.sbn.core.variables.{MultinomialType, Variable}
+import org.apache.commons.math3.util.FastMath
 
 /**
   * This class represents the Multinomial distribution. This distribution can be used to compute the probabilities in situations
@@ -51,7 +52,7 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
     * @return the Probability for a given state of the distribution.
     */
   @throws[IllegalArgumentException]
-  override def getProbability(value: Double): Double = try {
+  override def probability(value: Double): Double = try {
     this.probabilities(value.asInstanceOf[Int])
   } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value")}
 
@@ -63,10 +64,41 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
     * @return the logProbability for a given state of the distribution.
     */
   @throws[IllegalArgumentException]
-  override def getLogProbability(value: Double): Double = Math.log(getProbability(value))
+  override def logProbability(value: Double): Double = FastMath.log(probability(value))
+
+
 
   /**
-    * Returns a randomly smapled value that represents an index of the variable states.
+    *
+    * @param x
+    * @param y
+    * @return
+    */
+  override def probability(x: Double, y: Double): Double = {
+    if(x > y) throw new IllegalArgumentException("Lower endpoint above upper endpoint (x > y)")
+
+    cumulativeProbability(y) - cumulativeProbability(x)
+  }
+
+  /**
+    *
+    * @param value
+    * @return
+    */
+  override def cumulativeProbability(value: Double): Double = try {
+    (for (i <- 0 until value.asInstanceOf[Int]) yield probabilities(i)).sum
+  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value")}
+
+  /** @inheritdoc */
+  // TODO: no tiene mucho sentido si no me equivoco
+  override def density(value: Double): Double = ???
+
+  /** @inheritdoc */
+  // TODO: no tiene mucho sentido si no me equivoco
+  override def logDensity(value: Double): Double = ???
+
+  /**
+    * Returns a randomly sampled value that represents an index of the variable states.
     *
     * @return a randomly sampled double value.
     */

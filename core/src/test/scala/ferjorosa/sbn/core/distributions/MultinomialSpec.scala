@@ -56,20 +56,20 @@ class MultinomialSpec extends CustomSpec{
 
   "Multinomial.getLogProbability" should "return a valid value" in {
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
-    val distProb1 = dist.getProbability(1)
+    val distProb1 = dist.probability(1)
 
     assert(Utils.eqDouble(distProb1, 0.5))
-    assert(Utils.eqDouble(Math.log(distProb1), dist.getLogProbability(1)))
-    assert(Utils.eqDouble(Math.exp(dist.getLogProbability(1)), dist.getProbability(1)))
+    assert(Utils.eqDouble(Math.log(distProb1), dist.logProbability(1)))
+    assert(Utils.eqDouble(Math.exp(dist.logProbability(1)), dist.probability(1)))
   }
 
   "Multinomial.getProbability" should "return a valid value" in {
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
-    val distProb0 = dist.getProbability(0)
+    val distProb0 = dist.probability(0)
 
     assert(Utils.eqDouble(distProb0, 0.2))
-    assert(Utils.eqDouble(Math.log(distProb0), dist.getLogProbability(0)))
-    assert(Utils.eqDouble(Math.exp(dist.getLogProbability(0)), dist.getProbability(0)))
+    assert(Utils.eqDouble(Math.log(distProb0), dist.logProbability(0)))
+    assert(Utils.eqDouble(Math.exp(dist.logProbability(0)), dist.probability(0)))
   }
 
   "Multinomial.sample" should "return a valid value" in {
