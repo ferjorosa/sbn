@@ -15,7 +15,9 @@ lazy val core = project.in(file("core"))
     "org.scalatest" %% "scalatest" % "3.0.0",
     "ch.qos.logback" %  "logback-classic" % "1.1.7",
     "com.typesafe.scala-logging" % "scala-logging_2.11" % "3.5.0",
-    "org.scala-graph" %% "graph-core" % "1.11.3")
+    "org.scala-graph" %% "graph-core" % "1.11.3",
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
+    "org.apache.commons" % "commons-math3" % "3.6.1")
   )
 
 // ===========  Module 'Ltm'  ============ //
