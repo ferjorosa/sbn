@@ -1,9 +1,10 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
+
 import java.util.concurrent.ThreadLocalRandom
 
-import ferjorosa.sbn.core.variables.{GaussianType, Variable}
 import org.apache.commons.math3.distribution.NormalDistribution
 import org.apache.commons.math3.util.FastMath
+import sbn.core.variables.{GaussianType, Variable}
 
 /**
   * This class represents a Gaussian distribution. The Gaussian (or normal) distribution is a very common continuous

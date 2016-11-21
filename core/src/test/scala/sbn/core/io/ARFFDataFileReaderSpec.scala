@@ -1,8 +1,7 @@
-package ferjorosa.sbn.core.io.filereaders
+package sbn.core.io
 
-import ferjorosa.sbn.core.CustomSpec
-
-import scala.util.{Failure, Success}
+import sbn.core.CustomSpec
+import sbn.core.io.filereaders.ARFFDataFileReader
 
 class ARFFDataFileReaderSpec extends CustomSpec {
 

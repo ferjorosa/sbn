@@ -1,8 +1,8 @@
-package ferjorosa.sbn.core.models
+package sbn.core.models
 
-import ferjorosa.sbn.core.distributions.Distribution
-import ferjorosa.sbn.core.models.graph.DirectedGraph
-import ferjorosa.sbn.core.variables.Variable
+import sbn.core.distributions.Distribution
+import sbn.core.models.graph.DirectedGraph
+import sbn.core.variables.Variable
 
 /**
   * This class represents a Bayesian network, which is a probabilistic graphical model that represents a set of random

@@ -1,10 +1,9 @@
-package ferjorosa.sbn.core.io
+package sbn.core.io
 
 import java.io.File
 
-import ferjorosa.sbn.core.data.{DataInstance, MutableDataSet}
-import ferjorosa.sbn.core.io.filereaders.{ARFFDataFileReader, DataFileReader}
 import sbn.core.data.{ImmutableDataSet, MutableDataSet}
+import sbn.core.io.filereaders.{ARFFDataFileReader, DataFileReader}
 
 import scala.util.{Failure, Success, Try}
 

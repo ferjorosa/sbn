@@ -1,8 +1,8 @@
-package ferjorosa.sbn.core.models.graph
+package sbn.core.models.graph
 
-import ferjorosa.sbn.core.CustomSpec
-import ferjorosa.sbn.core.io.DataFileLoader
-import ferjorosa.sbn.core.variables.{Variable, VariableFactory}
+import sbn.core.CustomSpec
+import sbn.core.io.DataFileLoader
+import sbn.core.variables.{Variable, VariableFactory}
 
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph

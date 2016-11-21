@@ -3,7 +3,6 @@ package sbn.core.data.attributes
 import java.util.NoSuchElementException
 
 import sbn.core.CustomSpec
-import sbn.core.data.RealStateSpace
 
 class AttributesSpec extends CustomSpec{
 

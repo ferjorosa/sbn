@@ -1,6 +1,6 @@
-package ferjorosa.sbn.core.models.graph
+package sbn.core.models.graph
 
-import ferjorosa.sbn.core.variables.Variable
+import sbn.core.variables.Variable
 
 import scalax.collection.GraphEdge.DiEdge
 import scalax.collection.config.CoreConfig

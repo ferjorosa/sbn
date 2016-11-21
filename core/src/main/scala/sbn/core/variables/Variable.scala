@@ -1,10 +1,9 @@
-package ferjorosa.sbn.core.variables
+package sbn.core.variables
 
 import java.util.UUID
 
 import sbn.core.data.attributes._
-import ferjorosa.sbn.core.distributions.{ConditionalDistribution, UnivariateDistribution}
-import sbn.core.data.{FiniteStateSpace, RealStateSpace, StateSpaceType}
+import sbn.core.distributions.{ConditionalDistribution, UnivariateDistribution}
 
 /**
   * This trait defines an interface for both manifest and latent variables.

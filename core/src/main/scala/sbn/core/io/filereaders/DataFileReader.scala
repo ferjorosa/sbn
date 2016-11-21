@@ -1,6 +1,5 @@
-package ferjorosa.sbn.core.io.filereaders
+package sbn.core.io.filereaders
 
-import ferjorosa.sbn.core.data.MutableDataSet
 import sbn.core.data.{ImmutableDataSet, MutableDataSet}
 
 import scala.util.Try

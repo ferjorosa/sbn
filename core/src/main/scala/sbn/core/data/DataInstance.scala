@@ -1,6 +1,6 @@
-package ferjorosa.sbn.core.data
+package sbn.core.data
 
-import ferjorosa.sbn.core.data.attributes.{Attributes, FiniteStateSpace, RealStateSpace}
+import sbn.core.data.attributes.{Attributes, FiniteStateSpace, RealStateSpace}
 
 import scala.util.Try
 

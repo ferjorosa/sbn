@@ -1,6 +1,6 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
 
-import ferjorosa.sbn.core.CustomSpec
+import sbn.core.CustomSpec
 
 class Multinomial_MultinomialParentsSpec extends CustomSpec{
 

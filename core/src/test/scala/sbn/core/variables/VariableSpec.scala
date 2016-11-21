@@ -1,7 +1,6 @@
-package ferjorosa.sbn.core.variables
+package sbn.core.variables
 
-import ferjorosa.sbn.core.CustomSpec
-import sbn.core.data.{FiniteStateSpace, RealStateSpace}
+import sbn.core.CustomSpec
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
 
 class VariableSpec extends CustomSpec{

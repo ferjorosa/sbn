@@ -1,4 +1,4 @@
-package ferjorosa.sbn.core.utils
+package sbn.core.utils
 
 /**
   * Created by fer on 3/11/16.

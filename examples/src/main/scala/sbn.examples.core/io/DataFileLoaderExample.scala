@@ -1,7 +1,7 @@
 package ferjorosa.sbn.examples.core.io
 
-import ferjorosa.sbn.core.data.{ImmutableDataSet, DataInstance}
-import ferjorosa.sbn.core.io.DataFileLoader
+import sbn.core.data.ImmutableDataSet
+import sbn.core.io.DataFileLoader
 
 import scala.util.{Failure, Success, Try}
 

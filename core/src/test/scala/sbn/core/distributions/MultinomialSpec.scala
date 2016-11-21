@@ -1,12 +1,11 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
 
 import java.util.UUID
 
-import ferjorosa.sbn.core.CustomSpec
+import sbn.core.CustomSpec
 import sbn.core.data.attributes.{Attribute, RealStateSpace}
-import ferjorosa.sbn.core.utils.Utils
-import ferjorosa.sbn.core.variables.{LatentVariable, MultinomialType, VariableFactory}
-import sbn.core.data.RealStateSpace
+import sbn.core.utils.Utils
+import sbn.core.variables.{LatentVariable, MultinomialType, VariableFactory}
 
 class MultinomialSpec extends CustomSpec{
 

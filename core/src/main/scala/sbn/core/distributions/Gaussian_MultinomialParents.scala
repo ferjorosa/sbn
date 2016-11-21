@@ -1,4 +1,4 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
 
 /**
   * Created by fer on 3/11/16.

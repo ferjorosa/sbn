@@ -1,7 +1,7 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
 
-import ferjorosa.sbn.core.CustomSpec
-import ferjorosa.sbn.core.variables.VariableFactory
+import sbn.core.CustomSpec
+import sbn.core.variables.VariableFactory
 
 class GaussianSpec extends CustomSpec{
 

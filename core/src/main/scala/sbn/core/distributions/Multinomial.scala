@@ -1,10 +1,11 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
+
 import java.util.concurrent.ThreadLocalRandom
 
-import ferjorosa.sbn.core.utils.Utils
-import ferjorosa.sbn.core.variables.{MultinomialType, Variable}
 import org.apache.commons.math3.util.FastMath
-import sbn.core.data.FiniteStateSpace
+import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.utils.Utils
+import sbn.core.variables.{MultinomialType, Variable}
 
 /**
   * This class represents the Multinomial distribution. This distribution can be used to compute the probabilities in situations

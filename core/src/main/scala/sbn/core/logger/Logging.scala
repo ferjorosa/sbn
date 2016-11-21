@@ -1,4 +1,4 @@
-package ferjorosa.sbn.core.logger
+package sbn.core.logger
 
 import com.typesafe.scalalogging.Logger
 

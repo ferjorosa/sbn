@@ -1,7 +1,7 @@
 package ferjorosa.sbn.examples.core.test
 
-import ferjorosa.sbn.core.data.attributes.FiniteStateSpace
-import ferjorosa.sbn.core.variables._
+import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.variables.{Assignment, Assignments, Variable, VariableFactory}
 
 /**
   * Created by fer on 3/11/16.

@@ -1,6 +1,6 @@
-package ferjorosa.sbn.core.variables
+package sbn.core.variables
 
-import ferjorosa.sbn.core.CustomSpec
+import sbn.core.CustomSpec
 
 class DistributionTypeSpec extends CustomSpec{
 

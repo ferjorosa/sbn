@@ -1,6 +1,6 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
 
-import ferjorosa.sbn.core.variables.{Assignment, Assignments, Variable}
+import sbn.core.variables.{Assignments, Variable}
 
 /**
   * This trait defines the intrinsic methods of every kind of distribution.

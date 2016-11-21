@@ -1,6 +1,6 @@
-package ferjorosa.sbn.core.variables
+package sbn.core.variables
 
-import ferjorosa.sbn.core.distributions._
+import sbn.core.distributions.{Multinomial_MultinomialParents, _}
 
 /**
   * Represents the univariate distribution type of a variable.

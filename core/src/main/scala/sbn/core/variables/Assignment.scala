@@ -1,4 +1,4 @@
-package ferjorosa.sbn.core.variables
+package sbn.core.variables
 
 /**
   * This class defines an assignment of a value to a variable. The assignment values are encoded as [[Double]] values, therefore

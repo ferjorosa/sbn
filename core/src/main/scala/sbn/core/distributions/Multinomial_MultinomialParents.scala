@@ -1,8 +1,8 @@
-package ferjorosa.sbn.core.distributions
+package sbn.core.distributions
 
-import ferjorosa.sbn.core.utils.Utils
-import ferjorosa.sbn.core.variables.{Assignment, Assignments, MultinomialType, Variable}
-import sbn.core.data.FiniteStateSpace
+import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.utils.Utils
+import sbn.core.variables.{Assignment, Assignments, MultinomialType, Variable}
 
 /**
   * This class defines the conditional distribution of a variable of [[MultinomialType]] whose parents are all also of [[MultinomialType]].

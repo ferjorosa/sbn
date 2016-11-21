@@ -1,6 +1,6 @@
-package ferjorosa.sbn.core.io
+package sbn.core.io
 
-import ferjorosa.sbn.core.CustomSpec
+import sbn.core.CustomSpec
 
 /**
  * Created by Fernando on 31/10/2016.

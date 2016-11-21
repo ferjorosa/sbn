@@ -1,13 +1,11 @@
-package ferjorosa.sbn.core.io.filereaders
+package sbn.core.io.filereaders
 
 import java.io.File
 
-import ferjorosa.sbn.core.data._
-import sbn.core.data.attributes._
-import ferjorosa.sbn.core.logger.Logging
 import sbn.core.data._
+import sbn.core.data.attributes._
+import sbn.core.logger.Logging
 
-import scala.io.BufferedSource
 import scala.util.{Failure, Success, Try}
 
 /**

@@ -1,4 +1,4 @@
-package ferjorosa.sbn.core
+package sbn.core
 
 import org.scalatest.{BeforeAndAfterAll, FlatSpec, Matchers}
 
