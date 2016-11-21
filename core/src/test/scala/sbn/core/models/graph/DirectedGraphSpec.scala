@@ -9,7 +9,7 @@ import scalax.collection.immutable.Graph
 
 class DirectedGraphSpec extends CustomSpec{
 
-  val dataSet = DataFileLoader.loadImmutableDataSet("datasets/test/sbn.examples.core/onlyAttributes.arff")
+  val dataSet = DataFileLoader.loadImmutableDataSet("datasets/test/core/onlyAttributes.arff")
   val latent_gaussian = VariableFactory.newGaussianVariable("latent_gaussian")
   val latent_multinomial = VariableFactory.newMultinomialVariable("latent_multinomial", 2)
   val manifest_gaussian = VariableFactory.newGaussianVariable(dataSet.get.attributes.getAttributeByName("continuousWithBounds"))
