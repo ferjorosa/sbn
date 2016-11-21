@@ -18,4 +18,10 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
 
   "Multinomial_MultinomialParents.logConditionalProbability" should "" is pending
 
+  "Multinomial_MultinomialParents.cumulativeConditionalProbability" should "" is pending
+
+  "Multinomial_MultinomialParents.conditionalDensity" should "" is pending
+
+  "Multinomial_MultinomialParents.logConditionalDensity" should "" is pending
+
 }

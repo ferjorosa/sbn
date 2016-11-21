@@ -49,7 +49,7 @@ case class Multinomial_MultinomialParents(variable: Variable,
   override def numberOfParameters: Int = this.parameterizedConditionalDistributions.values.map(_.numberOfParameters).sum
 
   /** @inheritdoc */
-  override def parents: Set[Variable] = this.multinomialParents
+  override def conditioningVariables: Set[Variable] = this.multinomialParents
 
   /** @inheritdoc */
   @throws[IllegalArgumentException]
@@ -57,16 +57,42 @@ case class Multinomial_MultinomialParents(variable: Variable,
 
   /** @inheritdoc */
   @throws[IllegalArgumentException]
+  override def conditionalProbability(assignments: Assignments, value: Double): Double =  Math.exp(logConditionalProbability(assignments, value))
+
+  /** @inheritdoc */
+  @throws[IllegalArgumentException]
   override def logConditionalProbability(assignments: Assignments, value: Double): Double = getMultinomial(assignments).logProbability(value)
+
+  /** @inheritdoc */
+  @throws[IllegalArgumentException]
+  override def conditionalProbability(assignments: Assignments, x0: Double, x1: Double): Double = {
+    if(x0 > x1) throw new IllegalArgumentException("Lower endpoint above upper endpoint (x0 > x1)")
+
+    cumulativeConditionalProbability(assignments, x1) - cumulativeConditionalProbability(assignments, x0)
+  }
+
+  /** @inheritdoc */
+  @throws[IllegalArgumentException]
+  override def cumulativeConditionalProbability(assignments: Assignments, x: Double): Double = {
+    getMultinomial(assignments).cumulativeProbability(x)
+  }
+
+  /** @inheritdoc */
+  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
+  override def conditionalDensity(assignments: Assignments, x: Double): Double = ???
+
+  /** @inheritdoc */
+  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
+  override def logConditionalDensity(assignments: Assignments, x: Double): Double = ???
 
   /**
     * Returns the requested Multinomial distribution associated to the provided [[Assignments]] object.
     *
     * @param assignments the parent variables and its values.
-    * @throws NoSuchElementException if the provided [[Assignments]] object is not valid.
+    * @throws IllegalArgumentException if the provided [[Assignments]] object is not valid.
     * @return the requested [[Multinomial]] distribution
     */
-  @throws[NoSuchElementException]
+  @throws[IllegalArgumentException]
   private def getMultinomial(assignments: Assignments): Multinomial = try {
     parameterizedConditionalDistributions(assignments)
   } catch{ case nse: NoSuchElementException => throw new IllegalArgumentException("Invalid assignments for the distribution")}
@@ -98,6 +124,7 @@ object Multinomial_MultinomialParents {
 
   /**
     * Auxiliary method that makes use of [[Utils.cartesianProduct]] to generate
+    *
     * @param parents the multinomial parents of the variable.
     * @throws IllegalArgumentException if the parents state space is not finite.
     * @return the sequence of possible parent assignments that will be used to create the internal distributions.
