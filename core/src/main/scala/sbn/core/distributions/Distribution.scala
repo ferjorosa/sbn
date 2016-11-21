@@ -1,7 +1,6 @@
 package sbn.core.distributions
 
-import sbn.core.variables.{Assignments, Variable}
-import sbn.core.variables.Assignment
+import sbn.core.variables.{Assignment, Assignments, Variable}
 
 /**
   * This trait defines the intrinsic methods of every kind of distribution.
