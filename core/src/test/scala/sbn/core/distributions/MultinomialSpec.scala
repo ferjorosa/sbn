@@ -53,8 +53,8 @@ class MultinomialSpec extends CustomSpec{
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3))
     assert(dist.numberOfParameters ==  dist.probabilities.size)
   }
-
-  "Multinomial.getLogProbability" should "return a valid value" in {
+  //TODO: Given one value or 2
+  "Multinomial.probability" should "return a valid value" in {
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
     val distProb1 = dist.probability(1)
 
@@ -62,8 +62,8 @@ class MultinomialSpec extends CustomSpec{
     assert(Utils.eqDouble(Math.log(distProb1), dist.logProbability(1)))
     assert(Utils.eqDouble(Math.exp(dist.logProbability(1)), dist.probability(1)))
   }
-
-  "Multinomial.getProbability" should "return a valid value" in {
+  //TODO: Given one value or 2
+  "Multinomial.logProbability" should "return a valid value" in {
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
     val distProb0 = dist.probability(0)
 
@@ -72,6 +72,12 @@ class MultinomialSpec extends CustomSpec{
     assert(Utils.eqDouble(Math.exp(dist.logProbability(0)), dist.probability(0)))
   }
 
+  "Multinomial.cumulativeProbability" should "return a valid value" is pending
+
+  "Multinomial.density" should "" is pending
+
+  "Multinomial.logDensity" should "" is pending
+
   "Multinomial.sample" should "return a valid value" in {
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 4))
     val sampledValues: Seq[Double] = for(i<-0 until 100) yield dist.sample
@@ -79,5 +85,7 @@ class MultinomialSpec extends CustomSpec{
     // No sampled value can be an state index that is out of bounds
     assert(sampledValues.filter(_ >= 4).count(_ < 0) == 0)
   }
+
+  "Multinomial.getStateName" should "return a valid state name" is pending
 
 }

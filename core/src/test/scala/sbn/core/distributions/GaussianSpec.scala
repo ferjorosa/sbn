@@ -35,30 +35,15 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.parameters" should "be a Vector containing the mean and variance values" in {
     assert(Gaussian(VariableFactory.newGaussianVariable("gaussian_noBounds")).parameters == Vector(0, 1))
   }
+  //TODO: Given one value or 2
+  "Gaussian.probability" should "" is pending
+  //TODO: Given one value or 2
+  "Gaussian.logProbability" should "" is pending
 
-  "Gaussian.getLogProbability" should "hoola-hoop" in {
-    val dist = Gaussian(VariableFactory.newGaussianVariable("gaussian", 0, 1))
+  "Gaussian.cumulativeProbability" should "" is pending
 
-    val now1 = System.nanoTime()
-    for(i<-0 until 1000000)
-      dist.logProbability(0.33)
-    val end1 = System.nanoTime()
+  "Gaussian.density" should "" is pending
 
-    val now2 = System.nanoTime()
-    for(i<-0 until 1000000)
-      dist.logProbability(0.33)
-    val end2 = System.nanoTime()
-
-    val temp1 = end1 - now1
-    val temp2 = end2 - now2
-
-    println(end1 -now1, end2 - now2)
-
-    if(temp1 > temp2)
-      println("temp1 mas lento por "+ (temp1 -temp2) + "ns")
-
-    if(temp2 > temp1)
-      println("temp2 mas lento por "+ (temp2 -temp1) + "ns")
-  }
+  "Gaussian.logDensity" should "" is pending
 
 }

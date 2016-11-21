@@ -67,7 +67,7 @@ case class Multinomial_MultinomialParents(variable: Variable,
     * @return the requested [[Multinomial]] distribution
     */
   @throws[NoSuchElementException]
-  def getMultinomial(assignments: Assignments): Multinomial = try {
+  private def getMultinomial(assignments: Assignments): Multinomial = try {
     parameterizedConditionalDistributions(assignments)
   } catch{ case nse: NoSuchElementException => throw new IllegalArgumentException("Invalid assignments for the distribution")}
 }

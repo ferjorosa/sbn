@@ -63,15 +63,6 @@ case class Gaussian(variable: Variable, mean: Double, variance: Double) extends 
 
   /** @inheritdoc */
   override def sample: Double = (ThreadLocalRandom.current().nextGaussian() * this.standardDeviation) + this.mean
-
-  /**
-    * Returns the log probability for a given value
-    *
-    * @param value the input value.
-    * @return the logProbability for a given input value.
-    */
-  def getLogProbability2(value: Double): Double =
-    Math.exp(- Math.pow(value - this.mean, 2) / (2 * this.variance)) / Math.sqrt(2*variance*Math.PI)
 }
 
 /** The factory containing specific methods for creating [[Gaussian]] distribution objects */
