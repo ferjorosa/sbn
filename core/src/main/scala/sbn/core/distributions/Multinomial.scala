@@ -48,7 +48,7 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
     * possible state of the distribution and log represented the natural logarithm.
     *
     * @param x a double value representing a possible state of the Multinomial distribution.
-    * @throws IllegalArgumentException if [[x < 0]] or [[x > nStates]]
+    * @throws IllegalArgumentException if x < 0 or x > nStates
     * @return the Probability for a given state of the distribution.
     */
   @throws[IllegalArgumentException]
@@ -62,17 +62,17 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
     * of the distribution.
     *
     * @param x a double value representing a possible state of the Multinomial distribution.
-    * @throws IllegalArgumentException if [[x < 0]] or [[x > nStates]]
+    * @throws IllegalArgumentException if x0 > x1 or if x0, x1 are invalid.
     * @return the Probability for a given state of the distribution.
     */
   @throws[IllegalArgumentException]
   override def logProbability(x: Double): Double = FastMath.log(probability(x))
 
   /** @inheritdoc */
-  override def probability(x: Double, y: Double): Double = {
-    if(x > y) throw new IllegalArgumentException("Lower endpoint above upper endpoint (x > y)")
+  override def probability(x0: Double, x1: Double): Double = {
+    if(x0 > x1) throw new IllegalArgumentException("Lower endpoint above upper endpoint (x0 > x1)")
 
-    cumulativeProbability(y) - cumulativeProbability(x)
+    cumulativeProbability(x1) - cumulativeProbability(x0)
   }
 
   /** @inheritdoc */

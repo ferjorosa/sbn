@@ -50,7 +50,7 @@ case class Gaussian(variable: Variable, mean: Double, variance: Double) extends 
   /** @inheritdoc */
   override def probability(x: Double, y: Double): Double = try {
     implementation.probability(x, y)
-  }catch { case ntle: NumberIsTooLargeException => throw new IllegalArgumentException("Lower endpoint above upper endpoint (x > y)")}
+  }catch { case nitle: NumberIsTooLargeException => throw new IllegalArgumentException("Lower endpoint above upper endpoint (x > y)")}
 
   /** @inheritdoc */
   override def cumulativeProbability(value: Double): Double = implementation.cumulativeProbability(value)
