@@ -24,7 +24,8 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
   /** The state space of the multinomial variable. */
   private val variableStateSpace: FiniteStateSpace = variable.attribute.stateSpaceType match {
     case finite: FiniteStateSpace => finite
-    // Note: This is a special case, technically is impossible to have a multinomial variable with a continuous state space when using its factory.
+    // Note: This is a special case, it is technically impossible to have a multinomial variable with a continuous state
+    // space when using the VariableFactory.
     case _ => throw new IllegalArgumentException("state space of the variable must be finite")
   }
 
@@ -35,74 +36,59 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
   /** @inheritdoc */
   override def label: String = "Multinomial"
 
-  /**
-    * Returns a vector containing the parameters of the distribution (the probability associated to each state).
-    *
-    * @return A collection of [[Double]] values corresponding to the parameters of the distribution.
-    */
+  /** @inheritdoc */
   override def parameters: Vector[Double] = this.probabilities
 
   /** @inheritdoc */
   override def numberOfParameters: Int = this.variableStateSpace.numberOfStates
 
   /**
-    * Returns the Probability for a given state of the distribution.
+    * This method represents the logarithm of the probability mass function (PMF) for the distribution. For a random
+    * variable X whose values are distributed according to this distribution, this method returns log P(X = x), where x is a
+    * possible state of the distribution and log represented the natural logarithm.
     *
-    * @param value a [[Double]] value representing a given state of the Multinomial distribution.
-    * @throws IllegalArgumentException if value < 0 or value > nStates
+    * @param x a double value representing a possible state of the Multinomial distribution.
+    * @throws IllegalArgumentException if [[x < 0]] or [[x > nStates]]
     * @return the Probability for a given state of the distribution.
     */
   @throws[IllegalArgumentException]
-  override def probability(value: Double): Double = try {
-    this.probabilities(value.asInstanceOf[Int])
+  override def probability(x: Double): Double = try {
+    this.probabilities(x.asInstanceOf[Int])
   } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value")}
 
   /**
-    * Returns the logProbability for a given state of the distribution.
+    * This method represents the probability mass function (PMF) for the distribution. For a random variable X whose
+    * values are distributed according to this distribution, this method returns P(X = x), where x is a possible state
+    * of the distribution.
     *
-    * @param value a [[Double]] value representing a given state of the Multinomial distribution.
-    * @throws IllegalArgumentException if value < 0 or value > numberOfParameters
-    * @return the logProbability for a given state of the distribution.
+    * @param x a double value representing a possible state of the Multinomial distribution.
+    * @throws IllegalArgumentException if [[x < 0]] or [[x > nStates]]
+    * @return the Probability for a given state of the distribution.
     */
   @throws[IllegalArgumentException]
-  override def logProbability(value: Double): Double = FastMath.log(probability(value))
+  override def logProbability(x: Double): Double = FastMath.log(probability(x))
 
-
-
-  /**
-    *
-    * @param x
-    * @param y
-    * @return
-    */
+  /** @inheritdoc */
   override def probability(x: Double, y: Double): Double = {
     if(x > y) throw new IllegalArgumentException("Lower endpoint above upper endpoint (x > y)")
 
     cumulativeProbability(y) - cumulativeProbability(x)
   }
 
-  /**
-    *
-    * @param value
-    * @return
-    */
+  /** @inheritdoc */
   override def cumulativeProbability(value: Double): Double = try {
     (for (i <- 0 until value.asInstanceOf[Int]) yield probabilities(i)).sum
   } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value")}
 
   /** @inheritdoc */
-  // TODO: no tiene mucho sentido si no me equivoco
+  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
   override def density(value: Double): Double = ???
 
   /** @inheritdoc */
-  // TODO: no tiene mucho sentido si no me equivoco
+  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
   override def logDensity(value: Double): Double = ???
 
-  /**
-    * Returns a randomly sampled value that represents an index of the variable states.
-    *
-    * @return a randomly sampled double value.
-    */
+  /** @inheritdoc */
   override def sample: Double = {
     // randomValue ranges [0, 1]
     val randomValue = ThreadLocalRandom.current().nextDouble()

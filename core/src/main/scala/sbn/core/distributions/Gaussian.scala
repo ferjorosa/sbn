@@ -3,6 +3,7 @@ package sbn.core.distributions
 import java.util.concurrent.ThreadLocalRandom
 
 import org.apache.commons.math3.distribution.NormalDistribution
+import org.apache.commons.math3.exception.NumberIsTooLargeException
 import org.apache.commons.math3.util.FastMath
 import sbn.core.variables.{GaussianType, Variable}
 
@@ -38,59 +39,30 @@ case class Gaussian(variable: Variable, mean: Double, variance: Double) extends 
   /** @inheritdoc */
   override def numberOfParameters: Int = 2
 
-  /**
-    * Returns the probability for a given input value.
-    *
-    * @param value the value. Depending on the univariate distribution, it will be codified differently.
-    * @return the probability for a given input value.
-    */
+  /** @inheritdoc */
+  // The returned value will be always 0 given its infinite points (Real distribution). It doesn't make sense to calculate it.
   override def probability(value: Double): Double = implementation.probability(value)
 
-  /**
-    * Returns the logProbability for a given input value.
-    *
-    * @param value the value. Depending on the univariate distribution, it will be codified differently.
-    * @return the logProbability for a given input value.
-    */
+  /** @inheritdoc */
+  // The returned value will be always log(0) given its infinite points (Real distribution). It doesn't make sense to calculate it.
   override def logProbability(value: Double): Double = FastMath.log(probability(value))
 
-  /**
-    *
-    * @param x
-    * @param y
-    * @return
-    */
-  override def probability(x: Double, y: Double): Double = implementation.probability(x, y)
+  /** @inheritdoc */
+  override def probability(x: Double, y: Double): Double = try {
+    implementation.probability(x, y)
+  }catch { case ntle: NumberIsTooLargeException => throw new IllegalArgumentException("Lower endpoint above upper endpoint (x > y)")}
 
-  /**
-    *
-    * @param value
-    * @return
-    */
+  /** @inheritdoc */
   override def cumulativeProbability(value: Double): Double = implementation.cumulativeProbability(value)
 
-
-  /**
-    *
-    * @param value
-    * @return
-    */
+  /** @inheritdoc */
   override def density(value: Double): Double = implementation.density(value)
 
-  /**
-    *
-    * @param value
-    * @return
-    */
+  /** @inheritdoc */
   override def logDensity(value: Double): Double = implementation.logDensity(value)
 
-  /**
-    * Returns a randomly sampled value.
-    *
-    * @return a randomly sampled double value.
-    */
+  /** @inheritdoc */
   override def sample: Double = (ThreadLocalRandom.current().nextGaussian() * this.standardDeviation) + this.mean
-
 
   /**
     * Returns the log probability for a given value
@@ -107,12 +79,10 @@ object Gaussian {
 
   /**
     * Factory method that produces a new standard [[Gaussian]] distribution, which is a Gaussian distribution with
-    * mean = 0 and variance = 1 over tha variable's domain.
+    * mean = 0 and variance = 1 over that variable's domain.
     * @param variable the associated variable.
     * @return a new [[Gaussian]] distribution with standard parameter values.
     */
-  def apply(variable: Variable): Gaussian = {
-    // Standard Gaussian distribution
-    Gaussian(variable, 0, 1)
-  }
+  def apply(variable: Variable): Gaussian = Gaussian(variable, 0, 1)
+
 }

@@ -1,6 +1,7 @@
 package sbn.core.distributions
 
 import sbn.core.variables.{Assignments, Variable}
+import sbn.core.variables.Assignment
 
 /**
   * This trait defines the intrinsic methods of every kind of distribution.
@@ -83,7 +84,7 @@ trait UnivariateDistribution extends Distribution{
   /**
     * Returns a vector containing the parameters of the distribution.
     *
-    * @return A collection of [[Double]] values corresponding to the parameters of the distribution.
+    * @return A collection of double values corresponding to the parameters of the distribution.
     */
   def parameters: Vector[Double]
 
@@ -95,53 +96,56 @@ trait UnivariateDistribution extends Distribution{
   def sample: Double
 
   /**
-    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
-    * {@code P(X = x)}. In other  words, this method represents the probability mass function (PMF) for the distribution.
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * P(X = x). In other  words, this method represents the probability mass function (PMF) for the distribution.
     *
-    * @param x the provided point at which the PMF is evaluated. Depending on the univariate distribution, it will
-    *              be codified differently.
+    * @param x the provided point at which the PMF is evaluated.
+    * @throws IllegalArgumentException if x is an invalid value.
     * @return the value of the PMF at the provided point.
     */
+  @throws[IllegalArgumentException]
   def probability(x: Double): Double
 
   /**
-    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
-    * {@code log(P(X = x))}, where {@code log} is the natural logarithm. In other words, this method represents the
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * log P(X = x), where 'log' is the natural logarithm. In other words, this method represents the
     * logarithm of the probability mass function (PMF) for the distribution.
     *
-    * @param x the provided point at which the PMF is evaluated. Depending on the univariate distribution, it will
-    *              be codified differently.
+    * @param x the provided point at which the PMF is evaluated.
+    * @throws IllegalArgumentException if x is an invalid value.
     * @return the value of the log(PMF) at the provided point.
     */
+  @throws[IllegalArgumentException]
   def logProbability(x: Double): Double
 
   /**
-    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
-    * {@code P(x0 < X <= x1)}.
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * P(x0 < X <= x1).
     *
     * @param x0 the lower bound.
-    * @param x1 the upper bound
-    * @throws IllegalArgumentException if x0 > x1
-    * @return the probability that this distribution will take a value in the interval (x0, x1]
+    * @param x1 the upper bound.
+    * @throws IllegalArgumentException if x0 > x1.
+    * @return the probability that this distribution will take a value in the interval (x0, x1].
     */
   @throws[IllegalArgumentException]
   def probability(x0: Double, x1: Double): Double
 
   /**
-    * For a random variable {@code X} whose values are distributed according to this distribution, this method returns
-    * {@code P(X <= x)}. In other words, this method represents the (cumulative) distribution function (CDF)
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * P(X <= x). In other words, this method represents the (cumulative) distribution function (CDF)
     * for this distribution.
     *
     * @param x the point at which the CDF is evaluated.
     * @return the probability that a variable with this distribution will take a value less than or equal to x.
     */
+  @throws[IllegalArgumentException]
   def cumulativeProbability(x: Double): Double
 
   /**
-    * Returns the probability density function (PDF) of this distribution evaluated at the specified point {@code x}.
-    * In general, the PDF is the derivative of the {@link #cumulativeProbability(double) CDF}. If the derivative does not
-    * exist at {@code x}, then an appropriate replacement should be returned, e.g. {@code Double.POSITIVE_INFINITY},
-    * {@code Double.NaN}, or the limit inferior or limit superior of the difference quotient.
+    * Returns the probability density function (PDF) of this distribution evaluated at the specified point x.
+    * In general, the PDF is the derivative of the [[cumulativeProbability(x: Double)]]. If the derivative does not
+    * exist at x, then an appropriate replacement should be returned, e.g. [[Double.PositiveInfinity]],
+    * [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
     *
     * @param x the point at which the PDF is evaluated
     * @return the value of the probability density function at point x
@@ -150,9 +154,9 @@ trait UnivariateDistribution extends Distribution{
 
   /**
     * Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the
-    * specified point {@code x}. In general, the PDF is the derivative of the {@link #cumulativeProbability(double) CDF}.
-    * If the derivative does not exist at {@code x}, then an appropriate replacement should be returned,
-    * e.g. {@code Double.POSITIVE_INFINITY}, {@code Double.NaN}, or the limit inferior or limit superior of the difference quotient.
+    * specified point x. In general, the PDF is the derivative of the [[cumulativeProbability(x: Double)]].
+    * If the derivative does not exist at x, then an appropriate replacement should be returned,
+    * e.g. [[Double.PositiveInfinity]], [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
     *
     * @param x the point at which the PDF is evaluated
     * @return the logarithm of the value of the probability density function at point x.

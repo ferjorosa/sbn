@@ -1,4 +1,4 @@
-package ferjorosa.sbn.examples.core.test
+package sbn.examples.core.test
 
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.variables.{Assignment, Assignments, Variable, VariableFactory}
