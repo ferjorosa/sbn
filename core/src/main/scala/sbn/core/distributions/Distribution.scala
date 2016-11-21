@@ -31,11 +31,11 @@ trait Distribution extends Product with Serializable{
 trait ConditionalDistribution extends Distribution{
 
   /**
-    * Returns a collection containing the parent variables that condition it.
+    * Returns the set of variables that condition it.
     *
-    * @return a collection containing the parent variables that condition it.
+    * @return the set of variables that condition it.
     */
-  def parents: Set[Variable]
+  def conditioningVariables: Set[Variable]
 
   /**
     * Returns the univariate distribution of an [[Assignment]] given a conditional distribution. If we think of the
@@ -50,30 +50,100 @@ trait ConditionalDistribution extends Distribution{
   def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution
 
   /**
-    * Returns the log conditional probability of an [[Assignment]] and a specific value. If we think of the
-    * [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the assignments would represent
-    * a specific row of the CPT and the value would represent a column.
+    * For a random variable X whose values are distributed according to this distribution, which is constrained to a
+    * set of conditioning variables S that take specific values ([[Assignments]]), this method returns P(X = x | assignments).
+    * For example, assignments could be composed of 2 conditioning variables (A, B) that take the values of A=a and B=b
+    * respectively.
+    *
+    * In other words, this method represents the conditional probability mass function (CPMF) for this distribution
+    * given the values of its conditiong variables.
+    *
+    * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
+    * assignments would represent a specific row of the CPT and x would represent a column. In the case that the
+    * variable's type is Real (not finite), the probability associated to x will be 0, given the infinite number of
+    * columns (infinite number of points).
     *
     * @param assignments the values assigned to the conditioning variables.
-    * @param value the value of the main variable.
-    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
-    * @return the log conditional probability represented by a [[Double]] value.
-    */
-  @throws[IllegalArgumentException]
-  def logConditionalProbability(assignments: Assignments, value: Double): Double
-
-  /**
-    * Returns the conditional probability of an [[Assignment]] and a specific value. Tf we think of the
-    * [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the assignments would represent
-    * a specific row of the CPT and the value would represent a column.
-    *
-    * @param assignments the values assigned to the conditioning variables.
-    * @param value the value of the main variable.
+    * @param x the value of the main variable.
     * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the conditional probability represented by a [[Double]] value.
     */
   @throws[IllegalArgumentException]
-  def conditionalProbability(assignments: Assignments, value: Double): Double = Math.exp(logConditionalProbability(assignments, value))
+  def conditionalProbability(assignments: Assignments, x: Double): Double
+
+  /**
+    * For a random variable X whose values are distributed according to this distribution, which is constrained to a
+    * set of conditioning variables S that take specific values ([[Assignments]]), this method returns P(X = x | assignments).
+    *
+    * In other words, this method represents the logarithm of the conditional probability mass function (CPMF) for this
+    * distribution given the values of its conditiong variables.
+    *
+    * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
+    * assignments would represent a specific row of the CPT and x would represent a column. In the case that the
+    * variable's type is Real (not finite), the probability associated to x will be 0, given the infinite number of
+    * columns (infinite number of points). Therefore its logProbability will be log(0).
+    *
+    * @param assignments the values assigned to the conditioning variables.
+    * @param x the value of the main variable.
+    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
+    * @return the log conditional probability represented by a [[Double]] value.
+    */
+  @throws[IllegalArgumentException]
+  def logConditionalProbability(assignments: Assignments, x: Double): Double
+
+  /**
+    * For a random variable X whose values are distributed according to this distribution, which is constrained to a
+    * set of conditioning variables S that take specific values ([[Assignments]]), this method returns P(x0 < X <= x1 | assignments).
+    *
+    * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
+    * assignments would represent a specific row of the CPT and [x0, x1] would represent an interval. This method would return
+    * the probability associated to that interval of values.
+    *
+    * @param assignments the conditioning variables and their associated values.
+    * @param x0 the lower bound.
+    * @param x1 the upper bound.
+    * @throws IllegalArgumentException
+    * @return the probability that this distribution will take a value in the interval (x0, x1], given its conditioning
+    *         variables' values.
+    */
+  @throws[IllegalArgumentException]
+  def conditionalProbability(assignments: Assignments, x0: Double, x1: Double): Double
+
+  /**
+    * For a random variable X whose values are distributed according to this distribution, which is constrained to a
+    * set of conditioning variables S that take specific values ([[Assignments]]), this method returns P(X <= x | assignments).
+    *
+    * In other words, this method represents the conditional (cumulative) distribution function (CCDF) for this distribution
+    * given the values of its conditioning variables.
+    *
+    * @param assignments the conditioning variables and their associated values.
+    * @param x the value of the main variable that represent the point at which the CCDF is evaluated.
+    * @throws IllegalArgumentException
+    * @return the probability that a variable with this distribution will take a value less than or equal to x, given its set of
+    *         conditioning variables.
+    */
+  @throws[IllegalArgumentException]
+  def cumulativeConditionalProbability(assignments: Assignments, x: Double): Double
+
+  /**
+    * Returns the conditional probability density function (CPDF) of this distribution evaluated at the specified point x. This
+    * distribution is conditioned by a set of variables S that take specific values [[Assignments]]).
+    *
+    * @param assignments the values assigned to the conditioning variables.
+    * @param x the point at which the CPDF is evaluated.
+    * @return the value of the conditional probability density function at point x.
+    */
+  def conditionalDensity(assignments: Assignments, x: Double): Double
+
+  /**
+    * Returns the conditional probability density function (CPDF) of this distribution evaluated at the specified point x. This
+    * distribution is conditioned by a set of variables S that take specific values [[Assignments]]).
+    *
+    * @param assignments the values assigned to the conditioning variables.
+    * @param x the point at which the CPDF is evaluated.
+    * @return the logarithm of the value of the conditional probability density function at point x.
+    */
+  def logConditionalDensity(assignments: Assignments, x: Double): Double
 }
 
 /**
@@ -147,8 +217,8 @@ trait UnivariateDistribution extends Distribution{
     * exist at x, then an appropriate replacement should be returned, e.g. [[Double.PositiveInfinity]],
     * [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
     *
-    * @param x the point at which the PDF is evaluated
-    * @return the value of the probability density function at point x
+    * @param x the point at which the PDF is evaluated.
+    * @return the value of the probability density function at point x.
     */
   def density(x: Double): Double
 
@@ -158,7 +228,7 @@ trait UnivariateDistribution extends Distribution{
     * If the derivative does not exist at x, then an appropriate replacement should be returned,
     * e.g. [[Double.PositiveInfinity]], [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
     *
-    * @param x the point at which the PDF is evaluated
+    * @param x the point at which the PDF is evaluated.
     * @return the logarithm of the value of the probability density function at point x.
     */
   def logDensity(x: Double): Double
