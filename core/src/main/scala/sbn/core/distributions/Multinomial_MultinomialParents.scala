@@ -60,7 +60,7 @@ object Multinomial_MultinomialParents {
   @throws[IllegalArgumentException]
   def apply(variable: Variable, multinomialParents: Set[Variable]): Multinomial_MultinomialParents ={
     require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
-    require(!multinomialParents.exists(_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
+    require(!multinomialParents.exists(!_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
 
     val parametrizedMultinomialDistributions = BaseDistribution_MultinomialParents.generateAssignmentCombinations(multinomialParents)
       // .view makes it much faster because it avoids creating intermediate results.
