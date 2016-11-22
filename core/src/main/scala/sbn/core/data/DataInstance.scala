@@ -6,6 +6,7 @@ import scala.util.Try
 
 /**
   * This class represents a data sample. It consists of a number of Attributes and its corresponding values.
+  *
   * @param attributes the [[Attributes]] object representing the columns of the data instance.
   * @param values the values assigned to the columns.
   * @throws IllegalArgumentException if [[attributes]].size != [[values]].size
@@ -20,6 +21,7 @@ object DataInstanceFactory {
 
   /**
    * Factory method that produces a new DataInstance from an ARFF data line.
+    *
    * @param attributes the attributes corresponding to the data values.
    * @param line the data file line.
    * @return a Success(DataInstance) object or a Failure(e: Exception) if an exception was thrown in the process.

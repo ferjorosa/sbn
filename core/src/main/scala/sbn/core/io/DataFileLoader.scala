@@ -15,6 +15,7 @@ object DataFileLoader {
 
   /**
     * Tries to load an [[ImmutableDataSet]] with the right reader from a specific path.
+    *
     * @param path the path specified by the user.
     * @return a [[Success]]([[ImmutableDataSet]]) or
     *         a [[Failure]]([[Exception]]) if an exception occurred during the process.
@@ -28,6 +29,7 @@ object DataFileLoader {
 
   /**
     * Analyzes the extension of the provided file and chooses the right reader for the job if available.
+    *
     * @param fileName the name of the chosen file.
     * @return a [[Success]]([[DataFileReader]]) or
     *         a [[Failure]]([[Exception]]) if the file extension not supported.

@@ -11,6 +11,7 @@ trait DistributionType{
   /**
     * Tests whether a given parent is compatible or not. In other words, it checks if the resulting conditional distribution
     * would be allowed by the library or not.
+    *
     * @param distributionType the parent's distribution type.
     * @return true if the parent is compatible, false otherwise.
     */
@@ -19,6 +20,7 @@ trait DistributionType{
   /**
     * Tests whether a given attribute is compatible with the variable's distribution type. To do so, its state-space will be
     * tested against the distribution type.
+    *
     * @param attribute the given attribute.
     * @return true if the attribute's state space is compatible with the distribution type, false otherwise.
     */
@@ -26,6 +28,7 @@ trait DistributionType{
 
   /**
     * Creates a new [[UnivariateDistribution]] of the distribution type.
+    *
     * @param variable the variable used to create the [[UnivariateDistribution]].
     * @return a new [[UnivariateDistribution]] of the distribution type.
     */
@@ -33,6 +36,7 @@ trait DistributionType{
 
   /**
     * Creates a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
+    *
     * @param variable the variable used as base for the distribution.
     * @param parents the parents of the variable.
     * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
@@ -63,6 +67,7 @@ case class MultinomialType() extends DistributionType{
 
   /**
     * Creates a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
+    *
     * @param variable the variable used as base for the distribution.
     * @param parents the parents of the variable.
     * @throws IllegalArgumentException if the parent set is empty or

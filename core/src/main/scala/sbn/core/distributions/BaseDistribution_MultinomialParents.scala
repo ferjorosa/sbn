@@ -4,7 +4,9 @@ import sbn.core.utils.Utils
 import sbn.core.variables.{Assignment, Assignments, Variable}
 
 /**
-  * Created by fer on 21/11/16.
+  * This class abstracts the distributions generated from a set of multinomial parents (i.e., [[Multinomial_MultinomialParents]]
+  * or [[Gaussian_MultinomialParents]]). All of them have a similar form, and to reduce the repeated code this class
+  * implements some of their methods.
   */
 abstract class BaseDistribution_MultinomialParents(variable: Variable,
                                                    multinomialParents: Set[Variable],

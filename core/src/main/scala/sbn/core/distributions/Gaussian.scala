@@ -71,6 +71,7 @@ object Gaussian {
   /**
     * Factory method that produces a new standard [[Gaussian]] distribution, which is a Gaussian distribution with
     * mean = 0 and variance = 1 over that variable's domain.
+    *
     * @param variable the associated variable.
     * @return a new [[Gaussian]] distribution with standard parameter values.
     */

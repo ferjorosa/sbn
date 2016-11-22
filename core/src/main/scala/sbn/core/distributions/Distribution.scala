@@ -101,7 +101,7 @@ trait ConditionalDistribution extends Distribution{
     * @param assignments the conditioning variables and their associated values.
     * @param x0 the lower bound.
     * @param x1 the upper bound.
-    * @throws IllegalArgumentException
+    * @throws IllegalArgumentException if x0 > x1 or if the provided [[Assignments]] object is invalid for the distribution.
     * @return the probability that this distribution will take a value in the interval (x0, x1], given its conditioning
     *         variables' values.
     */
@@ -117,7 +117,7 @@ trait ConditionalDistribution extends Distribution{
     *
     * @param assignments the conditioning variables and their associated values.
     * @param x the value of the main variable that represent the point at which the CCDF is evaluated.
-    * @throws IllegalArgumentException
+    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the probability that a variable with this distribution will take a value less than or equal to x, given its set of
     *         conditioning variables.
     */

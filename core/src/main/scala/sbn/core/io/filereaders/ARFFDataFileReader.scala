@@ -15,6 +15,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
 
   /**
     * Tries to load an [[ImmutableDataSet]] from an ARFF file.
+    *
     * @param path the path to the ARFF file.
     * @return a [[Success]]([[ImmutableDataSet]]) or
     *         a [[Failure]]([[Exception]]) if an exception occurred during the process.
@@ -38,6 +39,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
 
   /**
    * Tests if this DataFileReader can read the filename.
+    *
    * @param fileName the filename.
    * @return true if the filename can be read, false otherwise.
    */
@@ -51,6 +53,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
 
   /**
    * This method reads the file and tries to return the @relation string.
+    *
    * @param path the path to the file, needed to create a reading source.
    * @return a [[Success]]([[String]]) or a [[Failure]]([[Exception]]) if an exception occurred during the process.
    */
@@ -70,6 +73,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
   /**
    * This method reads the file and tries to generate a [[Attributes]] object containing all the [[Attribute]] objects
    * that refer to the @attribute lines.
+    *
    * @param path the path to the file, needed to create a reading source.
    * @return a [[Success]]([[Attributes]]) or a [[Failure]]([[Exception]]) if an exception occurred during the process.
    */
@@ -131,6 +135,7 @@ object ARFFDataFileReader extends DataFileReader with Logging{
   /**
    * This method reads the file and returns a [[Vector]] of [[DataInstance]] objects containing all the ones that
    * have been created without errors.
+    *
    * @param path the path to the file, needed to create a reading source.
    * @param attributes the [[Attributes]] object needed to create a [[DataInstance]]
    * @return the [[Vector]] containing the [[DataInstance]] objects that have been created without errors.

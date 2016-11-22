@@ -23,12 +23,14 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
 
   /**
     * Returns the attributeList ordered by the [[attributeOrder]].
+    *
     * @return the attributeList ordered by the [[attributeOrder]].
     */
   def orderedAttributeList: List[Attribute] = attributeOrder.map(x => attributeList(x))
 
   /**
     * Returns the requested [[Attribute]] object.
+    *
     * @param name the requested attribute's name.
     * @throws NoSuchElementException if the requested name doesn't exists.
     * @return the requested Attribute.
@@ -41,18 +43,21 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
 
   /**
    * Returns the size of the [[attributeList]].
+    *
    * @return the size of the [[attributeList]].
    */
   override def size: Int = this.attributeList.size
 
   /**
     * Returns a custom iterator for the collection.
+    *
     * @return a custom iterator for the collection.
     */
   override def iterator: Iterator[Attribute] = orderedAttributeList.iterator
 
   /**
    * Returns the attribute associated to the provided index.
+    *
    * @param attributeIndex the index of the attribute.
    * @throws IndexOutOfBoundsException if attributeIndex exceeds the bounds of [[attributeList]].
    * @return the attribute associated to the provided index.
@@ -67,6 +72,7 @@ object Attributes{
 
   /**
    * Auxiliary factory method. It is used when no special attribute order is provided.
+    *
    * @param attributeList the native collection containing the [[Attribute]] objects.
    * @return a new [[Attributes]] object with a default attribute order.
    */
