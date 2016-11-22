@@ -1,48 +1,50 @@
 package sbn.core.distributions
 
-import java.util.UUID
-
 import sbn.core.CustomSpec
-import sbn.core.data.attributes.{Attribute, RealStateSpace}
+import sbn.core.data.attributes.{Attribute, FiniteStateSpace}
 import sbn.core.utils.Utils
-import sbn.core.variables.{LatentVariable, MultinomialType, VariableFactory}
+import sbn.core.variables.VariableFactory
 
 class MultinomialSpec extends CustomSpec{
 
   "Multinomial constructor" should "throw an IllegalArgumentException if variable.distributionType is not MultinomialType" in {
+
+    Given("a variable of Gaussian type")
+    val variable = VariableFactory.newGaussianVariable("tonto el que lo lea")
+
+    When("Creating a Multinomial distribution from it")
+
+    Then("a IllegalArgumentException should be thrown")
     a[IllegalArgumentException] should be thrownBy {
-      Multinomial(VariableFactory.newGaussianVariable("tonto el que lo lea"), Vector(0, 1.0))
+      Multinomial(variable, Vector(0, 0.5, 0.5))
     }
   }
 
-  "Multinomial constructor" should "throw an IllegalArgumentException if the numberOfStates of the variable =! probabilities.size" in {
+  it should "throw an IllegalArgumentException if the numberOfStates of the variable =! probabilities.size" in {
     a[IllegalArgumentException] should be thrownBy {
       Multinomial(VariableFactory.newMultinomialVariable("multinomial", 2), Vector(0.33, 0.33, 0.34))
     }
   }
 
-  "Multinomial constructor" should "throw an IllegalArgumentException if the sum of probabilities != 1.0" in {
+  it should "throw an IllegalArgumentException if the sum of probabilities != 1.0" in {
     a[IllegalArgumentException] should be thrownBy {
       Multinomial(VariableFactory.newMultinomialVariable("multinomial", 2), Vector(0.5, 0))
     }
   }
 
   "Multinomial.apply" should "create a Multinomial distribution with random probabilities from a finite state variable" in {
-    val distribution = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3))
 
+    Given("a multinomial variable with 3 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 3)
+
+    When("creating a multinomial distribution from it")
+    val distribution = Multinomial(variable)
+
+    Then("the number of parameters must equal the number of states of the variable")
     assert(distribution.numberOfParameters == 3)
+
+    And("The probabilities must sum 1.0")
     assert(Utils.eqDouble(distribution.probabilities.sum, 1.0))
-  }
-
-  // Note: This is a special case, technically is impossible to have a multinomial variable with a continuous state space when using the factory.
-  // To test it we create a variable without using the factory
-  "Multinomial.apply" should "throw an IllegalArgumentException if its attribute state space is not finite" in {
-    val continuousAttribute = Attribute("Continuous", RealStateSpace(-5,5))
-    val multinomialVar = LatentVariable(continuousAttribute, MultinomialType(), UUID.randomUUID())
-
-    a[IllegalArgumentException] should be thrownBy {
-      Multinomial(multinomialVar)
-    }
   }
 
   "Multinomial.label" should "return 'Multinomial'" in {
@@ -50,42 +52,125 @@ class MultinomialSpec extends CustomSpec{
   }
 
   "Multinomial.numberOfParameters" should "be equal to the nStates of the variable and its probabilities.size" in {
-    val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3))
-    assert(dist.numberOfParameters ==  dist.probabilities.size)
-  }
-  //TODO: Given one value or 2
-  "Multinomial.probability" should "return a valid value" in {
-    val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
-    val distProb1 = dist.probability(1)
 
-    assert(Utils.eqDouble(distProb1, 0.5))
-    assert(Utils.eqDouble(Math.log(distProb1), dist.logProbability(1)))
+    Given("a multinomial variable with 3 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 3)
+
+    When("creating a multinomial distribution from it")
+    val dist = Multinomial(variable)
+
+    Then("the number of parameters of the distribution should equal the number of states of the variable")
+    val finiteStateSpace = variable.attribute.stateSpaceType match{
+      case finite: FiniteStateSpace => finite
+      case _ => throw new IllegalStateException("state space should be finite")
+    }
+    assert(finiteStateSpace.numberOfStates ==  dist.numberOfParameters)
+  }
+
+  "Multinomial.probability(x)" should "return P(X = x)" in {
+
+    Given("a multinomial variable with 3 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 3)
+
+    When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
+    val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
+
+    Then("probability(1) must equal 0.5")
+    assert(Utils.eqDouble(dist.probability(1), 0.5))
+
+    And("probability(0) must equal 0.2")
+    assert(Utils.eqDouble(dist.probability(0), 0.2))
+  }
+
+  "Multinomial.logProbability(x)" should "return log P(X = x)" in {
+
+    Given("a multinomial variable with 3 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 3)
+
+    When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
+    val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
+
+    Then("exp(probability(0)) must equal logProbability(0)")
+    assert(Utils.eqDouble(dist.probability(0), 0.2))
+    assert(Utils.eqDouble(Math.log(dist.probability(0)), dist.logProbability(0)))
+
+    And("exp(probability(1)) must equal logProbability(1)")
     assert(Utils.eqDouble(Math.exp(dist.logProbability(1)), dist.probability(1)))
   }
-  //TODO: Given one value or 2
-  "Multinomial.logProbability" should "return a valid value" in {
-    val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 3), Vector(0.2, 0.5, 0.3))
-    val distProb0 = dist.probability(0)
 
-    assert(Utils.eqDouble(distProb0, 0.2))
-    assert(Utils.eqDouble(Math.log(distProb0), dist.logProbability(0)))
-    assert(Utils.eqDouble(Math.exp(dist.logProbability(0)), dist.probability(0)))
+  "Multinomial.probability(x0, x1)" should "return P(x0 < X <= x1)" in {
+
+    Given("a multinomial variable with 6 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 6)
+
+    When("creating a multinomial distribution with parameters (0.2, 0.1, 0.3, 0.2, 0.05, 0.15) from it")
+    val dist = Multinomial(variable, Vector(0.2, 0.1, 0.3, 0.2, 0.05, 0.15))
+
+    Then("probability(0, 5) must equal 0.8")
+    assert(Utils.eqDouble(dist.probability(0, dist.parameters.size - 1), 0.8))
+
+    And("probability(2, 4) must equal 0.")
+    assert(Utils.eqDouble(dist.probability(2, 4), 0.25))
+
   }
 
-  "Multinomial.cumulativeProbability" should "return a valid value" is pending
+  "Multinomial.cumulativeProbability(x)" should "return P(X <= x)" in {
+
+    Given("a multinomial variable with 6 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 6)
+
+    When("creating a multinomial distribution with parameters (0.2, 0.1, 0.3, 0.2, 0.05, 0.15) from it")
+    val dist = Multinomial(variable, Vector(0.2, 0.1, 0.3, 0.2, 0.05, 0.15))
+
+    Then("cumulativeProbability(5) must equal 1.0")
+    assert(Utils.eqDouble(dist.cumulativeProbability(dist.parameters.size - 1), 1.0))
+
+    And("cumulativeProbability(0) must equal 0.2")
+    assert(Utils.eqDouble(dist.cumulativeProbability(0), 0.2))
+
+    And("cumulativeProbability(4) must equal 0.85")
+    assert(Utils.eqDouble(dist.cumulativeProbability(4), 0.85))
+  }
 
   "Multinomial.density" should "" is pending
 
   "Multinomial.logDensity" should "" is pending
 
   "Multinomial.sample" should "return a valid value" in {
+
+    Given("a distribution with 4 random parameters")
     val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 4))
+
+    When("values are sampled")
     val sampledValues: Seq[Double] = for(i<-0 until 100) yield dist.sample
 
-    // No sampled value can be an state index that is out of bounds
+    Then("No sampled value can be an state index that is out of bounds")
     assert(sampledValues.filter(_ >= 4).count(_ < 0) == 0)
   }
 
-  "Multinomial.getStateName" should "return a valid state name" is pending
+  "Multinomial.getStateName" should "return valid state names when parameter names have been defined by default" in {
+
+    Given("a distribution with parameter names by default")
+    val dist = Multinomial(VariableFactory.newMultinomialVariable("multinomial", 4))
+
+    When("getting the parameter names")
+    val stateNames = for (i <- dist.parameters.indices) yield dist.getStateName(i)
+
+    Then("it should return 's'+ index of the parameter")
+    assert(stateNames.toList equals List("s0", "s1", "s2", "s3"))
+  }
+
+  it should "return valid state names when parameter names have been defined by the variable's attribute" in {
+
+    Given("a distribution with parameter names defined by the variable's attribute")
+    val attribute = Attribute("manifestAttr1", FiniteStateSpace(Vector("estado1", "s2", "attrState3")))
+    val dist2 = Multinomial(VariableFactory.newMultinomialVariable(attribute))
+
+    When("getting the parameter names")
+    val stateNames2 = for(i <- dist2.parameters.indices)yield dist2.getStateName(i)
+
+    Then("it should return the names provided by the variable's attribute")
+    assert(stateNames2.toList equals List("estado1", "s2", "attrState3"))
+  }
 
 }

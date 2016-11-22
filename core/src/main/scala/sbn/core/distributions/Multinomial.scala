@@ -77,8 +77,8 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
 
   /** @inheritdoc */
   override def cumulativeProbability(value: Double): Double = try {
-    (for (i <- 0 until value.asInstanceOf[Int]) yield probabilities(i)).sum
-  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value")}
+    (for (i <- 0 to value.asInstanceOf[Int]) yield probabilities(i)).sum
+  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value. State index is out of bounds.")}
 
   /** @inheritdoc */
   // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
