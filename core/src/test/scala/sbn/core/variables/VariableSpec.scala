@@ -1,9 +1,37 @@
 package sbn.core.variables
 
+import java.util.UUID
+
 import sbn.core.CustomSpec
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
 
 class VariableSpec extends CustomSpec{
+
+  "ManifestVariable.constructor" should "throw an IllegalArgumentException if the attribute is incompatible" in {
+
+    Given("an attribute with a finite state-space")
+    val attribute = Attribute("attr", FiniteStateSpace(10))
+
+    When("creating a manifest variable of gaussian type")
+
+    Then("an IllegalArgumentException should be thrown")
+    a[IllegalArgumentException] should be thrownBy {
+      val variable = ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
+    }
+  }
+
+  "LatentVariable.constructor" should "throw an IllegalArgumentException if the attribute is incompatible" in {
+
+    Given("an attribute with a finite state-space")
+    val attribute = Attribute("attr", FiniteStateSpace(10))
+
+    When("creating a latent variable of gaussian type")
+
+    Then("an IllegalArgumentException should be thrown")
+    a[IllegalArgumentException] should be thrownBy {
+      val variable = LatentVariable(attribute, new GaussianType, UUID.randomUUID())
+    }
+  }
 
   "VariableFactory.newMultinomialVariable" should "throw an IllegalArgumentException if its attribute's state space is not finite" in {
     val attribute = Attribute("attr", RealStateSpace())

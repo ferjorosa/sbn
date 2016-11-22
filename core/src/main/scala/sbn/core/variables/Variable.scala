@@ -71,7 +71,10 @@ trait Variable extends Product with Serializable{
   */
 case class ManifestVariable (attribute: Attribute,
                              distributionType: DistributionType,
-                             id: UUID) extends Variable
+                             id: UUID) extends Variable{
+
+  require(distributionType.isAttributeCompatible(attribute), "Attribute is not compatible: "+ distributionType + " & " + attribute.stateSpaceType)
+}
 
 
 /**
@@ -83,7 +86,10 @@ case class ManifestVariable (attribute: Attribute,
   */
 case class LatentVariable (attribute: Attribute,
                            distributionType: DistributionType,
-                           id: UUID) extends Variable
+                           id: UUID) extends Variable{
+
+  require(distributionType.isAttributeCompatible(attribute), "Attribute is not compatible: "+ distributionType + " & " + attribute.stateSpaceType)
+}
 
 
 /**
@@ -101,11 +107,7 @@ object VariableFactory {
     * @return a new [[ManifestVariable]] of multinomial type.
     */
   @throws[IllegalArgumentException]
-  def newMultinomialVariable(attribute: Attribute): ManifestVariable = {
-    require(attribute.stateSpaceType.isInstanceOf[FiniteStateSpace], "attribute's state space must be finite")
-
-    ManifestVariable(attribute, new MultinomialType, UUID.randomUUID())
-  }
+  def newMultinomialVariable(attribute: Attribute): ManifestVariable = ManifestVariable(attribute, new MultinomialType, UUID.randomUUID())
 
   /**
     * Creates a latent multinomial variable by specifying its number of states.
@@ -127,10 +129,7 @@ object VariableFactory {
     * @return a new [[ManifestVariable]] of gaussian type.
     */
   @throws[IllegalArgumentException]
-  def newGaussianVariable(attribute: Attribute): ManifestVariable = {
-    require(attribute.stateSpaceType.isInstanceOf[RealStateSpace], "attribute's state space must be real")
-    ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
-  }
+  def newGaussianVariable(attribute: Attribute): ManifestVariable = ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
 
   /**
     * Creates a latent gaussian variable by specifying its value intervals.
