@@ -55,7 +55,7 @@ trait ConditionalDistribution extends Distribution{
     * respectively.
     *
     * In other words, this method represents the conditional probability mass function (CPMF) for this distribution
-    * given the values of its conditiong variables.
+    * given the values of its conditioning variables.
     *
     * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
     * assignments would represent a specific row of the CPT and x would represent a column. In the case that the
@@ -75,7 +75,7 @@ trait ConditionalDistribution extends Distribution{
     * set of conditioning variables S that take specific values ([[Assignments]]), this method returns P(X = x | assignments).
     *
     * In other words, this method represents the logarithm of the conditional probability mass function (CPMF) for this
-    * distribution given the values of its conditiong variables.
+    * distribution given the values of its conditioning variables.
     *
     * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
     * assignments would represent a specific row of the CPT and x would represent a column. In the case that the
