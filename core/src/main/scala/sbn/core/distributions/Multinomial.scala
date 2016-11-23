@@ -76,9 +76,13 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
   }
 
   /** @inheritdoc */
-  override def cumulativeProbability(value: Double): Double = try {
-    (for (i <- 0 to value.asInstanceOf[Int]) yield probabilities(i)).sum
-  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value. State index is out of bounds.")}
+  override def cumulativeProbability(value: Double): Double = {
+    if(value < 0) throw new IllegalArgumentException("Invalid value. State index has to be > 0")
+
+    try {
+      (for (i <- 0 to value.asInstanceOf[Int]) yield probabilities(i)).sum
+    } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value. State index is out of bounds.")}
+  }
 
   /** @inheritdoc */
   // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
@@ -112,6 +116,15 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
   def getStateName(index: Int): String = try {
     this.variableStateSpace.stateNames(index)
   } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid index")}
+
+  override def toString: String = {
+    val sb: StringBuilder = new StringBuilder
+
+    sb.append("[ ")
+    parameters.foreach(x => sb.append(x + " "))
+    sb.append("]")
+    sb.toString()
+  }
 }
 
 /** The factory that contains specific methods for creating [[Multinomial]] objects. */
