@@ -40,12 +40,10 @@ abstract class BaseDistribution_MultinomialParents(variable: Variable,
   override def cumulativeConditionalProbability(assignments: Assignments, x: Double): Double = getUnivariateDistribution(assignments).cumulativeProbability(x)
 
   /** @inheritdoc */
-  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
-  override def conditionalDensity(assignments: Assignments, x: Double): Double = ???
+  override def conditionalDensity(assignments: Assignments, x: Double): Double = getUnivariateDistribution(assignments).density(x)
 
   /** @inheritdoc */
-  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
-  override def logConditionalDensity(assignments: Assignments, x: Double): Double = ???
+  override def logConditionalDensity(assignments: Assignments, x: Double): Double = getUnivariateDistribution(assignments).logDensity(x)
 }
 
 object BaseDistribution_MultinomialParents {
@@ -59,10 +57,11 @@ object BaseDistribution_MultinomialParents {
     */
   @throws[IllegalArgumentException]
   def generateAssignmentCombinations(parents: Set[Variable]): Seq[Assignments] = {
-    val stateSequences: Set[Vector[Int]] = parents.map(v => v.attribute.stateSpaceType match {
+    val stateSequences: Seq[Vector[Int]] = parents.toSeq.map(v => v.attribute.stateSpaceType match {
       case finite: FiniteStateSpace => finite.stateIndexes
       case _ => throw new IllegalArgumentException("Parents state space must be finite")
     })
+
     // First we obtain the cartesian product (all the combinations) of the parents state space values
     Utils.cartesianProduct(stateSequences)
       // and then we zip each state value with its parent variable reference
