@@ -159,7 +159,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     }
   }
 
-  "Multinomial_MultinomialParents.conditionalProbability(assignments, x0, x1)" should "return  log P(x0 < X <= x1 | assignments)" in{
+  "Multinomial_MultinomialParents.conditionalProbability(assignments, x0, x1)" should "return P(x0 < X <= x1 | assignments)" in{
 
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
