@@ -11,10 +11,13 @@ import sbn.core.variables.Variable
   *
   * @param name the name of the network.
   * @param dag the associated directed acyclic graph.
-  * @param distributions the set of [[Distribution]] associated to each node of the [[dag]].
+  * @param distributions the seq of [[Distribution]] associated to each node of the [[dag]].
   */
-case class BayesianNetwork(name: String, dag: DirectedGraph, distributions: Set[Distribution]) {
+// TODO: Given that the Set collection is invariant, i had to change it for Seq. Factory methods will create
+// a Seq of non-repeated randomly parameterized distributions, so its "equivalent" to what i wanted to obtain with a Set (for the moment)
+case class BayesianNetwork(name: String, dag: DirectedGraph, distributions: Seq[Distribution]) {
   require(dag.isAcyclic, "The directed graph of the BN has to be acyclic")
+  require(distributions.size == dag.nodes.size, "The number of distributions must equal the number of nodes")
 
   /**
     * Returns the set of variables that consist the BN.
@@ -37,13 +40,13 @@ object BayesianNetwork {
     */
   def apply(name: String, dag: DirectedGraph): BayesianNetwork = {
 
-    val distributions: Set[Distribution] = dag.nodes.map( variable => {
+    val distributions: Seq[Distribution] = dag.nodes.map( variable => {
       val parents = dag.parents(variable)
       if (parents.isEmpty)
         variable.newUnivariateDistribution
       else
         variable.newConditionalDistribution(parents)
-    })
+    }).toSeq
 
     BayesianNetwork(name, dag, distributions)
   }
@@ -56,13 +59,13 @@ object BayesianNetwork {
     * @return a new [[BayesianNetwork]] with randomly parameterized distributions.
     */
   def apply(dag: DirectedGraph): BayesianNetwork = {
-    val distributions: Set[Distribution] = dag.nodes.map( variable => {
+    val distributions: Seq[Distribution] = dag.nodes.map( variable => {
       val parents = dag.parents(variable)
       if (parents.isEmpty)
         variable.newUnivariateDistribution
       else
         variable.newConditionalDistribution(parents)
-    })
+    }).toSeq
 
     BayesianNetwork("BayesianNetwork", dag, distributions)
   }
