@@ -146,14 +146,14 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     When("creating a Multinomial_MultinomialParents distribution from it")
     val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
 
-    Then("conditionalProbability(X = 1 | parent1_2states = 0, parent2_2states = 1) should return 0.4")
+    Then("logConditionalProbability(X = 1 | parent1_2states = 0, parent2_2states = 1) should return log(0.4)")
     assert(Utils.eqDouble(dist.logConditionalProbability(assignments0_1, 1), FastMath.log(0.4)))
 
-    And("conditionalProbability(X = 2 | parent1_2states = 1, parent2_2states = 1) should return 0.0")
+    And("logConditionalProbability(X = 2 | parent1_2states = 1, parent2_2states = 1) should return log(0.0)")
     // -infinity
     assert(dist.logConditionalProbability(assignments1_1, 2) == FastMath.log(0.0))
 
-    And("conditionalProbability(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
+    And("logConditionalProbability(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
     a[IllegalArgumentException] should be thrownBy {
       dist.logConditionalProbability(assignments1_1, 6)
     }
@@ -200,8 +200,43 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     }
   }
 
-  "Multinomial_MultinomialParents.conditionalDensity(assignments, x)" should "" is pending
+  "Multinomial_MultinomialParents.conditionalDensity(assignments, x)" should "return P(X = x | assignments)" in {
 
-  "Multinomial_MultinomialParents.logConditionalDensity(assignments, x)" should "" is pending
+    Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
+
+    When("creating a Multinomial_MultinomialParents distribution from it")
+    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+
+    Then("conditionalDensity(X = 1 | parent1_2states = 0, parent2_2states = 1) should return 0.4")
+    assert(Utils.eqDouble(dist.conditionalDensity(assignments0_1, 1), 0.4))
+
+    And("conditionalDensity(X = 2 | parent1_2states = 1, parent2_2states = 1) should return 0.0")
+    assert(Utils.eqDouble(dist.conditionalDensity(assignments1_1, 2), 0.0))
+
+    And("conditionalDensity(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
+    a[IllegalArgumentException] should be thrownBy {
+      dist.conditionalDensity(assignments1_1, 6)
+    }
+  }
+
+  "Multinomial_MultinomialParents.logConditionalDensity(assignments, x)" should "return P(X = x | assignments)" in {
+
+    Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
+
+    When("creating a Multinomial_MultinomialParents distribution from it")
+    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+
+    Then("logConditionalDensity(X = 1 | parent1_2states = 0, parent2_2states = 1) should return log(0.4)")
+    assert(Utils.eqDouble(dist.logConditionalDensity(assignments0_1, 1), FastMath.log(0.4)))
+
+    And("logConditionalDensity(X = 2 | parent1_2states = 1, parent2_2states = 1) should return log(0.0)")
+    // -infinity
+    assert(dist.logConditionalDensity(assignments1_1, 2) == FastMath.log(0.0))
+
+    And("logConditionalDensity(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
+    a[IllegalArgumentException] should be thrownBy {
+      dist.logConditionalDensity(assignments1_1, 6)
+    }
+  }
 
 }

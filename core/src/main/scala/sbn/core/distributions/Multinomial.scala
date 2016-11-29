@@ -85,12 +85,12 @@ case class Multinomial(variable: Variable, probabilities: Vector[Double]) extend
   }
 
   /** @inheritdoc */
-  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
-  override def density(value: Double): Double = ???
+  // In a discrete distribution f(x) = P(X = x)
+  override def density(x: Double): Double = probability(x)
 
   /** @inheritdoc */
-  // TODO: no tiene mucho sentido (si no me equivoco) pero se puede calcular
-  override def logDensity(value: Double): Double = ???
+  // In a discrete distribution f(x) = P(X = x)
+  override def logDensity(x: Double): Double = logProbability(x)
 
   /** @inheritdoc */
   override def sample: Double = {

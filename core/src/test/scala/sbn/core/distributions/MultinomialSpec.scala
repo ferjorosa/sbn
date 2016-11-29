@@ -90,11 +90,11 @@ class MultinomialSpec extends CustomSpec{
     When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
     val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
 
-    Then("exp(probability(0)) must equal logProbability(0)")
+    Then("log(probability(0)) must equal logProbability(0)")
     assert(Utils.eqDouble(dist.probability(0), 0.2))
     assert(Utils.eqDouble(Math.log(dist.probability(0)), dist.logProbability(0)))
 
-    And("exp(probability(1)) must equal logProbability(1)")
+    And("exp(logProbability(1)) must equal probability(1)")
     assert(Utils.eqDouble(Math.exp(dist.logProbability(1)), dist.probability(1)))
   }
 
@@ -132,9 +132,41 @@ class MultinomialSpec extends CustomSpec{
     assert(Utils.eqDouble(dist.cumulativeProbability(4), 0.85))
   }
 
-  "Multinomial.density" should "" is pending
+  "Multinomial.density" should "return P(X = x)" in {
 
-  "Multinomial.logDensity" should "" is pending
+    Given("a multinomial variable with 3 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 3)
+
+    When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
+    val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
+
+    Then("density(1) must equal 0.5 and probability(1)")
+    assert(Utils.eqDouble(dist.density(1), 0.5))
+    assert(Utils.eqDouble(dist.density(1), dist.probability(1)))
+
+    And("density(0) must equal 0.2 and probability(0)")
+    assert(Utils.eqDouble(dist.density(0), 0.2))
+    assert(Utils.eqDouble(dist.density(0), dist.probability(0)))
+  }
+
+  "Multinomial.logDensity" should "return log P(X = x)" in {
+
+    Given("a multinomial variable with 3 states")
+    val variable = VariableFactory.newMultinomialVariable("multinomial", 3)
+
+    When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
+    val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
+
+    Then("log(density(0)) must equal logDensity(0)")
+    assert(Utils.eqDouble(dist.density(0), 0.2))
+    assert(Utils.eqDouble(Math.log(dist.density(0)), dist.logDensity(0)))
+
+    And("logDensity(0) must equal logProbability(0)")
+    assert(Utils.eqDouble(dist.logDensity(0), dist.logProbability(0)))
+
+    And("exp(logDensity(1)) must equal density(1) and probability(1)")
+    assert(Utils.eqDouble(Math.exp(dist.logDensity(1)), dist.density(1)))
+  }
 
   "Multinomial.sample" should "return a valid value" in {
 
