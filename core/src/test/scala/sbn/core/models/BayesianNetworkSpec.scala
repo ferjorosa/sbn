@@ -1,7 +1,7 @@
 package sbn.core.models
 
 import sbn.core.CustomSpec
-import sbn.core.distributions.{ConditionalDistribution, Multinomial, UnivariateDistribution}
+import sbn.core.statistics.distributions.{ConditionalDistribution, Multinomial, UnivariateDistribution}
 import sbn.core.io.DataFileLoader
 import sbn.core.models.graph.DirectedGraph
 import sbn.core.variables.{Variable, VariableFactory}

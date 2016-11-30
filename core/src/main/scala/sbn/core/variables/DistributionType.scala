@@ -1,7 +1,7 @@
 package sbn.core.variables
 
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
-import sbn.core.distributions.{Multinomial_MultinomialParents, _}
+import sbn.core.statistics.distributions.{Multinomial_MultinomialParents, _}
 
 /**
   * Represents the univariate distribution type of a variable.

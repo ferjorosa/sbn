@@ -1,6 +1,6 @@
 package sbn.core.models
 
-import sbn.core.distributions.Distribution
+import sbn.core.statistics.distributions.Distribution
 import sbn.core.models.graph.DirectedGraph
 import sbn.core.variables.Variable
 

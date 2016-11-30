@@ -2,7 +2,7 @@ package sbn.core.variables
 
 import sbn.core.CustomSpec
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
-import sbn.core.distributions.{Gaussian, Gaussian_MultinomialParents, Multinomial, Multinomial_MultinomialParents}
+import sbn.core.statistics.distributions.{Gaussian, Gaussian_MultinomialParents, Multinomial, Multinomial_MultinomialParents}
 
 class DistributionTypeSpec extends CustomSpec{
 

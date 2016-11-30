@@ -1,4 +1,4 @@
-package sbn.core.distributions
+package sbn.core.statistics.distributions
 
 import sbn.core.variables.{Assignment, Assignments, Variable}
 

@@ -1,4 +1,4 @@
-package sbn.core.distributions
+package sbn.core.statistics.distributions
 
 import org.apache.commons.math3.util.FastMath
 import sbn.core.CustomSpec

@@ -3,7 +3,7 @@ package sbn.core.variables
 import java.util.UUID
 
 import sbn.core.data.attributes._
-import sbn.core.distributions.{ConditionalDistribution, UnivariateDistribution}
+import sbn.core.statistics.distributions.{ConditionalDistribution, UnivariateDistribution}
 
 /**
   * This trait defines an interface for both manifest and latent variables.
