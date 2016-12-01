@@ -122,3 +122,24 @@ case class GaussianType() extends DistributionType{
     else throw new IllegalArgumentException("The parent set is not compatible")
   }
 }
+
+case class GammaType() extends DistributionType {
+
+  /** @inheritdoc */
+  override def isParentCompatible(distributionType: DistributionType): Boolean = distributionType match {
+    // resulting distribution: Gamma_MultinomialParents
+    case _: MultinomialType => true
+    case _ => false
+  }
+
+  /** @inheritdoc */
+  override def isAttributeCompatible(attribute: Attribute): Boolean = attribute.stateSpaceType match {
+    case _: RealStateSpace => true
+    case _ => false
+  }
+  /** @inheritdoc */
+  override def newUnivariateDistribution(variable: Variable): UnivariateDistribution = Gamma(variable, 1, 1)
+
+  /** @inheritdoc */
+  override def newConditionalDistribution(variable: Variable, parents: Set[Variable]): ConditionalDistribution = ???
+}
