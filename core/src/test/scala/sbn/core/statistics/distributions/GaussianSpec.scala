@@ -3,14 +3,14 @@ package sbn.core.statistics.distributions
 import org.apache.commons.math3.util.FastMath
 import sbn.core.CustomSpec
 import sbn.core.utils.Utils
-import sbn.core.variables.VariableFactory
+import sbn.core.variables.ModelVariablesFactory
 
 class GaussianSpec extends CustomSpec{
 
   "Gaussian constructor" should "throw an IllegalArgumentException if the variable's distribution type is not Gaussian" in {
 
     Given("a multinomial variable")
-    val multinomialVar = VariableFactory.newMultinomialVariable("star wars", 2)
+    val multinomialVar = ModelVariablesFactory.newMultinomialVariable("star wars", 2)
 
     When("creating a Gaussian distribution from it")
 
@@ -23,7 +23,7 @@ class GaussianSpec extends CustomSpec{
   it should "throw an IllegalArgumentException if the variance <= 0" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a Gaussian ditribution with variance = -0.0001 from it")
 
@@ -36,7 +36,7 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.apply" should "create a standard Gaussian distribution with mean = 0 and variance = 1 when no more parameteres are passed" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian", -2, 2)
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian", -2, 2)
 
     When("creating a Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)
@@ -47,17 +47,17 @@ class GaussianSpec extends CustomSpec{
   }
 
   "Gaussian.label" should "return 'Gaussian'" in {
-    assert(Gaussian(VariableFactory.newGaussianVariable("gaussian_noBounds")).label == "Gaussian")
+    assert(Gaussian(ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")).label == "Gaussian")
   }
 
   "Gaussian.numberOfParameters" should "be == 2" in {
-    assert(Gaussian(VariableFactory.newGaussianVariable("gaussian_noBounds")).numberOfParameters == 2)
+    assert(Gaussian(ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")).numberOfParameters == 2)
   }
 
   "Gaussian.parameters" should "be a Vector containing the mean and variance values" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a standard Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)
@@ -69,7 +69,7 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.probability(x)" should "return P(X = x)" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a standard Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)
@@ -83,7 +83,7 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.logProbability(x)" should "return log P(X = x)" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a standard Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)
@@ -97,7 +97,7 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.probability(x0, x1)" should "return P(x0 < X <= x1)" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a standard Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)
@@ -112,7 +112,7 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.cumulativeProbability(x)" should "return P(X <= x)" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a standard Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)
@@ -130,7 +130,7 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.density(x)" should "return pdf(X = x)" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a standard Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)
@@ -148,7 +148,7 @@ class GaussianSpec extends CustomSpec{
   "Gaussian.logDensity(x)" should "return log pdf(X = x)" in {
 
     Given("a gaussian variable")
-    val gaussianVar = VariableFactory.newGaussianVariable("gaussian_noBounds")
+    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian_noBounds")
 
     When("creating a standard Gaussian distribution using the apply() method")
     val dist = Gaussian(gaussianVar)

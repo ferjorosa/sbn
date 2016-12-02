@@ -10,21 +10,21 @@ import scalax.collection.immutable.Graph
   * This class wraps the [[Graph]] class and offers an easier interface when working with variables.
   * For a more advanced use, just access the wrapped graph.
   */
-case class UndirectedGraph(self: Graph[Variable, UnDiEdge]){
+case class UndirectedGraph[V <: Variable](self: Graph[V, UnDiEdge]){
 
   /**
-    * Returns the Set of [[Variable]] belonging to the graph.
+    * Returns the Set of [[V]] belonging to the graph.
     *
-    * @return the Set of [[Variable]] belonging to the graph.
+    * @return the Set of [[V]] belonging to the graph.
     */
-  def nodes: Set[Variable] = self.nodes.toOuter
+  def nodes: Set[V] = self.nodes.toOuter
 
   /**
     * Returns the set of edges belonging to the graph.
     *
     * @return the set of edges belonging to the graph.
     */
-  def edges: Set[UnDiEdge[Variable]] = self.edges.toOuter
+  def edges: Set[UnDiEdge[V]] = self.edges.toOuter
 
   /**
     * Returns the number nodes.
@@ -57,9 +57,9 @@ object UndirectedGraph {
     * @param edges the set of undirected edges of the graph.
     * @return a new [[UndirectedGraph]] object.
     */
-  def apply(edges: Set[UnDiEdge[Variable]]): UndirectedGraph = {
+  def apply[V <: Variable](edges: Set[UnDiEdge[V]]): UndirectedGraph[V] = {
     implicit val config = CoreConfig()
-    val graphBuilder = Graph.newBuilder[Variable, UnDiEdge]
+    val graphBuilder = Graph.newBuilder[V, UnDiEdge]
     edges.map(graphBuilder += _)
     UndirectedGraph(graphBuilder.result)
   }

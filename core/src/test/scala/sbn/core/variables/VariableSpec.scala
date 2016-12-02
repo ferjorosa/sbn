@@ -36,17 +36,17 @@ class VariableSpec extends CustomSpec{
   "VariableFactory.newMultinomialVariable" should "throw an IllegalArgumentException if its attribute's state space is not finite" in {
     val attribute = Attribute("attr", RealStateSpace())
     a[IllegalArgumentException] should be thrownBy{
-      VariableFactory.newMultinomialVariable(attribute)
+      ModelVariablesFactory.newMultinomialVariable(attribute)
     }
   }
 
   it should "return a new multinomial ManifestVariable when a correct Attribute is provided" in {
     val attribute = Attribute("attr", FiniteStateSpace(10))
-    val multinomialManifestVariable = VariableFactory.newMultinomialVariable(attribute)
+    val multinomialManifestVariable = ModelVariablesFactory.newMultinomialVariable(attribute)
   }
 
   it should "return a new multinomial LatentVariable when a correct configuration is provided" in {
-    val multinomialLatentVariable = VariableFactory.newMultinomialVariable("multinomialLatentVariable", 4)
+    val multinomialLatentVariable = ModelVariablesFactory.newMultinomialVariable("multinomialLatentVariable", 4)
 
     assert(multinomialLatentVariable.isInstanceOf[LatentVariable])
     assert(multinomialLatentVariable.distributionType.isInstanceOf[MultinomialType])
@@ -56,19 +56,19 @@ class VariableSpec extends CustomSpec{
   "VariableFactory.newGaussianVariable" should "throw an IllegalArgumentException if its attribute's state space is not real" in {
     val attribute = Attribute("attr", FiniteStateSpace(2))
     a[IllegalArgumentException] should be thrownBy{
-      VariableFactory.newGaussianVariable(attribute)
+      ModelVariablesFactory.newGaussianVariable(attribute)
     }
   }
 
   it should "return a new gaussian ManifestVariable when a correct Attribute is provided" in {
     val attribute = Attribute("attr", RealStateSpace())
-    val gaussianManifestVariable = VariableFactory.newGaussianVariable(attribute)
+    val gaussianManifestVariable = ModelVariablesFactory.newGaussianVariable(attribute)
 
   }
 
   it should "return a new gaussian LatentVariable when a correct configuration is provided" in {
-    val gaussianLatentVariable1 = VariableFactory.newGaussianVariable("gaussianLatentVariable1")
-    val gaussianLatentVariable2 = VariableFactory.newGaussianVariable("gaussianLatentVariable2", 0, 1)
+    val gaussianLatentVariable1 = ModelVariablesFactory.newGaussianVariable("gaussianLatentVariable1")
+    val gaussianLatentVariable2 = ModelVariablesFactory.newGaussianVariable("gaussianLatentVariable2", 0, 1)
 
     assert(gaussianLatentVariable1.isInstanceOf[LatentVariable] && gaussianLatentVariable2.isInstanceOf[LatentVariable])
     assert(gaussianLatentVariable1.distributionType.isInstanceOf[GaussianType] && gaussianLatentVariable2.distributionType.isInstanceOf[GaussianType])

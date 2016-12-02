@@ -1,7 +1,7 @@
 package sbn.core.statistics.distributions
 
 import sbn.core.CustomSpec
-import sbn.core.variables.{Assignment, Assignments, Variable, VariableFactory}
+import sbn.core.variables._
 
 /**
   * Created by fer on 23/11/16.
@@ -11,11 +11,11 @@ class BaseDistribution_MultinomialParentsSpec extends CustomSpec{
   "BaseDistribution_MultinomialParents.generateAssignmentsCombinations" should "" in{
 
     Given("a multinomial variable (3 params) and a set of 3 multinomial parents with a number of 2, 2, 3 parameters respectively ")
-    val parent_1 = VariableFactory.newMultinomialVariable("parent_1", 2)
-    val parent_2 = VariableFactory.newMultinomialVariable("parent_2", 2)
-    val parent_3 = VariableFactory.newMultinomialVariable("parent_3", 3)
-    val variable = VariableFactory.newMultinomialVariable("variable", 3)
-    val parents: Set[Variable] = Set(parent_1, parent_2, parent_3)
+    val parent_1 = ModelVariablesFactory.newMultinomialVariable("parent_1", 2)
+    val parent_2 = ModelVariablesFactory.newMultinomialVariable("parent_2", 2)
+    val parent_3 = ModelVariablesFactory.newMultinomialVariable("parent_3", 3)
+    val variable = ModelVariablesFactory.newMultinomialVariable("variable", 3)
+    val parents: Set[ModelVariable] = Set(parent_1, parent_2, parent_3)
 
     When("calling generateAssingmentsCombinations(parents)")
     val combinations = BaseDistribution_MultinomialParents.generateAssignmentCombinations(parents)

@@ -1,22 +1,22 @@
 package sbn.core.statistics.distributions
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.utils.Utils
-import sbn.core.variables.{Assignment, Assignments, Variable}
+import sbn.core.variables.{Assignment, Assignments, ModelVariable}
 
 /**
   * This class abstracts the distributions generated from a set of multinomial parents (i.e., [[Multinomial_MultinomialParents]]
   * or [[Gaussian_MultinomialParents]]). All of them have a similar form, and to reduce the repeated code this class
   * implements some of their methods.
   */
-abstract class BaseDistribution_MultinomialParents(variable: Variable,
-                                                   multinomialParents: Set[Variable],
+abstract class BaseDistribution_MultinomialParents(variable: ModelVariable,
+                                                   multinomialParents: Set[ModelVariable],
                                                    parameterizedConditionalDistributions: Map[Assignments, UnivariateDistribution]) extends ConditionalDistribution {
 
   /** @inheritdoc */
   override def numberOfParameters: Int = this.parameterizedConditionalDistributions.values.map(_.numberOfParameters).sum
 
   /** @inheritdoc */
-  override def conditioningVariables: Set[Variable] = this.multinomialParents
+  override def conditioningVariables: Set[ModelVariable] = this.multinomialParents
 
   /** @inheritdoc */
   override def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution = try {
@@ -56,7 +56,7 @@ object BaseDistribution_MultinomialParents {
     * @return the sequence of possible parent assignments that will be used to create the internal distributions.
     */
   @throws[IllegalArgumentException]
-  def generateAssignmentCombinations(parents: Set[Variable]): Seq[Assignments] = {
+  def generateAssignmentCombinations(parents: Set[ModelVariable]): Seq[Assignments] = {
     val stateSequences: Seq[Vector[Int]] = parents.toSeq.map(v => v.attribute.stateSpaceType match {
       case finite: FiniteStateSpace => finite.stateIndexes
       case _ => throw new IllegalArgumentException("Parents state space must be finite")

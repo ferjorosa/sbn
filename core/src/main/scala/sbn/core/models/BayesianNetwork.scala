@@ -1,8 +1,8 @@
 package sbn.core.models
 
-import sbn.core.statistics.distributions.Distribution
 import sbn.core.models.graph.DirectedGraph
-import sbn.core.variables.Variable
+import sbn.core.statistics.distributions.Distribution
+import sbn.core.variables.ModelVariable
 
 /**
   * This class represents a Bayesian network, which is a probabilistic graphical model that represents a set of random
@@ -15,7 +15,7 @@ import sbn.core.variables.Variable
   */
 // TODO: Given that the Set collection is invariant, i had to change it for Seq. Factory methods will create
 // a Seq of non-repeated randomly parameterized distributions, so its "equivalent" to what i wanted to obtain with a Set (for the moment)
-case class BayesianNetwork(name: String, dag: DirectedGraph, distributions: Seq[Distribution]) {
+case class BayesianNetwork(name: String, dag: DirectedGraph[ModelVariable], distributions: Seq[Distribution]) {
   require(dag.isAcyclic, "The directed graph of the BN has to be acyclic")
   require(distributions.size == dag.nodes.size, "The number of distributions must equal the number of nodes")
 
@@ -24,7 +24,7 @@ case class BayesianNetwork(name: String, dag: DirectedGraph, distributions: Seq[
     *
     * @return the BN's variables.
     */
-  def variables: Set[Variable] = this.dag.nodes
+  def variables: Set[ModelVariable] = this.dag.nodes
 }
 
 /** The factory containing specific methods for creating [[BayesianNetwork]] distribution objects */
@@ -38,7 +38,7 @@ object BayesianNetwork {
     * @param dag the associated directed acyclic graph.
     * @return a new [[BayesianNetwork]] with randomly parameterized distributions.
     */
-  def apply(name: String, dag: DirectedGraph): BayesianNetwork = {
+  def apply(name: String, dag: DirectedGraph[ModelVariable]): BayesianNetwork = {
 
     val distributions: Seq[Distribution] = dag.nodes.map( variable => {
       val parents = dag.parents(variable)
@@ -58,7 +58,7 @@ object BayesianNetwork {
     * @param dag the associated directed acyclic graph.
     * @return a new [[BayesianNetwork]] with randomly parameterized distributions.
     */
-  def apply(dag: DirectedGraph): BayesianNetwork = {
+  def apply(dag: DirectedGraph[ModelVariable]): BayesianNetwork = {
     val distributions: Seq[Distribution] = dag.nodes.map( variable => {
       val parents = dag.parents(variable)
       if (parents.isEmpty)

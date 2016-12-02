@@ -10,21 +10,21 @@ import scalax.collection.immutable.Graph
   * This class wraps the [[Graph]] class and offers an easier interface when working with variables.
   * For a more advanced use, just access the wrapped graph.
   */
-case class DirectedGraph(self: Graph[Variable, DiEdge]) {
+case class DirectedGraph[V <: Variable](self: Graph[V, DiEdge]) {
 
   /**
-    * Returns the Set of [[Variable]] belonging to the graph.
+    * Returns the Set of [[V]] belonging to the graph.
     *
-    * @return the Set of [[Variable]] belonging to the graph.
+    * @return the Set of [[V]] belonging to the graph.
     */
-  def nodes: Set[Variable] = self.nodes.toOuter
+  def nodes: Set[V] = self.nodes.toOuter
 
   /**
     * Returns the set of edges belonging to the graph.
     *
     * @return the set of edges belonging to the graph.
     */
-  def edges: Set[DiEdge[Variable]] = self.edges.toOuter
+  def edges: Set[DiEdge[V]] = self.edges.toOuter
 
   /**
     * Returns the number nodes.
@@ -48,12 +48,12 @@ case class DirectedGraph(self: Graph[Variable, DiEdge]) {
   def isAcyclic: Boolean = this.self.isAcyclic
 
   /**
-    * Returns the Set of [[Variable]] that represent the parents of a given variable (it has incoming edges from them).
+    * Returns the Set of [[V]] that represent the parents of a given variable (it has incoming edges from them).
     *
     * @param variable the given variable.
-    * @return the Set of [[Variable]] representing the parents of a given variable.
+    * @return the Set of [[V]] representing the parents of a given variable.
     */
-  def parents(variable: Variable): Set[Variable] = this.self.get(variable).inNeighbors.map(_.value)
+  def parents(variable: V): Set[V] = this.self.get(variable).inNeighbors.map(_.value)
 }
 
 /** Factory for the [[DirectedGraph]] class. Its main factory method is created by default. */
@@ -65,9 +65,9 @@ object DirectedGraph {
     * @param edges the set of directed edges of the graph.
     * @return a new [[DirectedGraph]] object.
     */
-  def apply(edges: Set[DiEdge[Variable]]): DirectedGraph = {
+  def apply[V <: Variable](edges: Set[DiEdge[V]]): DirectedGraph[V] = {
     implicit val config = CoreConfig()
-    val graphBuilder = Graph.newBuilder[Variable, DiEdge]
+    val graphBuilder = Graph.newBuilder[V, DiEdge]
     edges.map(graphBuilder += _)
     DirectedGraph(graphBuilder.result())
   }

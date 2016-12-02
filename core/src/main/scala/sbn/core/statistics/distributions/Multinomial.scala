@@ -5,7 +5,7 @@ import java.util.concurrent.ThreadLocalRandom
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.utils.Utils
-import sbn.core.variables.{MultinomialType, Variable}
+import sbn.core.variables.{ModelVariable, MultinomialType}
 
 /**
   * This class represents the Multinomial distribution. This distribution can be used to compute the probabilities in situations
@@ -19,7 +19,7 @@ import sbn.core.variables.{MultinomialType, Variable}
   *                                  if [[probabilities.sum]] != 1.0
   */
 @throws[IllegalArgumentException]
-case class Multinomial(variable: Variable, probabilities: Vector[Double]) extends UnivariateDistribution{
+case class Multinomial(variable: ModelVariable, probabilities: Vector[Double]) extends UnivariateDistribution{
 
   /** The state space of the multinomial variable. */
   private val variableStateSpace: FiniteStateSpace = variable.attribute.stateSpaceType match {
@@ -139,7 +139,7 @@ object Multinomial{
     * @return a new [[Multinomial]] distribution with randomly created parameter values.
     */
   @throws[IllegalArgumentException]
-  def apply(variable: Variable): Multinomial = {
+  def apply(variable: ModelVariable): Multinomial = {
     require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
 
     val nStates: Int = variable.attribute.stateSpaceType match {

@@ -3,16 +3,16 @@ package sbn.core.statistics.distributions
 import org.apache.commons.math3.util.FastMath
 import sbn.core.CustomSpec
 import sbn.core.utils.Utils
-import sbn.core.variables.{Assignment, Assignments, VariableFactory}
+import sbn.core.variables.{Assignment, Assignments, ModelVariablesFactory}
 
 class Gaussian_MultinomialParentsSpec extends CustomSpec{
 
   "Gaussian_MultinomialParents.apply" should "throw an IllegalArgumentException if the variable is not of GaussianType" in{
 
     Given("a variable of Multinomial type and a set of multinomial parents")
-    val variable = VariableFactory.newMultinomialVariable("multinomial", 15)
-    val parent1 = VariableFactory.newMultinomialVariable("mult1", 2)
-    val parent2 = VariableFactory.newMultinomialVariable("mult2", 3)
+    val variable = ModelVariablesFactory.newMultinomialVariable("multinomial", 15)
+    val parent1 = ModelVariablesFactory.newMultinomialVariable("mult1", 2)
+    val parent2 = ModelVariablesFactory.newMultinomialVariable("mult2", 3)
 
     When("creating a Gaussian_MultinomialParents distribution from it")
 
@@ -25,9 +25,9 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
   it should "throw an IllegalArgumentException if parents are not exclusively of MultinomialType" in {
 
     Given("a variable of Gaussian type and a set of mixed-type parents")
-    val variable = VariableFactory.newGaussianVariable("gaussian")
-    val parent1 = VariableFactory.newGaussianVariable("gaussianP")
-    val parent2 = VariableFactory.newMultinomialVariable("multinomialP", 3)
+    val variable = ModelVariablesFactory.newGaussianVariable("gaussian")
+    val parent1 = ModelVariablesFactory.newGaussianVariable("gaussianP")
+    val parent2 = ModelVariablesFactory.newMultinomialVariable("multinomialP", 3)
 
     When("creating a Gaussian_MultinomialParents distribution from it")
 
@@ -40,9 +40,9 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
   "Gaussian_MultinomialParents.label" should "return 'Gaussian | Multinomial'" in {
 
     Given("a variable of gaussian type and a set of multinomial parents")
-    val variable = VariableFactory.newGaussianVariable("gaussian")
-    val parent1 = VariableFactory.newMultinomialVariable("mult1", 1)
-    val parent2 = VariableFactory.newMultinomialVariable("mult2", 4)
+    val variable = ModelVariablesFactory.newGaussianVariable("gaussian")
+    val parent1 = ModelVariablesFactory.newMultinomialVariable("mult1", 1)
+    val parent2 = ModelVariablesFactory.newMultinomialVariable("mult2", 4)
 
     When("creating a Gaussian_MultinomialParents distribution from it")
     val dist = Gaussian_MultinomialParents(variable, Set(parent1, parent2))
@@ -54,9 +54,9 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
   "Gaussian_MultinomialParents.numberOfParameters" should "return the valid number of parameters of the distribution" in{
 
     Given("a standard gaussian variable (always 2 parameters, the mean and variance) and a set of 2 multinomial parents with 3 and 8 parameters respectively")
-    val variable = VariableFactory.newGaussianVariable("")
-    val parent1 = VariableFactory.newMultinomialVariable("mult1", 3)
-    val parent2 = VariableFactory.newMultinomialVariable("mult2", 8)
+    val variable = ModelVariablesFactory.newGaussianVariable("")
+    val parent1 = ModelVariablesFactory.newMultinomialVariable("mult1", 3)
+    val parent2 = ModelVariablesFactory.newMultinomialVariable("mult2", 8)
 
     When("creating a Gaussian_MultinomialParents distribution from it")
     val dist = Gaussian_MultinomialParents(variable, Set(parent1, parent2))
@@ -66,9 +66,9 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
   }
 
   /** These variable are all immutable objects with immutable references so they are safe to use in multiple tests */
-  val st_gaussian = VariableFactory.newGaussianVariable("st_gaussian")
-  val parent1_2states = VariableFactory.newMultinomialVariable("mult1", 2)
-  val parent2_2states = VariableFactory.newMultinomialVariable("mult2", 2)
+  val st_gaussian = ModelVariablesFactory.newGaussianVariable("st_gaussian")
+  val parent1_2states = ModelVariablesFactory.newMultinomialVariable("mult1", 2)
+  val parent2_2states = ModelVariablesFactory.newMultinomialVariable("mult2", 2)
   // Manually created distributions
   val parent1_0_parent2_0 = Gaussian(st_gaussian, 0, 1)
   val parent1_0_parent2_1 = Gaussian(st_gaussian,-5, 25)
@@ -110,7 +110,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
 
     And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw an IllegalArgumentException")
     a[IllegalArgumentException] should be thrownBy {
-      val newVariable = VariableFactory.newMultinomialVariable("newVariable", 2)
+      val newVariable = ModelVariablesFactory.newMultinomialVariable("newVariable", 2)
       dist.getUnivariateDistribution(Assignments(Set(Assignment(newVariable, 0), Assignment(parent2_2states,1))))
     }
 
