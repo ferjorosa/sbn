@@ -6,6 +6,7 @@ import sbn.core.statistics.exponentialfamily.distributions.{EF_Dirichlet, EF_Uni
 /**
   * Created by fer on 2/12/16.
   */
+//TODO: mirar si tiene sentido esta distinción, o al menos, distinguir bien en las distribuciones
 trait ParameterDistributionType {
 
   /**
