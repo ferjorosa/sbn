@@ -1,7 +1,7 @@
 package sbn.examples.core.test
 
 import sbn.core.data.attributes.FiniteStateSpace
-import sbn.core.variables.{Assignment, Assignments, Variable, VariableFactory}
+import sbn.core.variables.{Assignment, Assignments, Variable, ModelVariablesFactory}
 
 /**
   * Created by fer on 3/11/16.
@@ -10,10 +10,10 @@ object test {
 
   def main(args: Array[String]): Unit = {
 
-    val multinomial_1 = VariableFactory.newMultinomialVariable("multinomial_1", 2)
-    val multinomial_2 = VariableFactory.newMultinomialVariable("multinomial_2", 2)
-    val multinomial_3 = VariableFactory.newMultinomialVariable("multinomial_3", 3)
-    val variable = VariableFactory.newMultinomialVariable("variable", 3)
+    val multinomial_1 = ModelVariablesFactory.newMultinomialVariable("multinomial_1", 2)
+    val multinomial_2 = ModelVariablesFactory.newMultinomialVariable("multinomial_2", 2)
+    val multinomial_3 = ModelVariablesFactory.newMultinomialVariable("multinomial_3", 3)
+    val variable = ModelVariablesFactory.newMultinomialVariable("variable", 3)
     val parents: Set[Variable] = Set(multinomial_1, multinomial_2, multinomial_3)
 
     val s  = Seq("0","1")
