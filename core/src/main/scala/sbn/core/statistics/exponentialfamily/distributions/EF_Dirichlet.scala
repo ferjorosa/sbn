@@ -2,6 +2,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
 import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables.{DirichletParameterType, ParameterVariable, Variable}
 
 /**
@@ -16,12 +17,14 @@ case class EF_Dirichlet(variable: Variable, nStates: Int, scale: Double) extends
   override def logBaseMeasure(x: Double): Double = ???
 
   override def logNormalizer: Double = ???
+
+  override def toConjugateExponentialDistribution: CE_Distribution = ??? // no tiene sentido
 }
 
 object EF_Dirichlet {
 
   def apply(parameterVariable: ParameterVariable, scale: Double): EF_Dirichlet = {
-    require(parameterVariable.parameterDistributionType.isInstanceOf[DirichletParameterType], "Variable must be of multinomial type")
+    require(parameterVariable.parameterDistributionType.isInstanceOf[DirichletParameterType], "Variable must be of DirichletParameter type")
 
     val nStates: Int = parameterVariable.attribute.stateSpaceType match {
       case finite: FiniteStateSpace => finite.numberOfStates

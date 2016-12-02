@@ -2,6 +2,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
+import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 
 /**
   * Created by fer on 29/11/16.
@@ -24,6 +25,7 @@ trait EF_UnivariateDistribution extends EF_Distribution{
 
   def density(x: Double): Double = FastMath.exp(logDensity(x))
 
+  def toConjugateExponentialDistribution: CE_Distribution
 }
 
 trait EF_ConditionalDistribution extends EF_Distribution {
