@@ -1,7 +1,6 @@
 package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.{DenseVector, sum}
 import org.apache.commons.math3.util.FastMath
-import sbn.core.statistics.distributions.{Multinomial, UnivariateDistribution}
 import sbn.core.variables.Variable
 
 /**
@@ -20,6 +19,4 @@ case class EF_Multinomial(variable: Variable, probabilities: Vector[Double]) ext
   override def logBaseMeasure(x: Double): Double = 0
 
   override def logNormalizer: Double = FastMath.log(sum(naturalParameters.map(FastMath.exp)))
-
-  override def toUnivariateDistribution: UnivariateDistribution = Multinomial(variable, probabilities)
 }

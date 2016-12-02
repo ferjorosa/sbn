@@ -2,7 +2,6 @@ package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
-import sbn.core.statistics.distributions.{Gaussian, UnivariateDistribution}
 import sbn.core.variables.Variable
 
 /**
@@ -17,6 +16,4 @@ case class EF_Gaussian(variable: Variable, mean: Double, variance: Double) exten
   override def logBaseMeasure(x: Double): Double = - FastMath.log(2*FastMath.PI) / 2
 
   override def logNormalizer: Double = FastMath.log(1 / variance) / 2 - (mean * mean / (2 * variance))
-
-  override def toUnivariateDistribution: UnivariateDistribution = Gaussian(variable, mean, variance)
 }

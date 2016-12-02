@@ -2,7 +2,6 @@ package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
-import sbn.core.statistics.distributions.UnivariateDistribution
 
 /**
   * Created by fer on 29/11/16.
@@ -24,8 +23,6 @@ trait EF_UnivariateDistribution extends EF_Distribution{
   def logDensity(x: Double): Double = (naturalParameters dot sufficientStatistics(x)) + logBaseMeasure(x) - logNormalizer
 
   def density(x: Double): Double = FastMath.exp(logDensity(x))
-
-  def toUnivariateDistribution: UnivariateDistribution
 
 }
 
