@@ -1,12 +1,12 @@
 package sbn.core.statistics.distributions
 
-import sbn.core.variables.{Assignments, GaussianType, ModelVariable, MultinomialType}
+import sbn.core.variables.{Assignments, GaussianType, MainVariable, MultinomialType}
 
 /**
   * Created by fer on 3/11/16.
   */
-case class Gaussian_MultinomialParents(variable: ModelVariable,
-                                       multinomialParents: Set[ModelVariable],
+case class Gaussian_MultinomialParents(variable: MainVariable,
+                                       multinomialParents: Set[MainVariable],
                                        parameterizedConditionalDistributions: Map[Assignments, Gaussian]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, parameterizedConditionalDistributions){
   /**
     * Returns the label of the distribution.
@@ -29,7 +29,7 @@ object Gaussian_MultinomialParents {
     * @return a new [[Gaussian_MultinomialParents]] distribution with random parameters.
     */
   @throws[IllegalArgumentException]
-  def apply(variable: ModelVariable, multinomialParents: Set[ModelVariable]): Gaussian_MultinomialParents ={
+  def apply(variable: MainVariable, multinomialParents: Set[MainVariable]): Gaussian_MultinomialParents ={
     require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of gaussian type")
     require(!multinomialParents.exists(!_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
 

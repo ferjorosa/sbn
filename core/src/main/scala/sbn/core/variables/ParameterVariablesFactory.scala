@@ -9,8 +9,8 @@ import sbn.core.data.attributes.{Attribute, FiniteStateSpace}
   */
 object ParameterVariablesFactory {
 
-  def newDirichletParameter(name: String, nStates: Int): ParameterVariable  = {
+  def newDirichletParameter(name: String, nStates: Int): ConjugatePriorVariable  = {
     val attribute = Attribute(name, FiniteStateSpace(nStates))
-    ParameterVariable(attribute, new DirichletParameterType, UUID.randomUUID())
+    ConjugatePriorVariable(attribute, new DirichletParameterType, UUID.randomUUID())
   }
 }

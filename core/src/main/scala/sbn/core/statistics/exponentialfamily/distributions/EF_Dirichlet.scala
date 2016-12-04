@@ -3,11 +3,12 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{DirichletParameterType, ParameterVariable, Variable}
+import sbn.core.variables.{ParameterVariable, DirichletParameterType, ConjugatePriorVariable, Variable}
 
 /**
   * Created by fer on 2/12/16.
   */
+//TODO hace uso de la función gamma
 case class EF_Dirichlet(variable: Variable, nStates: Int, scale: Double) extends EF_UnivariateDistribution{
 
   override val naturalParameters: DenseVector[Double] = ???
@@ -23,14 +24,14 @@ case class EF_Dirichlet(variable: Variable, nStates: Int, scale: Double) extends
 
 object EF_Dirichlet {
 
-  def apply(parameterVariable: ParameterVariable, scale: Double): EF_Dirichlet = {
-    require(parameterVariable.parameterDistributionType.isInstanceOf[DirichletParameterType], "Variable must be of DirichletParameter type")
+  def apply(conjugatePriorVariable: ParameterVariable, scale: Double): EF_Dirichlet = {
+    require(conjugatePriorVariable.parameterDistributionType.isInstanceOf[DirichletParameterType], "Variable must be of DirichletParameter type")
 
-    val nStates: Int = parameterVariable.attribute.stateSpaceType match {
+    val nStates: Int = conjugatePriorVariable.attribute.stateSpaceType match {
       case finite: FiniteStateSpace => finite.numberOfStates
       case _ => throw new IllegalArgumentException("state space of the variable must be finite")
     }
 
-    EF_Dirichlet(parameterVariable, nStates, scale)
+    EF_Dirichlet(conjugatePriorVariable, nStates, scale)
   }
 }

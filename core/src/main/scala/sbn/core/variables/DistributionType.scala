@@ -32,7 +32,7 @@ trait DistributionType{
     * @param variable the variable used to create the [[UnivariateDistribution]].
     * @return a new [[UnivariateDistribution]] of the distribution type.
     */
-  def newUnivariateDistribution(variable: ModelVariable): UnivariateDistribution
+  def newUnivariateDistribution(variable: MainVariable): UnivariateDistribution
 
   /**
     * Creates a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
@@ -41,7 +41,7 @@ trait DistributionType{
     * @param parents the parents of the variable.
     * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
     */
-  def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution
+  def newConditionalDistribution(variable: MainVariable, parents: Set[MainVariable]): ConditionalDistribution
 }
 
 /**
@@ -63,7 +63,7 @@ case class MultinomialType() extends DistributionType{
   }
 
   /** @inheritdoc */
-  override def newUnivariateDistribution(variable: ModelVariable): Multinomial = Multinomial(variable)
+  override def newUnivariateDistribution(variable: MainVariable): Multinomial = Multinomial(variable)
 
   /**
     * Creates a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
@@ -75,7 +75,7 @@ case class MultinomialType() extends DistributionType{
     * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
     */
   @throws[IllegalArgumentException]
-  override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = {
+  override def newConditionalDistribution(variable: MainVariable, parents: Set[MainVariable]): ConditionalDistribution = {
     require(parents.nonEmpty, "The parent set cannot be empty")
 
     val distributionTypes = parents.map(_.distributionType)
@@ -107,10 +107,10 @@ case class GaussianType() extends DistributionType{
   }
 
   /** @inheritdoc */
-  override def newUnivariateDistribution(variable: ModelVariable): Gaussian = Gaussian(variable)
+  override def newUnivariateDistribution(variable: MainVariable): Gaussian = Gaussian(variable)
 
   /** @inheritdoc */
-  override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = {
+  override def newConditionalDistribution(variable: MainVariable, parents: Set[MainVariable]): ConditionalDistribution = {
     require(parents.nonEmpty, "The parent set cannot be empty")
 
     val distributionTypes = parents.map(_.distributionType)
@@ -138,9 +138,9 @@ case class GammaType() extends DistributionType {
     case _ => false
   }
   /** @inheritdoc */
-  override def newUnivariateDistribution(variable: ModelVariable): UnivariateDistribution = Gamma(variable, 1, 1)
+  override def newUnivariateDistribution(variable: MainVariable): UnivariateDistribution = Gamma(variable, 1, 1)
 
   /** @inheritdoc */
   // TODO
-  override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = ???
+  override def newConditionalDistribution(variable: MainVariable, parents: Set[MainVariable]): ConditionalDistribution = ???
 }

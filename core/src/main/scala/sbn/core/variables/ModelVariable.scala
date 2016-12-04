@@ -4,11 +4,27 @@ import java.util.UUID
 
 import sbn.core.data.attributes.Attribute
 import sbn.core.statistics.distributions.{ConditionalDistribution, UnivariateDistribution}
+import sbn.core.statistics.exponentialfamily.distributions.EF_UnivariateDistribution
+
+trait ModelVariable extends Variable
+
+trait ParameterVariable extends ModelVariable {
+
+  /**
+    * The parameterVariable's distribution type (DirichletParameter, GammaParameter, GaussianParameter, etc.).
+    *
+    * @return the parameterVariable's distribution type.
+    */
+  def parameterDistributionType: ParameterDistributionType
+
+  def newEFUnivariateDistribution: EF_UnivariateDistribution
+
+}
 
 /**
   * Created by fer on 2/12/16.
   */
-trait ModelVariable extends Variable {
+trait MainVariable extends ModelVariable {
 
   /**
     * The variable's distribution type (Multinomial, Gaussian, Exponential, etc.).
@@ -19,6 +35,7 @@ trait ModelVariable extends Variable {
 
   /**
     * Creates a new [[UnivariateDistribution]] of the distribution type.
+    *
     * @return a new [[UnivariateDistribution]] of the distribution type.
     */
   def newUnivariateDistribution: UnivariateDistribution = distributionType.newUnivariateDistribution(this)
@@ -29,7 +46,7 @@ trait ModelVariable extends Variable {
     * @param parents the parents of the variable.
     * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
     */
-  def newConditionalDistribution(parents: Set[ModelVariable]): ConditionalDistribution = distributionType.newConditionalDistribution(this, parents)
+  def newConditionalDistribution(parents: Set[MainVariable]): ConditionalDistribution = distributionType.newConditionalDistribution(this, parents)
 }
 
 /**
@@ -42,7 +59,7 @@ trait ModelVariable extends Variable {
   */
 case class ManifestVariable (attribute: Attribute,
                              distributionType: DistributionType,
-                             id: UUID) extends ModelVariable{
+                             id: UUID) extends MainVariable{
 
   require(distributionType.isAttributeCompatible(attribute), "Attribute is not compatible: "+ distributionType + " & " + attribute.stateSpaceType)
 }
@@ -56,7 +73,16 @@ case class ManifestVariable (attribute: Attribute,
   */
 case class LatentVariable (attribute: Attribute,
                            distributionType: DistributionType,
-                           id: UUID) extends ModelVariable{
+                           id: UUID) extends MainVariable{
 
   require(distributionType.isAttributeCompatible(attribute), "Attribute is not compatible: "+ distributionType + " & " + attribute.stateSpaceType)
+}
+
+case class ConjugatePriorVariable(attribute: Attribute,
+                                  parameterDistributionType: ParameterDistributionType,
+                                  id: UUID) extends ParameterVariable {
+
+  require(parameterDistributionType.isAttributeCompatible(attribute), "Attribute is not compatible: "+ parameterDistributionType + " & " + attribute.stateSpaceType)
+
+  def newEFUnivariateDistribution: EF_UnivariateDistribution = parameterDistributionType.newEFUnivariateDistribution(this)
 }

@@ -2,7 +2,7 @@ package sbn.core.models.graph
 
 import sbn.core.CustomSpec
 import sbn.core.io.DataFileLoader
-import sbn.core.variables.{ModelVariable, ModelVariablesFactory}
+import sbn.core.variables.{MainVariable, ModelVariablesFactory}
 
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
@@ -21,12 +21,12 @@ class UndirectedGraphSpec extends CustomSpec{
     UnDiEdge(latent_multinomial, manifest_multinomial),
     UnDiEdge(latent_multinomial, latent_gaussian))
 
-  private def constructAcyclicGraph: UndirectedGraph[ModelVariable] = UndirectedGraph(Graph[ModelVariable, UnDiEdge](
+  private def constructAcyclicGraph: UndirectedGraph[MainVariable] = UndirectedGraph(Graph[MainVariable, UnDiEdge](
     UnDiEdge(latent_gaussian, manifest_gaussian),
     UnDiEdge(latent_multinomial, manifest_multinomial),
     UnDiEdge(latent_multinomial, latent_gaussian)))
 
-  private def constructCyclicGraph: UndirectedGraph[ModelVariable] = UndirectedGraph(Graph[ModelVariable, UnDiEdge](
+  private def constructCyclicGraph: UndirectedGraph[MainVariable] = UndirectedGraph(Graph[MainVariable, UnDiEdge](
     UnDiEdge(latent_gaussian, manifest_gaussian),
     UnDiEdge(latent_multinomial, manifest_multinomial),
     UnDiEdge(latent_multinomial, latent_gaussian),
@@ -62,7 +62,7 @@ class UndirectedGraphSpec extends CustomSpec{
     assert(graph.edges equals edges)
     // Test they are not the same reference
     assert(!(graph.edges eq edges))
-    assert(graph.edges.isInstanceOf[Set[UnDiEdge[ModelVariable]]])
+    assert(graph.edges.isInstanceOf[Set[UnDiEdge[MainVariable]]])
   }
 
   "UndirectedGraph.numberOfNodes" should "return the correct number of nodes, which is the number of variables" in {

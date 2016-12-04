@@ -18,7 +18,7 @@ trait ParameterDistributionType {
     */
   def isAttributeCompatible(attribute: Attribute): Boolean
 
-  def newEFUnivariateDistribution(parameterVariable: ParameterVariable): EF_UnivariateDistribution
+  def newEFUnivariateDistribution(parameterVariable: ConjugatePriorVariable): EF_UnivariateDistribution
 }
 
 case class DirichletParameterType() extends ParameterDistributionType {
@@ -29,6 +29,6 @@ case class DirichletParameterType() extends ParameterDistributionType {
     case _ => false
   }
 
-  override def newEFUnivariateDistribution(parameterVariable: ParameterVariable): EF_UnivariateDistribution = EF_Dirichlet(parameterVariable, 2)
+  override def newEFUnivariateDistribution(parameterVariable: ConjugatePriorVariable): EF_UnivariateDistribution = EF_Dirichlet(parameterVariable, 2)
 }
 

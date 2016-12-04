@@ -3,14 +3,14 @@ import breeze.linalg.{DenseVector, sum}
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.exponentialfamily.distributions.learning.{CE_Distribution, CE_Multinomial}
-import sbn.core.variables.{ModelVariable, ParameterVariablesFactory, Variable}
+import sbn.core.variables.{MainVariable, ParameterVariablesFactory, Variable}
 
 /**
   * Created by fer on 1/12/16.
   */
 //TODO: require variable de tipo multinomial
 //TODO: revisar si es conveniente tener un parameterDistributionType
-case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]) extends EF_UnivariateDistribution{
+case class EF_Multinomial(variable: MainVariable, probabilities: Vector[Double]) extends EF_UnivariateDistribution{
 
   /** The state space of the multinomial variable. */
   private val variableStateSpace: FiniteStateSpace = variable.attribute.stateSpaceType match {

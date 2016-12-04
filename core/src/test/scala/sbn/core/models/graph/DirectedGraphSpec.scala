@@ -2,7 +2,7 @@ package sbn.core.models.graph
 
 import sbn.core.CustomSpec
 import sbn.core.io.DataFileLoader
-import sbn.core.variables.{ModelVariable, ModelVariablesFactory}
+import sbn.core.variables.{MainVariable, ModelVariablesFactory}
 
 import scalax.collection.GraphEdge.DiEdge
 import scalax.collection.immutable.Graph
@@ -21,12 +21,12 @@ class DirectedGraphSpec extends CustomSpec{
     DiEdge(latent_multinomial, manifest_multinomial),
     DiEdge(latent_multinomial, latent_gaussian))
 
-  private def constructAcyclicGraph: DirectedGraph[ModelVariable] = DirectedGraph(Graph[ModelVariable, DiEdge](
+  private def constructAcyclicGraph: DirectedGraph[MainVariable] = DirectedGraph(Graph[MainVariable, DiEdge](
     DiEdge(latent_gaussian, manifest_gaussian),
     DiEdge(latent_multinomial, manifest_multinomial),
     DiEdge(latent_multinomial, latent_gaussian)))
 
-  private def constructCyclicGraph: DirectedGraph[ModelVariable] = DirectedGraph(Graph[ModelVariable, DiEdge](
+  private def constructCyclicGraph: DirectedGraph[MainVariable] = DirectedGraph(Graph[MainVariable, DiEdge](
     DiEdge(latent_gaussian, manifest_gaussian),
     DiEdge(latent_multinomial, manifest_multinomial),
     DiEdge(latent_multinomial, latent_gaussian),
@@ -63,7 +63,7 @@ class DirectedGraphSpec extends CustomSpec{
     assert(graph.edges equals edges)
     // Test they are not the same reference
     assert(!(graph.edges eq edges))
-    assert(graph.edges.isInstanceOf[Set[DiEdge[ModelVariable]]])
+    assert(graph.edges.isInstanceOf[Set[DiEdge[MainVariable]]])
   }
 
   "DirectedGraph.numberOfNodes" should "return the correct number of nodes, which is the number of variables" in {

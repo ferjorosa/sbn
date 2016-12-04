@@ -15,7 +15,7 @@ class BaseDistribution_MultinomialParentsSpec extends CustomSpec{
     val parent_2 = ModelVariablesFactory.newMultinomialVariable("parent_2", 2)
     val parent_3 = ModelVariablesFactory.newMultinomialVariable("parent_3", 3)
     val variable = ModelVariablesFactory.newMultinomialVariable("variable", 3)
-    val parents: Set[ModelVariable] = Set(parent_1, parent_2, parent_3)
+    val parents: Set[MainVariable] = Set(parent_1, parent_2, parent_3)
 
     When("calling generateAssingmentsCombinations(parents)")
     val combinations = BaseDistribution_MultinomialParents.generateAssignmentCombinations(parents)

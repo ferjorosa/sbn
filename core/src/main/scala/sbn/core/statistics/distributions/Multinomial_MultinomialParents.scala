@@ -1,6 +1,6 @@
 package sbn.core.statistics.distributions
 
-import sbn.core.variables.{Assignments, ModelVariable, MultinomialType}
+import sbn.core.variables.{Assignments, MainVariable, MultinomialType}
 
 /**
   * This class defines the conditional distribution of a variable of [[MultinomialType]] whose parents are all also of [[MultinomialType]].
@@ -36,8 +36,8 @@ import sbn.core.variables.{Assignments, ModelVariable, MultinomialType}
   * @param multinomialParents the parents of the variable.
   * @param parameterizedConditionalDistributions the resulting multinomial distributions of the variable.
   */
-case class Multinomial_MultinomialParents(variable: ModelVariable,
-                                          multinomialParents: Set[ModelVariable],
+case class Multinomial_MultinomialParents(variable: MainVariable,
+                                          multinomialParents: Set[MainVariable],
                                           parameterizedConditionalDistributions: Map[Assignments, Multinomial]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, parameterizedConditionalDistributions) {
 
   /** @inheritdoc */
@@ -58,7 +58,7 @@ object Multinomial_MultinomialParents {
     * @return a new [[Multinomial_MultinomialParents]] distribution with random parameters.
     */
   @throws[IllegalArgumentException]
-  def apply(variable: ModelVariable, multinomialParents: Set[ModelVariable]): Multinomial_MultinomialParents ={
+  def apply(variable: MainVariable, multinomialParents: Set[MainVariable]): Multinomial_MultinomialParents ={
     require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
     require(!multinomialParents.exists(!_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
 
