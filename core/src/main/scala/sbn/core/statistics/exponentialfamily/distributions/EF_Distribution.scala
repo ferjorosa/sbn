@@ -3,14 +3,14 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.MainVariable
+import sbn.core.variables.{MainVariable, Variable}
 
 /**
   * Created by fer on 29/11/16.
   */
 trait EF_Distribution {
 
-  val variable: MainVariable
+  val variable: Variable
 }
 
 trait EF_UnivariateDistribution extends EF_Distribution{
