@@ -9,6 +9,8 @@ class EF_Gamma extends EF_UnivariateDistribution{
 
   override val naturalParameters: DenseVector[Double] = ???
 
+  override val momentParameters: DenseVector[Double] = ???
+
   override def sufficientStatistics(x: Double): DenseVector[Double] = ???
 
   override def logBaseMeasure(x: Double): Double = ???

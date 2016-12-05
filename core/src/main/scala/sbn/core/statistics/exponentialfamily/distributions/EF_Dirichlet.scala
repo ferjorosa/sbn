@@ -13,6 +13,8 @@ case class EF_Dirichlet(variable: Variable, nStates: Int, scale: Double) extends
 
   override val naturalParameters: DenseVector[Double] = ???
 
+  override val momentParameters: DenseVector[Double] = ???
+
   override def sufficientStatistics(x: Double): DenseVector[Double] = ???
 
   override def logBaseMeasure(x: Double): Double = ???

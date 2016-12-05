@@ -15,6 +15,8 @@ trait EF_UnivariateDistribution extends EF_Distribution{
 
   val naturalParameters: DenseVector[Double]
 
+  val momentParameters: DenseVector[Double]
+
   def sufficientStatistics(x: Double): DenseVector[Double]
 
   def logBaseMeasure(x: Double): Double

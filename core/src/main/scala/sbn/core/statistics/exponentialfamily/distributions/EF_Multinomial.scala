@@ -9,6 +9,7 @@ import sbn.core.variables.{MainVariable, ParameterVariablesFactory, Variable}
   * Created by fer on 1/12/16.
   */
 //TODO: require variable de tipo multinomial
+// TODO: definir o revisar el uso de un vector inmutable para numeros Double
 //TODO: revisar si es conveniente tener un parameterDistributionType
 case class EF_Multinomial(variable: MainVariable, probabilities: Vector[Double]) extends EF_UnivariateDistribution{
 
@@ -21,6 +22,8 @@ case class EF_Multinomial(variable: MainVariable, probabilities: Vector[Double])
   }
 
   override val naturalParameters: DenseVector[Double] = DenseVector[Double] (probabilities.map(x => FastMath.log(x)).toArray)
+
+  override val momentParameters: DenseVector[Double] = DenseVector[Double](probabilities.toArray)
 
   override def sufficientStatistics(x: Double): DenseVector[Double] = {
     val zeroes = DenseVector.zeros[Double](naturalParameters.activeSize)
@@ -37,4 +40,9 @@ case class EF_Multinomial(variable: MainVariable, probabilities: Vector[Double])
     val dirichletDistribution = dirichletParameter.newEFUnivariateDistribution
     CE_Multinomial(variable, dirichletParameter)
   }
+}
+
+object EF_Multinomial {
+
+  def apply(variable: MainVariable, momentParameters: DenseVector[Double]) = EF_Multinomial(variable, momentParameters.data.toVector)
 }
