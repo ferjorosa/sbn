@@ -59,15 +59,31 @@ case class DirectedGraph[V <: Variable](self: Graph[V, DiEdge]) {
 /** Factory for the [[DirectedGraph]] class. Its main factory method is created by default. */
 object DirectedGraph {
 
+  /** Implicit configuration object for the Graph builder */
+  implicit val config = CoreConfig()
+
   /**
-    * Auxiliary factory method. It is provided for an easier graph building process.
+    * Auxiliary factory method. It is provided for an easier graph-building process.
     *
     * @param edges the set of directed edges of the graph.
     * @return a new [[DirectedGraph]] object.
     */
   def apply[V <: Variable](edges: Set[DiEdge[V]]): DirectedGraph[V] = {
-    implicit val config = CoreConfig()
     val graphBuilder = Graph.newBuilder[V, DiEdge]
+    edges.map(graphBuilder += _)
+    DirectedGraph(graphBuilder.result())
+  }
+
+  /**
+    * Auxiliary factory method. It is provided for an easier graph-building process
+    * @param variables
+    * @param edges
+    * @tparam V
+    * @return
+    */
+  def apply[V <: Variable](variables: Set[V], edges: Set[DiEdge[V]]): DirectedGraph[V] = {
+    val graphBuilder = Graph.newBuilder[V, DiEdge]
+    variables.map(graphBuilder += _)
     edges.map(graphBuilder += _)
     DirectedGraph(graphBuilder.result())
   }
