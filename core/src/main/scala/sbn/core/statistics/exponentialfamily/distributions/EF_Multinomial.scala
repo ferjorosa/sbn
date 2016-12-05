@@ -31,6 +31,8 @@ case class EF_Multinomial(variable: MainVariable, probabilities: Vector[Double])
     zeroes
   }
 
+  override def zeroSufficientStatistics: DenseVector[Double] = DenseVector.zeros(variableStateSpace.numberOfStates)
+
   override def logBaseMeasure(x: Double): Double = 0
 
   override def logNormalizer: Double = FastMath.log(sum(naturalParameters.map(FastMath.exp)))
@@ -40,9 +42,11 @@ case class EF_Multinomial(variable: MainVariable, probabilities: Vector[Double])
     val dirichletDistribution = dirichletParameter.newEFUnivariateDistribution
     CE_Multinomial(variable, dirichletParameter)
   }
+
+  override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = EF_Multinomial(this.variable, momentParameters)
 }
 
 object EF_Multinomial {
 
-  def apply(variable: MainVariable, momentParameters: DenseVector[Double]) = EF_Multinomial(variable, momentParameters.data.toVector)
+  def apply(variable: MainVariable, momentParameters: DenseVector[Double]): EF_Multinomial = EF_Multinomial(variable, momentParameters.data.toVector)
 }

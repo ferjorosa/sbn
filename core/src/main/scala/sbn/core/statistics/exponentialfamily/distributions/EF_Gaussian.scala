@@ -17,11 +17,15 @@ case class EF_Gaussian(variable: MainVariable, mean: Double, variance: Double) e
 
   override def sufficientStatistics(x: Double): DenseVector[Double] = DenseVector(x, x * x)
 
+  override def zeroSufficientStatistics: DenseVector[Double] = DenseVector.zeros(2)
+
   override def logBaseMeasure(x: Double): Double = - FastMath.log(2*FastMath.PI) / 2
 
   override def logNormalizer: Double = FastMath.log(1 / variance) / 2 - (mean * mean / (2 * variance))
 
   override def toConjugateExponentialDistribution: CE_Distribution = ???
+
+  override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = EF_Gaussian(this.variable, momentParameters)
 }
 
 object EF_Gaussian {
