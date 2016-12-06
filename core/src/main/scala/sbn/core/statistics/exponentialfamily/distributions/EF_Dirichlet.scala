@@ -3,7 +3,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{ParameterVariable, DirichletParameterType, ConjugatePriorVariable, Variable}
+import sbn.core.variables.{DirichletParameterType, ParameterVariable, Variable}
 
 /**
   * Created by fer on 2/12/16.

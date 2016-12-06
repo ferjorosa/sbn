@@ -3,7 +3,7 @@ import breeze.linalg.{DenseVector, sum}
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.exponentialfamily.distributions.learning.{CE_Distribution, CE_Multinomial}
-import sbn.core.variables.{MainVariable, ParameterVariablesFactory, Variable}
+import sbn.core.variables.{MainVariable, ParameterVariablesFactory}
 
 /**
   * Created by fer on 1/12/16.

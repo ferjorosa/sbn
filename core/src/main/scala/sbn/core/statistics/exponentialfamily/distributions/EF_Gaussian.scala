@@ -3,7 +3,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{MainVariable, Variable}
+import sbn.core.variables.MainVariable
 
 /**
   * Created by fer on 29/11/16.
