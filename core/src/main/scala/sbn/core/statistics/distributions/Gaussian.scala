@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom
 import org.apache.commons.math3.distribution.NormalDistribution
 import org.apache.commons.math3.exception.NumberIsTooLargeException
 import org.apache.commons.math3.util.FastMath
+import sbn.core.statistics.exponentialfamily.distributions.{EF_Distribution, EF_Gaussian}
 import sbn.core.variables.{GaussianType, MainVariable}
 
 /**
@@ -63,6 +64,9 @@ case class Gaussian(variable: MainVariable, mean: Double, variance: Double) exte
 
   /** @inheritdoc */
   override def sample: Double = (ThreadLocalRandom.current().nextGaussian() * this.standardDeviation) + this.mean
+
+  /** @inheritdoc */
+  override def toEF_Distribution: EF_Distribution = EF_Gaussian(this.variable, this.mean, this.variance)
 }
 
 /** The factory containing specific methods for creating [[Gaussian]] distribution objects */

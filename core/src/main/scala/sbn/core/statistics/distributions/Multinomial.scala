@@ -4,6 +4,7 @@ import java.util.concurrent.ThreadLocalRandom
 
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.statistics.exponentialfamily.distributions.{EF_Distribution, EF_Multinomial}
 import sbn.core.utils.Utils
 import sbn.core.variables.{MainVariable, MultinomialType}
 
@@ -104,6 +105,9 @@ case class Multinomial(variable: MainVariable, probabilities: Vector[Double]) ex
     }
     this.probabilities.length - 1
   }
+
+  /** @inheritdoc */
+  override def toEF_Distribution: EF_Distribution = EF_Multinomial(this.variable, this.probabilities)
 
   /**
     * Returns the state name of the associated multinomial variable for a given index.

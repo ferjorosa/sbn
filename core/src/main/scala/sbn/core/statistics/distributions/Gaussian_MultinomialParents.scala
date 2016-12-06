@@ -1,5 +1,6 @@
 package sbn.core.statistics.distributions
 
+import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
 import sbn.core.variables.{Assignments, GaussianType, MainVariable, MultinomialType}
 
 /**
@@ -14,6 +15,13 @@ case class Gaussian_MultinomialParents(variable: MainVariable,
     * @return The label of the distribution.
     */
   override def label: String = "Gaussian | Multinomial"
+
+  /**
+    * Returns the distribution in its Exponential Family form.
+    *
+    * @return the distribution in its Exponential Family form.
+    */
+  override def toEF_Distribution: EF_Distribution = ???
 }
 
 /** The factory containing specific methods for creating [[Gaussian_MultinomialParents]] distribution objects */

@@ -1,5 +1,6 @@
 package sbn.core.statistics.distributions
 
+import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
 import sbn.core.variables.{Assignments, MainVariable, MultinomialType}
 
 /**
@@ -43,6 +44,8 @@ case class Multinomial_MultinomialParents(variable: MainVariable,
   /** @inheritdoc */
   override def label: String = "Multinomial | Multinomial"
 
+  /** @inheritdoc */
+  override def toEF_Distribution: EF_Distribution = ???
 }
 
 /** The factory containing specific methods for creating [[Multinomial_MultinomialParents]] distribution objects */

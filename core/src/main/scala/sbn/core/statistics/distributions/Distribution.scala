@@ -1,5 +1,6 @@
 package sbn.core.statistics.distributions
 
+import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
 import sbn.core.variables.{Assignment, Assignments, MainVariable}
 
 /**
@@ -20,6 +21,12 @@ trait Distribution extends Product with Serializable{
     * @return The number of parameters of the distribution.
     */
   def numberOfParameters: Int
+
+  /**
+    * Returns the distribution in its Exponential Family form.
+    * @return the distribution in its Exponential Family form.
+    */
+  def toEF_Distribution: EF_Distribution
 }
 
 /**

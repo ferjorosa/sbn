@@ -2,6 +2,7 @@ package sbn.core.statistics.distributions
 
 import org.apache.commons.math3.distribution.GammaDistribution
 import org.apache.commons.math3.util.FastMath
+import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
 import sbn.core.variables.{GammaType, MainVariable}
 
 /**
@@ -44,4 +45,7 @@ case class Gamma(variable: MainVariable, shape: Double, scale: Double) extends U
 
   /** @inheritdoc */
   override def sample: Double = implementation.sample()
+
+  /** @inheritdoc */
+  override def toEF_Distribution: EF_Distribution = ???
 }
