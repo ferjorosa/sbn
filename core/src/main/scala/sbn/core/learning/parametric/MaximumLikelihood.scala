@@ -11,8 +11,7 @@ import sbn.core.statistics.exponentialfamily.distributions.{EF_Distribution, EF_
 // In the exponential family, the mle can be seen as a transformation from moment to natural parameters
 class MaximumLikelihood extends ParameterLearningAlgorithm{
 
-  def learn(eF_BayesianNetwork: EF_BayesianNetwork, dataSet: ImmutableDataSet)
-                    (implicit opDiv: breeze.linalg.operators.OpDiv.Impl2[DenseVector[Double], Int, DenseVector[Double]]): EF_BayesianNetwork = {
+  def learn(eF_BayesianNetwork: EF_BayesianNetwork, dataSet: ImmutableDataSet): EF_BayesianNetwork = {
 
     val transposed_data = dataSet.transposedDataMatrix
 
@@ -26,7 +25,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         }).reduce(_ + _)
 
     // Elementwise divison
-    val normalizedSumSuffStatistics: IndexedSeq[DenseVector[Double]] = sumSuffStatistics.map(_ :/ dataSet.data.size)
+    val normalizedSumSuffStatistics: IndexedSeq[DenseVector[Double]] = sumSuffStatistics.map(_ :/ dataSet.data.size.asInstanceOf[Double])
 
     val momentParameters = normalizedSumSuffStatistics
 
@@ -41,6 +40,6 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         dist
     })
 
-    EF_BayesianNetwork(eF_BayesianNetwork.name, eF_BayesianNetwork.dag, learnedDistributions, momentParameters.toVector)
+    EF_BayesianNetwork(eF_BayesianNetwork.name, eF_BayesianNetwork.dag, learnedDistributions)
   }
 }
