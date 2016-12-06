@@ -25,6 +25,12 @@ case class BayesianNetwork(name: String, dag: DirectedGraph[MainVariable], distr
     * @return the BN's variables.
     */
   def variables: Set[MainVariable] = this.dag.nodes
+
+  /**
+    * Transforms a BayesianNetwork into its Exponential Family form.
+    * @return an equivalent EF_BayesianNetwork object.
+    */
+  def toEF_BayesianNetwork: EF_BayesianNetwork = EF_BayesianNetwork(this.name, this.dag, this.distributions.map(_.toEF_Distribution))
 }
 
 /** The factory containing specific methods for creating [[BayesianNetwork]] distribution objects */
