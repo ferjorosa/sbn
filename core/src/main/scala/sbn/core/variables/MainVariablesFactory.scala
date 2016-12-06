@@ -5,11 +5,11 @@ import java.util.UUID
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace, StateSpaceType}
 
 /**
-  * The [[Variable]] factory. It is designed to create manifest and latent variables in a different way. Manifest variables
+  * The [[MainVariable]] factory. It is designed to create manifest and latent variables in a different way. Manifest variables
   * are created from a [[Attribute]], which comes from a DataSource, while Latent variables are created by the user,
   * specifying its parameters.
   */
-object ModelVariablesFactory {
+object MainVariablesFactory {
 
   /**
     * Creates a manifest multinomial variable from an attribute.
@@ -19,7 +19,7 @@ object ModelVariablesFactory {
     * @return a new [[ManifestVariable]] of multinomial type.
     */
   @throws[IllegalArgumentException]
-  def newMultinomialVariable(attribute: Attribute): ManifestVariable = ManifestVariable(attribute, new MultinomialType, UUID.randomUUID())
+  def newMultinomialMV(attribute: Attribute): MainVariable = ManifestVariable(attribute, new MultinomialType, UUID.randomUUID())
 
   /**
     * Creates a latent multinomial variable by specifying its number of states.
@@ -28,7 +28,7 @@ object ModelVariablesFactory {
     * @param nStates the number of states of its associated univariate multinomial distribution.
     * @return a new [[LatentVariable]] of multinomial type.
     */
-  def newMultinomialVariable(name: String, nStates: Int): LatentVariable = {
+  def newMultinomialLV(name: String, nStates: Int): MainVariable = {
     val attribute = Attribute(name, FiniteStateSpace(nStates))
     LatentVariable(attribute, new MultinomialType, UUID.randomUUID())
   }
@@ -41,7 +41,7 @@ object ModelVariablesFactory {
     * @return a new [[ManifestVariable]] of gaussian type.
     */
   @throws[IllegalArgumentException]
-  def newGaussianVariable(attribute: Attribute): ManifestVariable = ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
+  def newGaussianMV(attribute: Attribute): MainVariable = ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
 
   /**
     * Creates a latent gaussian variable by specifying its value intervals.
@@ -51,7 +51,7 @@ object ModelVariablesFactory {
     * @param max the maximum value of the interval.
     * @return a new [[LatentVariable]] of gaussian type.
     */
-  def newGaussianVariable(name: String, min: Double, max: Double): LatentVariable = {
+  def newGaussianLV(name: String, min: Double, max: Double): MainVariable = {
     val attribute = Attribute(name, RealStateSpace(min, max))
     LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }
@@ -62,7 +62,7 @@ object ModelVariablesFactory {
     * @param name the name of the latent variable.
     * @return a new [[LatentVariable]] of gaussian type.
     */
-  def newGaussianVariable(name: String): LatentVariable = {
+  def newGaussianLV(name: String): MainVariable = {
     val attribute = Attribute(name, RealStateSpace())
     LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }

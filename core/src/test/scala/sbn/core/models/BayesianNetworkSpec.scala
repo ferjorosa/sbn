@@ -1,10 +1,10 @@
 package sbn.core.models
 
 import sbn.core.CustomSpec
-import sbn.core.statistics.distributions.{ConditionalDistribution, Multinomial, UnivariateDistribution}
 import sbn.core.io.DataFileLoader
 import sbn.core.models.graph.DirectedGraph
-import sbn.core.variables.{MainVariable, ModelVariablesFactory}
+import sbn.core.statistics.distributions.{ConditionalDistribution, Multinomial, UnivariateDistribution}
+import sbn.core.variables.{MainVariable, MainVariablesFactory}
 
 import scalax.collection.GraphEdge.DiEdge
 import scalax.collection.immutable.Graph
@@ -12,10 +12,10 @@ import scalax.collection.immutable.Graph
 class BayesianNetworkSpec extends CustomSpec{
 
   val dataSet = DataFileLoader.loadImmutableDataSet("datasets/test/core/onlyAttributes.arff")
-  val latent_multinomial = ModelVariablesFactory.newMultinomialVariable("latent_multinomial", 5)
-  val latent_multinomial2 = ModelVariablesFactory.newMultinomialVariable("latent_multinomial2", 2)
-  val manifest_multinomial = ModelVariablesFactory.newMultinomialVariable(dataSet.get.attributes.getAttributeByName("multinomial"))
-  val manifest_multinomial2 = ModelVariablesFactory.newMultinomialVariable(dataSet.get.attributes.getAttributeByName("binomial"))
+  val latent_multinomial = MainVariablesFactory.newMultinomialLV("latent_multinomial", 5)
+  val latent_multinomial2 = MainVariablesFactory.newMultinomialLV("latent_multinomial2", 2)
+  val manifest_multinomial = MainVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("multinomial"))
+  val manifest_multinomial2 = MainVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("binomial"))
 
   private def constructCyclicGraph: DirectedGraph[MainVariable] = DirectedGraph(Graph[MainVariable, DiEdge](
     DiEdge(latent_multinomial, manifest_multinomial),

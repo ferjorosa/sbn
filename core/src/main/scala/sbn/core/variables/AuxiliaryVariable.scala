@@ -1,8 +1,4 @@
 package sbn.core.variables
-import java.util.UUID
-
-import sbn.core.data.attributes.Attribute
-import sbn.core.statistics.exponentialfamily.distributions.EF_UnivariateDistribution
 
 /**
   * Created by fer on 2/12/16.

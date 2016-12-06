@@ -2,7 +2,7 @@ package sbn.core.models.graph
 
 import sbn.core.CustomSpec
 import sbn.core.io.DataFileLoader
-import sbn.core.variables.{MainVariable, ModelVariablesFactory}
+import sbn.core.variables.{MainVariable, MainVariablesFactory}
 
 import scalax.collection.GraphEdge.DiEdge
 import scalax.collection.immutable.Graph
@@ -10,10 +10,10 @@ import scalax.collection.immutable.Graph
 class DirectedGraphSpec extends CustomSpec{
 
   val dataSet = DataFileLoader.loadImmutableDataSet("datasets/test/core/onlyAttributes.arff")
-  val latent_gaussian = ModelVariablesFactory.newGaussianVariable("latent_gaussian")
-  val latent_multinomial = ModelVariablesFactory.newMultinomialVariable("latent_multinomial", 2)
-  val manifest_gaussian = ModelVariablesFactory.newGaussianVariable(dataSet.get.attributes.getAttributeByName("continuousWithBounds"))
-  val manifest_multinomial = ModelVariablesFactory.newMultinomialVariable(dataSet.get.attributes.getAttributeByName("binomial"))
+  val latent_gaussian = MainVariablesFactory.newGaussianLV("latent_gaussian")
+  val latent_multinomial = MainVariablesFactory.newMultinomialLV("latent_multinomial", 2)
+  val manifest_gaussian = MainVariablesFactory.newGaussianMV(dataSet.get.attributes.getAttributeByName("continuousWithBounds"))
+  val manifest_multinomial = MainVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("binomial"))
 
   val variables = Set(latent_gaussian, latent_multinomial, manifest_gaussian, manifest_multinomial)
   val edges = Set(

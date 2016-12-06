@@ -57,7 +57,7 @@ class DistributionTypeSpec extends CustomSpec{
   "MultinomialType.newUnivariateDistribution" should "return a Multinomial distribution" in {
 
     Given("a multinomial variable")
-    val multinomialVar = ModelVariablesFactory.newMultinomialVariable("yolo", 2)
+    val multinomialVar = MainVariablesFactory.newMultinomialLV("yolo", 2)
 
     When("creating an univariate distribution from its distributionType")
 
@@ -68,9 +68,9 @@ class DistributionTypeSpec extends CustomSpec{
   "MultinomialType.newConditionalDistribution" should "return a Multinomial_MultinomialParents distribution if all its parents are MultinomialType" in {
 
     Given("a multinomial variable and a set of multinomial parents")
-    val multinomialVar = ModelVariablesFactory.newMultinomialVariable("gaussian",4)
-    val parent1 = ModelVariablesFactory.newMultinomialVariable("paren1",2)
-    val parent2 = ModelVariablesFactory.newMultinomialVariable("parent2", 15)
+    val multinomialVar = MainVariablesFactory.newMultinomialLV("gaussian",4)
+    val parent1 = MainVariablesFactory.newMultinomialLV("paren1",2)
+    val parent2 = MainVariablesFactory.newMultinomialLV("parent2", 15)
 
     When("creating a conditional distribution from its distributionType")
     val dist = multinomialVar.distributionType.newConditionalDistribution(multinomialVar, Set(parent1, parent2))
@@ -82,9 +82,9 @@ class DistributionTypeSpec extends CustomSpec{
   it should "throw an IllegalArgumentException otherwise" in {
 
     Given("a multinomial variable and a mixed set of multinomial and gaussian parents")
-    val multinomialVar = ModelVariablesFactory.newMultinomialVariable("gaussian",5)
-    val parent1 = ModelVariablesFactory.newGaussianVariable("parent1")
-    val parent2 = ModelVariablesFactory.newMultinomialVariable("parent2", 15)
+    val multinomialVar = MainVariablesFactory.newMultinomialLV("gaussian",5)
+    val parent1 = MainVariablesFactory.newGaussianLV("parent1")
+    val parent2 = MainVariablesFactory.newMultinomialLV("parent2", 15)
 
     When("creating a conditional distribution from its distributionType")
 
@@ -145,7 +145,7 @@ class DistributionTypeSpec extends CustomSpec{
   "GaussianType.newUnivariateDistribution" should "return a Gaussian distribution" in {
 
     Given("a gaussian variable")
-    val gaussianVar = ModelVariablesFactory.newGaussianVariable("yolo1337")
+    val gaussianVar = MainVariablesFactory.newGaussianLV("yolo1337")
 
     When("creating an univariate distribution from its distributionType")
     val dist = gaussianVar.distributionType.newUnivariateDistribution(gaussianVar)
@@ -157,9 +157,9 @@ class DistributionTypeSpec extends CustomSpec{
   "GaussianType.newConditionalDistribution" should "return a Gaussian_MultinomialParents distribution if all its parents are MultinomialType" in {
 
     Given("a gaussian variable and a set of multinomial parents")
-    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian")
-    val parent1 = ModelVariablesFactory.newMultinomialVariable("paren1",2)
-    val parent2 = ModelVariablesFactory.newMultinomialVariable("parent2", 15)
+    val gaussianVar = MainVariablesFactory.newGaussianLV("gaussian")
+    val parent1 = MainVariablesFactory.newMultinomialLV("paren1",2)
+    val parent2 = MainVariablesFactory.newMultinomialLV("parent2", 15)
 
     When("creating a conditional distribution from its distributionType")
     val dist = gaussianVar.distributionType.newConditionalDistribution(gaussianVar, Set(parent1, parent2))
@@ -171,9 +171,9 @@ class DistributionTypeSpec extends CustomSpec{
   it should "throw an IllegalArgumentException otherwise" in {
 
     Given("a gaussian variable and a mixed set of multinomial and gaussian parents")
-    val gaussianVar = ModelVariablesFactory.newGaussianVariable("gaussian")
-    val parent1 = ModelVariablesFactory.newGaussianVariable("parent1")
-    val parent2 = ModelVariablesFactory.newMultinomialVariable("parent2", 15)
+    val gaussianVar = MainVariablesFactory.newGaussianLV("gaussian")
+    val parent1 = MainVariablesFactory.newGaussianLV("parent1")
+    val parent2 = MainVariablesFactory.newMultinomialLV("parent2", 15)
 
     When("creating a conditional distribution from its distributionType")
 
