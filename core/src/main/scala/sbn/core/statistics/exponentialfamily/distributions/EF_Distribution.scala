@@ -3,7 +3,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.Variable
+import sbn.core.variables.{Assignments, Variable}
 
 /**
   * Created by fer on 29/11/16.
@@ -38,4 +38,22 @@ trait EF_UnivariateDistribution extends EF_Distribution{
 
 trait EF_ConditionalDistribution extends EF_Distribution {
 
+  val naturalParameters: Vector[DenseVector[Double]]
+
+  val momentParameters: Vector[DenseVector[Double]]
+
+  def zeroSufficientStatistics: Vector[DenseVector[Double]]
+
+  def sufficientStatistics(x: Double): Vector[DenseVector[Double]]
+
+  // TODO: cambiar a forma condicional
+  def logBaseMeasure(x: Double): Double
+  // TODO: cambiar a forma condicional
+  def logNormalizer: Double
+  // TODO: cambiar a forma condicional
+  def logDensity(assignments: Assignments, x: Double): Double = (naturalParameters dot sufficientStatistics(x)) + logBaseMeasure(x) - logNormalizer
+
+  def density(assignments: Assignments, x: Double): Double = FastMath.exp(logDensity(assignments, x))
+
+  def toConjugateExponentialDistribution: CE_Distribution
 }

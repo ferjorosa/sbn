@@ -18,6 +18,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
     val orderedDistributionsFromAttributes = dataSet.attributes.map(
       dataAttribute => eF_BayesianNetwork.distributions.find(x => x.variable.attribute equals dataAttribute).get).toVector
 
+    //TODO: Habria que generalizar este proceso para las distribuciones condicionadas
     val sumSuffStatistics: IndexedSeq[DenseVector[Double]] =
       for(i <- transposed_data.indices)
         yield transposed_data(i).map(value => orderedDistributionsFromAttributes(i) match {
