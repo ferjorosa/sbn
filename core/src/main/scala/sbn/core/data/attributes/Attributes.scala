@@ -21,8 +21,22 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
     case (attr, attrRepetitionsList)  if attrRepetitionsList.lengthCompare(1) > 0 => attr
   }.isEmpty, "Repeated values in the attributeOrder collection")
 
+  // TODO: doc
+  override val size: Int = this.attributeList.size
+
+  // TODO: doc
+  val attributeIndexes: Map[Attribute, Int] = attributeList.zipWithIndex.toMap
+
   /**
-    * Returns the attributeList ordered by the [[attributeOrder]].
+    * Returns a custom iterator for the collection.
+    *
+    * @return a custom iterator for the collection.
+    */
+  override def iterator: Iterator[Attribute] = orderedAttributeList.iterator
+
+  /**
+    * Returns the attributeList ordered by the [[attributeOrder]]. Its order would be different only if a specific order
+    * has been provided at the construction.
     *
     * @return the attributeList ordered by the [[attributeOrder]].
     */
@@ -42,20 +56,6 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
   }
 
   /**
-   * Returns the size of the [[attributeList]].
-    *
-   * @return the size of the [[attributeList]].
-   */
-  override def size: Int = this.attributeList.size
-
-  /**
-    * Returns a custom iterator for the collection.
-    *
-    * @return a custom iterator for the collection.
-    */
-  override def iterator: Iterator[Attribute] = orderedAttributeList.iterator
-
-  /**
    * Returns the attribute associated to the provided index.
     *
    * @param attributeIndex the index of the attribute.
@@ -64,6 +64,9 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
    */
   @throws[IndexOutOfBoundsException]
   def apply(attributeIndex: Int): Attribute = this.attributeList(this.attributeOrder(attributeIndex))
+
+  //TODO: doc
+  def indexOf(attribute: Attribute): Int = attributeIndexes(attribute)
 
 }
 

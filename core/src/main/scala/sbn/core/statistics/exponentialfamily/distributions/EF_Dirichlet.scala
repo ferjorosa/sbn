@@ -3,13 +3,13 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{DirichletParameterType, ParameterVariable, Variable}
+import sbn.core.variables.{DirichletParameterType, ModelVariable, ParameterVariable, Variable}
 
 /**
   * Created by fer on 2/12/16.
   */
 //TODO hace uso de la función gamma
-case class EF_Dirichlet(variable: Variable, nStates: Int, scale: Double) extends EF_UnivariateDistribution{
+case class EF_Dirichlet(variable: ModelVariable, nStates: Int, scale: Double) extends EF_UnivariateDistribution{
 
   override val naturalParameters: DenseVector[Double] = ???
 

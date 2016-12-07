@@ -1,12 +1,12 @@
 package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.Variable
+import sbn.core.variables.ModelVariable
 
 /**
   * Created by fer on 1/12/16.
   */
-case class EF_Gamma(variable: Variable) extends EF_UnivariateDistribution{
+case class EF_Gamma(variable: ModelVariable) extends EF_UnivariateDistribution{
 
   override val naturalParameters: DenseVector[Double] = ???
 

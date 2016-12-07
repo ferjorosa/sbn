@@ -1,6 +1,6 @@
 package sbn.core.data
 
-import sbn.core.data.attributes.Attributes
+import sbn.core.data.attributes.{Attribute, Attributes}
 
 /**
   * The class represents a collection of [[DataInstance]]] objects that represents its data.

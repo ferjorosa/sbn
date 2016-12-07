@@ -1,6 +1,6 @@
 package sbn.core.statistics.exponentialfamily.distributions.learning
 
-import sbn.core.variables.{ConjugatePriorVariable, DirichletParameterType, MainVariable, MultinomialType}
+import sbn.core.variables._
 
 /**
   * Created by fer on 2/12/16.

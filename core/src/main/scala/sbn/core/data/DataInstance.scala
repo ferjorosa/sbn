@@ -1,6 +1,6 @@
 package sbn.core.data
 
-import sbn.core.data.attributes.{Attributes, FiniteStateSpace, RealStateSpace}
+import sbn.core.data.attributes.{Attribute, Attributes, FiniteStateSpace, RealStateSpace}
 
 import scala.util.Try
 
@@ -14,6 +14,8 @@ import scala.util.Try
 @throws[IllegalArgumentException]
 case class DataInstance (attributes: Attributes, values: Vector[Double]){
   require(attributes.size == values.size, "attributes and values sizes differ")
+
+  def value(attribute: Attribute) = values(attributes.indexOf(attribute))
 }
 
 /** A factory object containing specific methods for creating [[DataInstance]] objects. */

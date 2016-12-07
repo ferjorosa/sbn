@@ -3,14 +3,14 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{Assignments, Variable}
+import sbn.core.variables.{Assignments, MainVariable, ModelVariable}
 
 /**
   * Created by fer on 29/11/16.
   */
 trait EF_Distribution {
 
-  val variable: Variable
+  val variable: ModelVariable
 }
 
 trait EF_UnivariateDistribution extends EF_Distribution{
@@ -38,22 +38,29 @@ trait EF_UnivariateDistribution extends EF_Distribution{
 
 trait EF_ConditionalDistribution extends EF_Distribution {
 
+  val parents: Set[MainVariable]
+
   val naturalParameters: Vector[DenseVector[Double]]
 
   val momentParameters: Vector[DenseVector[Double]]
 
+  def naturalParameters(assignments: Assignments): DenseVector[Double]
+
+  def momentParameters(assignments: Assignments): DenseVector[Double]
+
   def zeroSufficientStatistics: Vector[DenseVector[Double]]
 
-  def sufficientStatistics(x: Double): Vector[DenseVector[Double]]
+  def sufficientStatistics(assignments: Assignments, x: Double): DenseVector[Double]
 
-  // TODO: cambiar a forma condicional
-  def logBaseMeasure(x: Double): Double
-  // TODO: cambiar a forma condicional
-  def logNormalizer: Double
-  // TODO: cambiar a forma condicional
-  def logDensity(assignments: Assignments, x: Double): Double = (naturalParameters dot sufficientStatistics(x)) + logBaseMeasure(x) - logNormalizer
+  def logBaseMeasure(assignments: Assignments, x: Double): Double
+
+  def logNormalizer(assignments: Assignments): Double
+
+  def logDensity(assignments: Assignments, x: Double): Double = (naturalParameters(assignments) dot sufficientStatistics(assignments, x)) + logBaseMeasure(assignments, x) - logNormalizer(assignments)
 
   def density(assignments: Assignments, x: Double): Double = FastMath.exp(logDensity(assignments, x))
+
+  def getEF_UnivariateDistribution(assignments: Assignments): EF_UnivariateDistribution
 
   def toConjugateExponentialDistribution: CE_Distribution
 }
