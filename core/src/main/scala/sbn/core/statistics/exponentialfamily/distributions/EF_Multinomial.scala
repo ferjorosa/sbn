@@ -2,6 +2,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.{DenseVector, sum}
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.statistics.distributions.{Multinomial, Distribution}
 import sbn.core.statistics.exponentialfamily.distributions.learning.{CE_Distribution, CE_Multinomial}
 import sbn.core.variables.{MainVariable, ModelVariable, ParameterVariablesFactory}
 
@@ -44,6 +45,8 @@ case class EF_Multinomial(variable: MainVariable, probabilities: Vector[Double])
   }
 
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = EF_Multinomial(this.variable, momentParameters)
+
+  override def toDistribution: Distribution = Multinomial(this.variable, this.probabilities)
 }
 
 object EF_Multinomial {

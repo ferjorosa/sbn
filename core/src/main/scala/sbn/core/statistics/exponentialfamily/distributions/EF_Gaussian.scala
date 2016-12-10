@@ -2,6 +2,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
+import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables.MainVariable
 
@@ -26,6 +27,8 @@ case class EF_Gaussian(variable: MainVariable, mean: Double, variance: Double) e
   override def toConjugateExponentialDistribution: CE_Distribution = ???
 
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = EF_Gaussian(this.variable, momentParameters)
+
+  override def toDistribution: Distribution = ???
 }
 
 object EF_Gaussian {

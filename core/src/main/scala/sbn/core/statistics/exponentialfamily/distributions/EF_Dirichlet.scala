@@ -2,6 +2,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
 import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables.{DirichletParameterType, ModelVariable, ParameterVariable, Variable}
 
@@ -26,6 +27,8 @@ case class EF_Dirichlet(variable: ModelVariable, nStates: Int, scale: Double) ex
   override def toConjugateExponentialDistribution: CE_Distribution = ??? // no tiene sentido
 
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = ???
+
+  override def toDistribution: Distribution = ???
 }
 
 object EF_Dirichlet {

@@ -1,10 +1,11 @@
 package sbn.core.learning.parametric
-import breeze.linalg.DenseVector
-import sbn.core.data.ImmutableDataSet
+import breeze.linalg.{sum, DenseVector}
+import sbn.core.data.{DataInstance, ImmutableDataSet}
 import sbn.core.models.EF_BayesianNetwork
 import sbn.core.statistics.exponentialfamily.distributions.{EF_ConditionalDistribution, EF_Distribution, EF_UnivariateDistribution}
 import sbn.core.variables.{Assignment, Assignments, MainVariable, ModelVariable}
 
+import scala.collection.parallel.immutable.ParVector
 
 /**
   * Created by fer on 5/12/16.
@@ -77,6 +78,46 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
     }
     null
   }
+
+  def compoundMLE2(ef_BayesianNetwork: EF_BayesianNetwork, dataSet: ImmutableDataSet): EF_BayesianNetwork = {
+
+    //Aquellas distribuciones sobre un atributo presente en los datos
+    val observedDistributions = dataSet.attributes.map(
+      dataAttribute => ef_BayesianNetwork.distributions.find(x => x.variable.attribute equals dataAttribute).get).toVector
+
+    val distSumSS: ParVector[Map[Assignments, DenseVector[Double]]] = dataSet.data.map{ instance =>
+      observedDistributions.map{
+        case univariate: EF_UnivariateDistribution =>
+          (Assignments(Set.empty[Assignment]), univariate.sufficientStatistics(instance.value(univariate.variable.attribute)))
+        case condicional: EF_ConditionalDistribution =>
+          val assignments = MaximumLikelihood.generateAssignments(condicional.parents, instance)
+          (assignments, condicional.sufficientStatistics(assignments, instance.value(condicional.variable.attribute)))
+      }
+    }.transpose.par.map(_.groupBy(_._1)
+      .map{case (k, v) => k -> v.reduceLeft{(a, b) => (a._1, a._2 + b._2)}._2})
+
+    val normalizedSumSS: ParVector[Map[Assignments, DenseVector[Double]]] =
+      for(sumSS <- distSumSS) yield sumSS.mapValues(x => x :/ sum(x))
+
+    val learnedDistributions: Seq[EF_Distribution] = ef_BayesianNetwork.distributions.map(dist => {
+      if (observedDistributions.contains(dist)) {
+        val distIndex = observedDistributions.indexOf(dist)
+        dist match {
+          case univariate: EF_UnivariateDistribution =>
+            val momentParameters = normalizedSumSS(distIndex).get(Assignments(Set.empty[Assignment])).get
+            univariate.update(momentParameters)
+
+          case condicional: EF_ConditionalDistribution =>
+            val momentParameters = normalizedSumSS(distIndex)
+            condicional.update(momentParameters)
+        }
+      }
+      else
+        dist
+    })
+
+    EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions)
+  }
 }
 
 object MaximumLikelihood {
@@ -86,4 +127,10 @@ object MaximumLikelihood {
   private def generateAssignments(pairsParentSS: Iterable[(ModelVariable, DenseVector[Double])]): Assignments = {
     Assignments(pairsParentSS.map{case (a, b) => Assignment(a, b.data.indexOf(1))}.toSet)
   }
+
+  // Esto se podria optimizar con atributos(un Map mutable o algo asi, bueno mutable seguramente no valdria si quiero paralelizar easy)
+  private def generateAssignments(parents: Set[MainVariable], instance: DataInstance): Assignments =
+    Assignments(parents.map(x => Assignment(x, instance.value(x.attribute))))
+
+  //implicit val SemigroupDenseVector: Semigroup[DenseVector[Double]] = Semigroup.instance((a, b) => a + b)
 }

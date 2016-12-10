@@ -1,5 +1,6 @@
 package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
+import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables.ModelVariable
 
@@ -23,4 +24,6 @@ case class EF_Gamma(variable: ModelVariable) extends EF_UnivariateDistribution{
   override def toConjugateExponentialDistribution: CE_Distribution = ???
 
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = ???
+
+  override def toDistribution: Distribution = ???
 }

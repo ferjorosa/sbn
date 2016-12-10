@@ -1,7 +1,7 @@
 package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
-import sbn.core.statistics.distributions.Multinomial_MultinomialParents
+import sbn.core.statistics.distributions.{Multinomial, Distribution, Multinomial_MultinomialParents}
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables.{Assignments, MainVariable}
 
@@ -43,6 +43,15 @@ case class EF_Multinomial_Multinomial(variable: MainVariable,
   } catch{ case nse: NoSuchElementException => throw new IllegalArgumentException("Invalid assignments for the distribution")}
 
   override def toConjugateExponentialDistribution: CE_Distribution = ???
+
+  override def update(momentParameters: Map[Assignments, DenseVector[Double]]): EF_ConditionalDistribution = {
+    EF_Multinomial_Multinomial.create(this.variable, this.parents, momentParameters)
+  }
+
+  override def toDistribution: Distribution =
+    Multinomial_MultinomialParents(this.variable,
+                                   this.parents,
+                                   this.parameterizedConditionalDistributions.mapValues(_.toDistribution.asInstanceOf[Multinomial]))
 }
 
 object EF_Multinomial_Multinomial {
@@ -51,5 +60,9 @@ object EF_Multinomial_Multinomial {
       distribution.variable,
       distribution.multinomialParents,
       distribution.parameterizedConditionalDistributions.map{case (assignment, dist) => (assignment, dist.toEF_Distribution.asInstanceOf[EF_Multinomial])})
+
+  // TODO cambiar porque el tipo de momentParameters no se tiene en cuenta y da duplicado el apply
+  def create(variable: MainVariable, parents: Set[MainVariable], momentParameters: Map[Assignments, DenseVector[Double]]): EF_Multinomial_Multinomial =
+    EF_Multinomial_Multinomial(variable, parents, momentParameters.mapValues(EF_Multinomial(variable, _)))
 
 }

@@ -27,7 +27,8 @@ lazy val core = project.in(file("core"))
     "org.scala-graph" %% "graph-core" % "1.11.3",
     // https://mvnrepository.com/artifact/org.apache.commons/commons-math3
     "org.apache.commons" % "commons-math3" % "3.6.1",
-    "org.scalanlp" %% "breeze" % "0.12")
+    "org.scalanlp" %% "breeze" % "0.12",
+    "org.scalaz" %% "scalaz-core" % "7.2.8")
   )
 
 // ===========  Module 'Ltm'  ============ //

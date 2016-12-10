@@ -14,4 +14,6 @@ case class EF_BayesianNetwork(name: String,
   //val naturalParameters: Vector[DenseVector[Double]] = ???
 
   //def sufficientStatistics(x: Double): Vector[DenseVector[Double]] = ???
+
+  def toBayesianNetwork: BayesianNetwork = BayesianNetwork(this.name, this.dag, this.distributions.map(_.toDistribution))
 }

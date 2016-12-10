@@ -2,6 +2,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
+import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables.{Assignments, MainVariable, ModelVariable}
 
@@ -11,6 +12,8 @@ import sbn.core.variables.{Assignments, MainVariable, ModelVariable}
 trait EF_Distribution {
 
   val variable: ModelVariable
+
+  def toDistribution: Distribution
 }
 
 trait EF_UnivariateDistribution extends EF_Distribution{
@@ -63,4 +66,6 @@ trait EF_ConditionalDistribution extends EF_Distribution {
   def getEF_UnivariateDistribution(assignments: Assignments): EF_UnivariateDistribution
 
   def toConjugateExponentialDistribution: CE_Distribution
+
+  def update(momentParameters: Map[Assignments, DenseVector[Double]]): EF_ConditionalDistribution
 }
