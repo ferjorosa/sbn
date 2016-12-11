@@ -4,7 +4,7 @@ import breeze.linalg.DenseVector
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{DirichletParameterType, ModelVariable, ParameterVariable, Variable}
+import sbn.core.variables._
 
 /**
   * Created by fer on 2/12/16.
@@ -29,6 +29,8 @@ case class EF_Dirichlet(variable: ModelVariable, nStates: Int, scale: Double) ex
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = ???
 
   override def toDistribution: Distribution = ???
+
+  override def generalZeroSufficientStatistics: Map[Assignments, DenseVector[Double]] = ???
 }
 
 object EF_Dirichlet {

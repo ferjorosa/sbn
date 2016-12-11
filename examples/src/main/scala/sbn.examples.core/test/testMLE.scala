@@ -23,7 +23,7 @@ object testMLE {
 
   private def compoundMLE() = {
 
-    val data = DataFileLoader.loadImmutableDataSet("datasets/ferjorosaData/sprinklerData300.arff")
+    val data = DataFileLoader.loadImmutableDataSet("datasets/ferjorosaData/sprinklerData720000.arff")
 
     val parameterLearningAlgorithm: MaximumLikelihood = new MaximumLikelihood
 
@@ -52,11 +52,19 @@ object testMLE {
 
     val init = System.currentTimeMillis()
 
-    val ef_bn = parameterLearningAlgorithm.compoundMLE2(bn.toEF_BayesianNetwork, successfulDataSet)
+    val ef_bn = parameterLearningAlgorithm.alternativeMLE(bn.toEF_BayesianNetwork, successfulDataSet)
+
+    val efBnInit = System.currentTimeMillis()
+
     val bn_new = ef_bn.toBayesianNetwork
+
+    val efBnEnd = System.currentTimeMillis()
+    println("ef_bn time:" + (efBnEnd - efBnInit))
 
     val end = System.currentTimeMillis()
     println(end - init)
+
+    val x=0
   }
 
   private def compoundMLEIndependent()= {
@@ -75,7 +83,7 @@ object testMLE {
 
     val bn: BayesianNetwork = BayesianNetwork(dag)
 
-    val ef_bn = parameterLearningAlgorithm.compoundMLE2(bn.toEF_BayesianNetwork, successfulDataSet)
+    val ef_bn = parameterLearningAlgorithm.MLE(bn.toEF_BayesianNetwork, successfulDataSet)
   }
 
   private def compoundMLEOneVar() = {
@@ -94,7 +102,7 @@ object testMLE {
 
     val bn: BayesianNetwork = BayesianNetwork(dag)
 
-    val ef_bn = parameterLearningAlgorithm.compoundMLE2(bn.toEF_BayesianNetwork, successfulDataSet)
+    val ef_bn = parameterLearningAlgorithm.MLE(bn.toEF_BayesianNetwork, successfulDataSet)
 
     println("Fin")
   }

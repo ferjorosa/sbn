@@ -2,7 +2,7 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.ModelVariable
+import sbn.core.variables.{Assignments, ModelVariable}
 
 /**
   * Created by fer on 1/12/16.
@@ -26,4 +26,6 @@ case class EF_Gamma(variable: ModelVariable) extends EF_UnivariateDistribution{
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = ???
 
   override def toDistribution: Distribution = ???
+
+  override def generalZeroSufficientStatistics: Map[Assignments, DenseVector[Double]] = ???
 }

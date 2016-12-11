@@ -52,6 +52,9 @@ case class EF_Multinomial_Multinomial(variable: MainVariable,
     Multinomial_MultinomialParents(this.variable,
                                    this.parents,
                                    this.parameterizedConditionalDistributions.mapValues(_.toDistribution.asInstanceOf[Multinomial]))
+
+
+  override def generalZeroSufficientStatistics: Map[Assignments, DenseVector[Double]] = parameterizedConditionalDistributions.mapValues(_.zeroSufficientStatistics)
 }
 
 object EF_Multinomial_Multinomial {

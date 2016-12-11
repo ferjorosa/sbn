@@ -14,6 +14,8 @@ trait EF_Distribution {
   val variable: ModelVariable
 
   def toDistribution: Distribution
+
+  def generalZeroSufficientStatistics: Map[Assignments, DenseVector[Double]]
 }
 
 trait EF_UnivariateDistribution extends EF_Distribution{
