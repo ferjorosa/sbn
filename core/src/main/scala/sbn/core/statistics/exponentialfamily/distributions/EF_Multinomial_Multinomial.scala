@@ -12,20 +12,23 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
 // TODO: Realmente es igual tanto para Mult_mult que para gauss_mult y este codigo se va a utilizar como base, lo unico dif es el constructor y toCE_Dist
 case class EF_Multinomial_Multinomial(variable: ModelVariable,
                                       parents: Set[ModelVariable],
-                                      parameterizedConditionalDistributions: Map[Assignments, EF_Multinomial]) extends EF_BaseDistribution_Multinomial(variable, parents, parameterizedConditionalDistributions){
+                                      assignedDistributions: Map[Assignments, EF_Multinomial]) extends EF_BaseDistribution_Multinomial(variable, parents, assignedDistributions){
 
   require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
 
+  /** @inheritdoc */
   override def toConjugateExponentialDistribution: CE_Distribution = ???
 
+  /** @inheritdoc */
   override def update(momentParameters: Map[Assignments, DenseVector[Double]]): EF_ConditionalDistribution = {
     EF_Multinomial_Multinomial.create(this.variable, this.parents, momentParameters)
   }
 
+  /** @inheritdoc */
   override def toDistribution: Distribution =
     Multinomial_MultinomialParents(this.variable,
       this.parents,
-      this.parameterizedConditionalDistributions.mapValues(_.toDistribution.asInstanceOf[Multinomial]))
+      this.assignedDistributions.mapValues(_.toDistribution.asInstanceOf[Multinomial]))
 }
 
 object EF_Multinomial_Multinomial {
@@ -33,7 +36,7 @@ object EF_Multinomial_Multinomial {
   def apply(distribution: Multinomial_MultinomialParents): EF_Multinomial_Multinomial = EF_Multinomial_Multinomial(
       distribution.variable,
       distribution.multinomialParents,
-      distribution.parameterizedConditionalDistributions.map{case (assignment, dist) => (assignment, dist.toEF_Distribution.asInstanceOf[EF_Multinomial])})
+      distribution.assignedDistributions.map{case (assignment, dist) => (assignment, dist.toEF_Distribution.asInstanceOf[EF_Multinomial])})
 
   // TODO cambiar porque el tipo de momentParameters no se tiene en cuenta y da duplicado el apply
   def create(variable: ModelVariable, parents: Set[ModelVariable], momentParameters: Map[Assignments, DenseVector[Double]]): EF_Multinomial_Multinomial =

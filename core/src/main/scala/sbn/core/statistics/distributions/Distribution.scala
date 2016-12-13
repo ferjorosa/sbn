@@ -5,7 +5,7 @@ import sbn.core.variables.model.ModelVariable
 import sbn.core.variables.{Assignment, Assignments}
 
 /**
-  * This trait defines the intrinsic methods of every kind of distribution.
+  * This trait defines the intrinsic methods of every kind of probability distribution.
   */
 trait Distribution extends Product with Serializable{
 
@@ -28,6 +28,94 @@ trait Distribution extends Product with Serializable{
     * @return the distribution in its Exponential Family form.
     */
   def toEF_Distribution: EF_Distribution
+}
+
+/**
+  * This trait defines a univariate distribution, which is the probability distribution of only one random variable and no parents.
+  */
+trait UnivariateDistribution extends Distribution{
+
+  /**
+    * Returns a vector containing the parameters of the distribution.
+    *
+    * @return A collection of double values corresponding to the parameters of the distribution.
+    */
+  def parameters: Vector[Double]
+
+  /**
+    * Returns a randomly sampled double value.
+    *
+    * @return a randomly sampled double value.
+    */
+  def sample: Double
+
+  /**
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * P(X = x). In other  words, this method represents the probability mass function (PMF) for the distribution.
+    *
+    * @param x the provided point at which the PMF is evaluated.
+    * @throws IllegalArgumentException if x is an invalid value.
+    * @return the value of the PMF at the provided point.
+    */
+  @throws[IllegalArgumentException]
+  def probability(x: Double): Double
+
+  /**
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * log P(X = x), where 'log' is the natural logarithm. In other words, this method represents the
+    * logarithm of the probability mass function (PMF) for the distribution.
+    *
+    * @param x the provided point at which the PMF is evaluated.
+    * @throws IllegalArgumentException if x is an invalid value.
+    * @return the value of the log(PMF) at the provided point.
+    */
+  @throws[IllegalArgumentException]
+  def logProbability(x: Double): Double
+
+  /**
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * P(x0 < X <= x1).
+    *
+    * @param x0 the lower bound.
+    * @param x1 the upper bound.
+    * @throws IllegalArgumentException if x0 > x1.
+    * @return the probability that this distribution will take a value in the interval (x0, x1].
+    */
+  @throws[IllegalArgumentException]
+  def probability(x0: Double, x1: Double): Double
+
+  /**
+    * For a random variable X whose values are distributed according to this distribution, this method returns
+    * P(X <= x). In other words, this method represents the (cumulative) distribution function (CDF)
+    * for this distribution.
+    *
+    * @param x the point at which the CDF is evaluated.
+    * @return the probability that a variable with this distribution will take a value less than or equal to x.
+    */
+  @throws[IllegalArgumentException]
+  def cumulativeProbability(x: Double): Double
+
+  /**
+    * Returns the probability density function (PDF) of this distribution evaluated at the specified point x.
+    * In general, the PDF is the derivative of the [[cumulativeProbability(x: Double)]]. If the derivative does not
+    * exist at x, then an appropriate replacement should be returned, e.g. [[Double.PositiveInfinity]],
+    * [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
+    *
+    * @param x the point at which the PDF is evaluated.
+    * @return the value of the probability density function at point x.
+    */
+  def density(x: Double): Double
+
+  /**
+    * Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the
+    * specified point x. In general, the PDF is the derivative of the [[cumulativeProbability(x: Double)]].
+    * If the derivative does not exist at x, then an appropriate replacement should be returned,
+    * e.g. [[Double.PositiveInfinity]], [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
+    *
+    * @param x the point at which the PDF is evaluated.
+    * @return the logarithm of the value of the probability density function at point x.
+    */
+  def logDensity(x: Double): Double
 }
 
 /**
@@ -151,92 +239,4 @@ trait ConditionalDistribution extends Distribution{
     * @return the logarithm of the value of the conditional probability density function at point x.
     */
   def logConditionalDensity(assignments: Assignments, x: Double): Double
-}
-
-/**
-  * This trait defines a univariate distribution, which is a probability distribution of only one random variable.
-  */
-trait UnivariateDistribution extends Distribution{
-
-  /**
-    * Returns a vector containing the parameters of the distribution.
-    *
-    * @return A collection of double values corresponding to the parameters of the distribution.
-    */
-  def parameters: Vector[Double]
-
-  /**
-    * Returns a randomly sampled double value.
-    *
-    * @return a randomly sampled double value.
-    */
-  def sample: Double
-
-  /**
-    * For a random variable X whose values are distributed according to this distribution, this method returns
-    * P(X = x). In other  words, this method represents the probability mass function (PMF) for the distribution.
-    *
-    * @param x the provided point at which the PMF is evaluated.
-    * @throws IllegalArgumentException if x is an invalid value.
-    * @return the value of the PMF at the provided point.
-    */
-  @throws[IllegalArgumentException]
-  def probability(x: Double): Double
-
-  /**
-    * For a random variable X whose values are distributed according to this distribution, this method returns
-    * log P(X = x), where 'log' is the natural logarithm. In other words, this method represents the
-    * logarithm of the probability mass function (PMF) for the distribution.
-    *
-    * @param x the provided point at which the PMF is evaluated.
-    * @throws IllegalArgumentException if x is an invalid value.
-    * @return the value of the log(PMF) at the provided point.
-    */
-  @throws[IllegalArgumentException]
-  def logProbability(x: Double): Double
-
-  /**
-    * For a random variable X whose values are distributed according to this distribution, this method returns
-    * P(x0 < X <= x1).
-    *
-    * @param x0 the lower bound.
-    * @param x1 the upper bound.
-    * @throws IllegalArgumentException if x0 > x1.
-    * @return the probability that this distribution will take a value in the interval (x0, x1].
-    */
-  @throws[IllegalArgumentException]
-  def probability(x0: Double, x1: Double): Double
-
-  /**
-    * For a random variable X whose values are distributed according to this distribution, this method returns
-    * P(X <= x). In other words, this method represents the (cumulative) distribution function (CDF)
-    * for this distribution.
-    *
-    * @param x the point at which the CDF is evaluated.
-    * @return the probability that a variable with this distribution will take a value less than or equal to x.
-    */
-  @throws[IllegalArgumentException]
-  def cumulativeProbability(x: Double): Double
-
-  /**
-    * Returns the probability density function (PDF) of this distribution evaluated at the specified point x.
-    * In general, the PDF is the derivative of the [[cumulativeProbability(x: Double)]]. If the derivative does not
-    * exist at x, then an appropriate replacement should be returned, e.g. [[Double.PositiveInfinity]],
-    * [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
-    *
-    * @param x the point at which the PDF is evaluated.
-    * @return the value of the probability density function at point x.
-    */
-  def density(x: Double): Double
-
-  /**
-    * Returns the natural logarithm of the probability density function (PDF) of this distribution evaluated at the
-    * specified point x. In general, the PDF is the derivative of the [[cumulativeProbability(x: Double)]].
-    * If the derivative does not exist at x, then an appropriate replacement should be returned,
-    * e.g. [[Double.PositiveInfinity]], [[Double.NaN]], or the limit inferior or limit superior of the difference quotient.
-    *
-    * @param x the point at which the PDF is evaluated.
-    * @return the logarithm of the value of the probability density function at point x.
-    */
-  def logDensity(x: Double): Double
 }
