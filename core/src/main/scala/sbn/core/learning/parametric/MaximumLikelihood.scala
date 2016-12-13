@@ -3,9 +3,9 @@ import breeze.linalg.{DenseVector, sum}
 import sbn.core.data.{DataInstance, ImmutableDataSet}
 import sbn.core.models.EF_BayesianNetwork
 import sbn.core.statistics.exponentialfamily.distributions.{EF_ConditionalDistribution, EF_Distribution, EF_UnivariateDistribution}
-import sbn.core.variables.{Assignment, Assignments, MainVariable, ModelVariable}
+import sbn.core.variables.model.ModelVariable
+import sbn.core.variables.{Assignment, Assignments}
 
-import scala.collection.immutable.HashMap
 import scala.collection.parallel.immutable.ParVector
 
 /**
@@ -220,7 +220,7 @@ object MaximumLikelihood {
   }
 
   // Esto se podria optimizar con atributos(un Map mutable o algo asi, bueno mutable seguramente no valdria si quiero paralelizar easy)
-  private def generateAssignments(parents: Set[MainVariable], instance: DataInstance): Assignments =
+  private def generateAssignments(parents: Set[ModelVariable], instance: DataInstance): Assignments =
     Assignments(parents.map(x => Assignment(x, instance.value(x.attribute))))
 
   //implicit val SemigroupDenseVector: Semigroup[DenseVector[Double]] = Semigroup.instance((a, b) => a + b)

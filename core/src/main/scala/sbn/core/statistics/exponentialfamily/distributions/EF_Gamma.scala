@@ -2,7 +2,8 @@ package sbn.core.statistics.exponentialfamily.distributions
 import breeze.linalg.DenseVector
 import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{Assignments, ModelVariable}
+import sbn.core.variables.Assignments
+import sbn.core.variables.model.ModelVariable
 
 /**
   * Created by fer on 1/12/16.

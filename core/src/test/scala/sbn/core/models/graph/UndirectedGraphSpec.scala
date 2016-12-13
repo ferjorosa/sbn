@@ -2,7 +2,7 @@ package sbn.core.models.graph
 
 import sbn.core.CustomSpec
 import sbn.core.io.DataFileLoader
-import sbn.core.variables.{MainVariable, MainVariablesFactory}
+import sbn.core.variables.model.{ModelVariable, ModelVariablesFactory}
 
 import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.immutable.Graph
@@ -10,10 +10,10 @@ import scalax.collection.immutable.Graph
 class UndirectedGraphSpec extends CustomSpec{
 
   val dataSet = DataFileLoader.loadImmutableDataSet("datasets/test/core/onlyAttributes.arff")
-  val latent_gaussian = MainVariablesFactory.newGaussianLV("latent_gaussian")
-  val latent_multinomial = MainVariablesFactory.newMultinomialLV("latent_multinomial", 2)
-  val manifest_gaussian = MainVariablesFactory.newGaussianMV(dataSet.get.attributes.getAttributeByName("continuousWithBounds"))
-  val manifest_multinomial = MainVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("binomial"))
+  val latent_gaussian = ModelVariablesFactory.newGaussianLV("latent_gaussian")
+  val latent_multinomial = ModelVariablesFactory.newMultinomialLV("latent_multinomial", 2)
+  val manifest_gaussian = ModelVariablesFactory.newGaussianMV(dataSet.get.attributes.getAttributeByName("continuousWithBounds"))
+  val manifest_multinomial = ModelVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("binomial"))
 
   val variables = Set(latent_gaussian, latent_multinomial, manifest_gaussian, manifest_multinomial)
   val edges = Set(
@@ -21,12 +21,12 @@ class UndirectedGraphSpec extends CustomSpec{
     UnDiEdge(latent_multinomial, manifest_multinomial),
     UnDiEdge(latent_multinomial, latent_gaussian))
 
-  private def constructAcyclicGraph: UndirectedGraph[MainVariable] = UndirectedGraph(Graph[MainVariable, UnDiEdge](
+  private def constructAcyclicGraph: UndirectedGraph[ModelVariable] = UndirectedGraph(Graph[ModelVariable, UnDiEdge](
     UnDiEdge(latent_gaussian, manifest_gaussian),
     UnDiEdge(latent_multinomial, manifest_multinomial),
     UnDiEdge(latent_multinomial, latent_gaussian)))
 
-  private def constructCyclicGraph: UndirectedGraph[MainVariable] = UndirectedGraph(Graph[MainVariable, UnDiEdge](
+  private def constructCyclicGraph: UndirectedGraph[ModelVariable] = UndirectedGraph(Graph[ModelVariable, UnDiEdge](
     UnDiEdge(latent_gaussian, manifest_gaussian),
     UnDiEdge(latent_multinomial, manifest_multinomial),
     UnDiEdge(latent_multinomial, latent_gaussian),
@@ -62,7 +62,7 @@ class UndirectedGraphSpec extends CustomSpec{
     assert(graph.edges equals edges)
     // Test they are not the same reference
     assert(!(graph.edges eq edges))
-    assert(graph.edges.isInstanceOf[Set[UnDiEdge[MainVariable]]])
+    assert(graph.edges.isInstanceOf[Set[UnDiEdge[ModelVariable]]])
   }
 
   "UndirectedGraph.numberOfNodes" should "return the correct number of nodes, which is the number of variables" in {

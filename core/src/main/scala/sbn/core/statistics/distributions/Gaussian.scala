@@ -6,7 +6,7 @@ import org.apache.commons.math3.distribution.NormalDistribution
 import org.apache.commons.math3.exception.NumberIsTooLargeException
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.exponentialfamily.distributions.{EF_Distribution, EF_Gaussian}
-import sbn.core.variables.{GaussianType, MainVariable}
+import sbn.core.variables.model.{GaussianType, ModelVariable}
 
 /**
   * This class represents a Gaussian distribution. The Gaussian (or normal) distribution is a very common continuous
@@ -21,7 +21,7 @@ import sbn.core.variables.{GaussianType, MainVariable}
   *                                  if the variance is <= 0
   */
 @throws[IllegalArgumentException]
-case class Gaussian(variable: MainVariable, mean: Double, variance: Double) extends UnivariateDistribution{
+case class Gaussian(variable: ModelVariable, mean: Double, variance: Double) extends UnivariateDistribution{
   require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of GaussianType")
   require(variance > 0, "Variance must be > 0")
 
@@ -79,6 +79,6 @@ object Gaussian {
     * @param variable the associated variable.
     * @return a new [[Gaussian]] distribution with standard parameter values.
     */
-  def apply(variable: MainVariable): Gaussian = Gaussian(variable, 0, 1)
+  def apply(variable: ModelVariable): Gaussian = Gaussian(variable, 0, 1)
 
 }

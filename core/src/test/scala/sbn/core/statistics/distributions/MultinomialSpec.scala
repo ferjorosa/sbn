@@ -3,14 +3,14 @@ package sbn.core.statistics.distributions
 import sbn.core.CustomSpec
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace}
 import sbn.core.utils.Utils
-import sbn.core.variables.MainVariablesFactory
+import sbn.core.variables.model.ModelVariablesFactory
 
 class MultinomialSpec extends CustomSpec{
 
   "Multinomial constructor" should "throw an IllegalArgumentException if variable.distributionType is not MultinomialType" in {
 
     Given("a variable of Gaussian type")
-    val variable = MainVariablesFactory.newGaussianLV("tonto el que lo lea")
+    val variable = ModelVariablesFactory.newGaussianLV("tonto el que lo lea")
 
     When("Creating a Multinomial distribution from it")
 
@@ -22,20 +22,20 @@ class MultinomialSpec extends CustomSpec{
 
   it should "throw an IllegalArgumentException if the numberOfStates of the variable =! probabilities.size" in {
     a[IllegalArgumentException] should be thrownBy {
-      Multinomial(MainVariablesFactory.newMultinomialLV("multinomial", 2), Vector(0.33, 0.33, 0.34))
+      Multinomial(ModelVariablesFactory.newMultinomialLV("multinomial", 2), Vector(0.33, 0.33, 0.34))
     }
   }
 
   it should "throw an IllegalArgumentException if the sum of probabilities != 1.0" in {
     a[IllegalArgumentException] should be thrownBy {
-      Multinomial(MainVariablesFactory.newMultinomialLV("multinomial", 2), Vector(0.5, 0))
+      Multinomial(ModelVariablesFactory.newMultinomialLV("multinomial", 2), Vector(0.5, 0))
     }
   }
 
   "Multinomial.apply" should "create a Multinomial distribution with random probabilities from a finite state variable" in {
 
     Given("a multinomial variable with 3 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 3)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
 
     When("creating a multinomial distribution from it")
     val distribution = Multinomial(variable)
@@ -48,13 +48,13 @@ class MultinomialSpec extends CustomSpec{
   }
 
   "Multinomial.label" should "return 'Multinomial'" in {
-    assert(Multinomial(MainVariablesFactory.newMultinomialLV("multinomial", 2)).label == "Multinomial")
+    assert(Multinomial(ModelVariablesFactory.newMultinomialLV("multinomial", 2)).label == "Multinomial")
   }
 
   "Multinomial.numberOfParameters" should "be equal to the nStates of the variable and its probabilities.size" in {
 
     Given("a multinomial variable with 3 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 3)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
 
     When("creating a multinomial distribution from it")
     val dist = Multinomial(variable)
@@ -70,7 +70,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.probability(x)" should "return P(X = x)" in {
 
     Given("a multinomial variable with 3 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 3)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
 
     When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
     val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
@@ -85,7 +85,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.logProbability(x)" should "return log P(X = x)" in {
 
     Given("a multinomial variable with 3 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 3)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
 
     When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
     val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
@@ -101,7 +101,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.probability(x0, x1)" should "return P(x0 < X <= x1)" in {
 
     Given("a multinomial variable with 6 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 6)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 6)
 
     When("creating a multinomial distribution with parameters (0.2, 0.1, 0.3, 0.2, 0.05, 0.15) from it")
     val dist = Multinomial(variable, Vector(0.2, 0.1, 0.3, 0.2, 0.05, 0.15))
@@ -117,7 +117,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.cumulativeProbability(x)" should "return P(X <= x)" in {
 
     Given("a multinomial variable with 6 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 6)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 6)
 
     When("creating a multinomial distribution with parameters (0.2, 0.1, 0.3, 0.2, 0.05, 0.15) from it")
     val dist = Multinomial(variable, Vector(0.2, 0.1, 0.3, 0.2, 0.05, 0.15))
@@ -135,7 +135,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.density" should "return P(X = x)" in {
 
     Given("a multinomial variable with 3 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 3)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
 
     When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
     val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
@@ -152,7 +152,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.logDensity" should "return log P(X = x)" in {
 
     Given("a multinomial variable with 3 states")
-    val variable = MainVariablesFactory.newMultinomialLV("multinomial", 3)
+    val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
 
     When("Creating a multinomial distribution with parameters (0.2, 0.5, 0.3) from it ")
     val dist = Multinomial(variable, Vector(0.2, 0.5, 0.3))
@@ -171,7 +171,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.sample" should "return a valid value" in {
 
     Given("a distribution with 4 random parameters")
-    val dist = Multinomial(MainVariablesFactory.newMultinomialLV("multinomial", 4))
+    val dist = Multinomial(ModelVariablesFactory.newMultinomialLV("multinomial", 4))
 
     When("values are sampled")
     val sampledValues: Seq[Double] = for(i<-0 until 100) yield dist.sample
@@ -183,7 +183,7 @@ class MultinomialSpec extends CustomSpec{
   "Multinomial.getStateName" should "return valid state names when parameter names have been defined by default" in {
 
     Given("a distribution with parameter names by default")
-    val dist = Multinomial(MainVariablesFactory.newMultinomialLV("multinomial", 4))
+    val dist = Multinomial(ModelVariablesFactory.newMultinomialLV("multinomial", 4))
 
     When("getting the parameter names")
     val stateNames = for (i <- dist.parameters.indices) yield dist.getStateName(i)
@@ -196,7 +196,7 @@ class MultinomialSpec extends CustomSpec{
 
     Given("a distribution with parameter names defined by the variable's attribute")
     val attribute = Attribute("manifestAttr1", FiniteStateSpace(Vector("estado1", "s2", "attrState3")))
-    val dist2 = Multinomial(MainVariablesFactory.newMultinomialMV(attribute))
+    val dist2 = Multinomial(ModelVariablesFactory.newMultinomialMV(attribute))
 
     When("getting the parameter names")
     val stateNames2 = for(i <- dist2.parameters.indices)yield dist2.getStateName(i)

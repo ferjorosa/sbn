@@ -1,7 +1,8 @@
 package sbn.core.statistics.distributions
 
 import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
-import sbn.core.variables.{Assignment, Assignments, MainVariable}
+import sbn.core.variables.model.ModelVariable
+import sbn.core.variables.{Assignment, Assignments}
 
 /**
   * This trait defines the intrinsic methods of every kind of distribution.
@@ -41,7 +42,7 @@ trait ConditionalDistribution extends Distribution{
     *
     * @return the set of variables that condition it.
     */
-  def conditioningVariables: Set[MainVariable]
+  def conditioningVariables: Set[ModelVariable]
 
   /**
     * Returns the univariate distribution of an [[Assignment]] given a conditional distribution. If we think of the

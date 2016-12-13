@@ -4,7 +4,8 @@ import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{Assignments, MainVariable, ModelVariable}
+import sbn.core.variables.Assignments
+import sbn.core.variables.model.ModelVariable
 
 /**
   * Created by fer on 29/11/16.
@@ -43,7 +44,7 @@ trait EF_UnivariateDistribution extends EF_Distribution{
 
 trait EF_ConditionalDistribution extends EF_Distribution {
 
-  val parents: Set[MainVariable]
+  val parents: Set[ModelVariable]
 
   val naturalParameters: Vector[DenseVector[Double]]
 

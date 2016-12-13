@@ -4,13 +4,14 @@ import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{Assignments, MainVariable}
+import sbn.core.variables.Assignments
+import sbn.core.variables.model.ModelVariable
 
 /**
   * Created by fer on 29/11/16.
   */
 //mean, variance = MomentParameters con size = 2, ¿deberia cambiarse?
-case class EF_Gaussian(variable: MainVariable, mean: Double, variance: Double) extends EF_UnivariateDistribution{
+case class EF_Gaussian(variable: ModelVariable, mean: Double, variance: Double) extends EF_UnivariateDistribution{
 
   override val naturalParameters: DenseVector[Double] = DenseVector(mean / variance, - 1 / (2 * variance))
 
@@ -35,5 +36,7 @@ case class EF_Gaussian(variable: MainVariable, mean: Double, variance: Double) e
 
 object EF_Gaussian {
 
-  def apply(variable: MainVariable, momentParameters: DenseVector[Double]): EF_Gaussian = EF_Gaussian(variable, momentParameters(0), momentParameters(1))
+  def apply(variable: ModelVariable, momentParameters: DenseVector[Double]): EF_Gaussian = EF_Gaussian(variable, momentParameters(0), momentParameters(1))
+
+  def apply(variable: ModelVariable): EF_Gaussian = EF_Gaussian(variable, 0, 1)
 }

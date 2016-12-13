@@ -4,7 +4,7 @@ import sbn.core.CustomSpec
 import sbn.core.io.DataFileLoader
 import sbn.core.models.graph.DirectedGraph
 import sbn.core.statistics.distributions.{ConditionalDistribution, Multinomial, UnivariateDistribution}
-import sbn.core.variables.{MainVariable, MainVariablesFactory}
+import sbn.core.variables.model.{ModelVariable, ModelVariablesFactory}
 
 import scalax.collection.GraphEdge.DiEdge
 import scalax.collection.immutable.Graph
@@ -12,18 +12,18 @@ import scalax.collection.immutable.Graph
 class BayesianNetworkSpec extends CustomSpec{
 
   val dataSet = DataFileLoader.loadImmutableDataSet("datasets/test/core/onlyAttributes.arff")
-  val latent_multinomial = MainVariablesFactory.newMultinomialLV("latent_multinomial", 5)
-  val latent_multinomial2 = MainVariablesFactory.newMultinomialLV("latent_multinomial2", 2)
-  val manifest_multinomial = MainVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("multinomial"))
-  val manifest_multinomial2 = MainVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("binomial"))
+  val latent_multinomial = ModelVariablesFactory.newMultinomialLV("latent_multinomial", 5)
+  val latent_multinomial2 = ModelVariablesFactory.newMultinomialLV("latent_multinomial2", 2)
+  val manifest_multinomial = ModelVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("multinomial"))
+  val manifest_multinomial2 = ModelVariablesFactory.newMultinomialMV(dataSet.get.attributes.getAttributeByName("binomial"))
 
-  private def constructCyclicGraph: DirectedGraph[MainVariable] = DirectedGraph(Graph[MainVariable, DiEdge](
+  private def constructCyclicGraph: DirectedGraph[ModelVariable] = DirectedGraph(Graph[ModelVariable, DiEdge](
     DiEdge(latent_multinomial, manifest_multinomial),
     DiEdge(latent_multinomial2, manifest_multinomial2),
     DiEdge(latent_multinomial2, latent_multinomial),
     DiEdge(manifest_multinomial, latent_multinomial2)))
 
-  private def constructAcyclicGraph: DirectedGraph[MainVariable] = DirectedGraph(Graph[MainVariable, DiEdge](
+  private def constructAcyclicGraph: DirectedGraph[ModelVariable] = DirectedGraph(Graph[ModelVariable, DiEdge](
     DiEdge(latent_multinomial, manifest_multinomial),
     DiEdge(latent_multinomial2, manifest_multinomial2),
     DiEdge(latent_multinomial2, latent_multinomial)))

@@ -4,7 +4,7 @@ import sbn.core.io.DataFileLoader
 import sbn.core.learning.parametric.{MaximumLikelihood, ParameterLearningAlgorithm}
 import sbn.core.models.BayesianNetwork
 import sbn.core.models.graph.DirectedGraph
-import sbn.core.variables.{MainVariable, MainVariablesFactory}
+import sbn.core.variables.model.{ModelVariable, ModelVariablesFactory}
 
 import scala.util.Success
 import scalax.collection.GraphEdge.DiEdge
@@ -31,7 +31,7 @@ object testMLE {
       case Success(dataSet) => dataSet
     }
 
-    val variables: Set[MainVariable] = successfulDataSet.attributes.map(MainVariablesFactory.newMultinomialMV(_)).toSet
+    val variables: Set[ModelVariable] = successfulDataSet.attributes.map(ModelVariablesFactory.newMultinomialMV(_)).toSet
     val variablesVector = variables.toVector
 
     val cloudy = variablesVector.find(_.name == "cloudy").get
@@ -45,7 +45,7 @@ object testMLE {
       DiEdge(sprinkler, wetGrass),
       DiEdge(rain, wetGrass)
     )
-    // Set.empty[DiEdge[MainVariable]]
+    // Set.empty[DiEdge[ModelVariable]]
     val dag = DirectedGraph(variables, edges)
 
     val bn: BayesianNetwork = BayesianNetwork(dag)
@@ -77,9 +77,9 @@ object testMLE {
       case Success(dataSet) => dataSet
     }
 
-    val variables: Set[MainVariable] = successfulDataSet.attributes.map(MainVariablesFactory.newMultinomialMV(_)).toSet
+    val variables: Set[ModelVariable] = successfulDataSet.attributes.map(ModelVariablesFactory.newMultinomialMV(_)).toSet
 
-    val dag = DirectedGraph(variables, Set.empty[DiEdge[MainVariable]])
+    val dag = DirectedGraph(variables, Set.empty[DiEdge[ModelVariable]])
 
     val bn: BayesianNetwork = BayesianNetwork(dag)
 
@@ -96,9 +96,9 @@ object testMLE {
       case Success(dataSet) => dataSet
     }
 
-    val variables: Set[MainVariable] = Set(MainVariablesFactory.newMultinomialMV(successfulDataSet.attributes.getAttributeByName("cloudy")))
+    val variables: Set[ModelVariable] = Set(ModelVariablesFactory.newMultinomialMV(successfulDataSet.attributes.getAttributeByName("cloudy")))
 
-    val dag = DirectedGraph(variables, Set.empty[DiEdge[MainVariable]])
+    val dag = DirectedGraph(variables, Set.empty[DiEdge[ModelVariable]])
 
     val bn: BayesianNetwork = BayesianNetwork(dag)
 
@@ -117,9 +117,9 @@ object testMLE {
       case Success(dataSet) => dataSet
     }
 
-    val variables: Set[MainVariable] = Set(MainVariablesFactory.newMultinomialMV(successfulDataSet.attributes.getAttributeByName("cloudy")))
+    val variables: Set[ModelVariable] = Set(ModelVariablesFactory.newMultinomialMV(successfulDataSet.attributes.getAttributeByName("cloudy")))
 
-    val dag = DirectedGraph(variables, Set.empty[DiEdge[MainVariable]])
+    val dag = DirectedGraph(variables, Set.empty[DiEdge[ModelVariable]])
 
     val bn: BayesianNetwork = BayesianNetwork(dag)
 

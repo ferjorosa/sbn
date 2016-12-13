@@ -1,5 +1,7 @@
 package sbn.core.variables
 
+// TODO: toString doc & tests.
+
 /**
   * This class defines an assignment of a value to a variable. The assignment values are encoded as [[Double]] values, therefore
   * In case of finite state space distribution, the [[value]] can be seen as an integer indexing the variable's states.
@@ -12,9 +14,15 @@ case class Assignment(variable: Variable, value: Double) {
 
   override def toString = "" + variable.name + " = " + value
 }
-
+/** The [[Assignment]] factory containing specific methods for creating [[Assignment]] objects*/
 object Assignment{
 
+  /**
+    * Factory method that produces an Assignment object from a (Variable, Double) tuple.
+    *
+    * @param tupledAssignment the assignment in tuple form.
+    * @return the equivalent [[Assignment]] object.
+    */
   // TODO: define as implicit conversion?
   def apply(tupledAssignment: (Variable, Double)): Assignment = Assignment(tupledAssignment._1, tupledAssignment._2)
 }

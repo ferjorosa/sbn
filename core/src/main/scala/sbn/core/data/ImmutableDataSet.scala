@@ -1,6 +1,6 @@
 package sbn.core.data
 
-import sbn.core.data.attributes.{Attribute, Attributes}
+import sbn.core.data.attributes.Attributes
 
 /**
   * The class represents a collection of [[DataInstance]]] objects that represents its data.
@@ -11,7 +11,10 @@ import sbn.core.data.attributes.{Attribute, Attributes}
   */
 case class ImmutableDataSet(name: String, attributes: Attributes, data: Vector[DataInstance]){
 
-  val dataMatrix: Vector[Vector[Double]] = data.map(_.values)
-
-  val transposedDataMatrix: Vector[Vector[Double]] = dataMatrix.transpose
+  /**
+    * Returns a matrix of Double values representing its data.
+    *
+    * @return a matrix of Double values representing its data.
+    */
+  def dataMatrix: Vector[Vector[Double]] = data.map(_.values)
 }

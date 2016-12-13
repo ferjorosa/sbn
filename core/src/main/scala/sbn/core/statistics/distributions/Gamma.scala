@@ -3,12 +3,12 @@ package sbn.core.statistics.distributions
 import org.apache.commons.math3.distribution.GammaDistribution
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
-import sbn.core.variables.{GammaType, MainVariable}
+import sbn.core.variables.model.{GammaType, ModelVariable}
 
 /**
   * Created by fer on 1/12/16.
   */
-case class Gamma(variable: MainVariable, shape: Double, scale: Double) extends UnivariateDistribution {
+case class Gamma(variable: ModelVariable, shape: Double, scale: Double) extends UnivariateDistribution {
   require(variable.distributionType.isInstanceOf[GammaType], "Variable must be of GammaType")
   require(shape > 0, "Shape must be > 0")
   require(scale > 0, "Scale must be > 0")

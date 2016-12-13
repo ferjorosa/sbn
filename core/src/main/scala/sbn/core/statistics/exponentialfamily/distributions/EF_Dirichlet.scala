@@ -5,6 +5,7 @@ import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.distributions.Distribution
 import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables._
+import sbn.core.variables.model.{DirichletType, ModelVariable}
 
 /**
   * Created by fer on 2/12/16.
@@ -35,14 +36,16 @@ case class EF_Dirichlet(variable: ModelVariable, nStates: Int, scale: Double) ex
 
 object EF_Dirichlet {
 
-  def apply(conjugatePriorVariable: ParameterVariable, scale: Double): EF_Dirichlet = {
-    require(conjugatePriorVariable.parameterDistributionType.isInstanceOf[DirichletParameterType], "Variable must be of DirichletParameter type")
+  def apply(variable: ModelVariable, scale: Double): EF_Dirichlet = {
+    require(variable.distributionType.isInstanceOf[DirichletType], "Variable must be of Dirichlet type")
 
-    val nStates: Int = conjugatePriorVariable.attribute.stateSpaceType match {
+    val nStates: Int = variable.attribute.stateSpaceType match {
       case finite: FiniteStateSpace => finite.numberOfStates
       case _ => throw new IllegalArgumentException("state space of the variable must be finite")
     }
 
-    EF_Dirichlet(conjugatePriorVariable, nStates, scale)
+    EF_Dirichlet(variable, nStates, scale)
   }
+
+  def apply(variable: ModelVariable): EF_Dirichlet = EF_Dirichlet(variable, 2)
 }
