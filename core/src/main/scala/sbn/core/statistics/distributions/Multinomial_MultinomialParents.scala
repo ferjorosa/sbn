@@ -1,7 +1,8 @@
 package sbn.core.statistics.distributions
 
-import sbn.core.statistics.exponentialfamily.distributions.{EF_Multinomial_Multinomial, EF_Distribution}
-import sbn.core.variables.{Assignments, MainVariable, MultinomialType}
+import sbn.core.statistics.exponentialfamily.distributions.{EF_Distribution, EF_Multinomial_Multinomial}
+import sbn.core.variables.Assignments
+import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
 /**
   * This class defines the conditional distribution of a variable of [[MultinomialType]] whose parents are all also of [[MultinomialType]].
@@ -37,9 +38,11 @@ import sbn.core.variables.{Assignments, MainVariable, MultinomialType}
   * @param multinomialParents the parents of the variable.
   * @param parameterizedConditionalDistributions the resulting multinomial distributions of the variable.
   */
-case class Multinomial_MultinomialParents(variable: MainVariable,
-                                          multinomialParents: Set[MainVariable],
+case class Multinomial_MultinomialParents(variable: ModelVariable,
+                                          multinomialParents: Set[ModelVariable],
                                           parameterizedConditionalDistributions: Map[Assignments, Multinomial]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, parameterizedConditionalDistributions) {
+
+  require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
 
   /** @inheritdoc */
   override def label: String = "Multinomial | Multinomial"
@@ -61,9 +64,7 @@ object Multinomial_MultinomialParents {
     * @return a new [[Multinomial_MultinomialParents]] distribution with random parameters.
     */
   @throws[IllegalArgumentException]
-  def apply(variable: MainVariable, multinomialParents: Set[MainVariable]): Multinomial_MultinomialParents ={
-    require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
-    require(!multinomialParents.exists(!_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
+  def apply(variable: ModelVariable, multinomialParents: Set[ModelVariable]): Multinomial_MultinomialParents ={
 
     val parametrizedMultinomialDistributions = BaseDistribution_MultinomialParents.generateAssignmentCombinations(multinomialParents)
       // .view makes it much faster because it avoids creating intermediate results.

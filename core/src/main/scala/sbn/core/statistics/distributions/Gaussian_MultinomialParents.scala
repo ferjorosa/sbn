@@ -1,14 +1,18 @@
 package sbn.core.statistics.distributions
 
 import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
-import sbn.core.variables.{Assignments, GaussianType, MainVariable, MultinomialType}
+import sbn.core.variables.Assignments
+import sbn.core.variables.model.{GaussianType, ModelVariable}
 
 /**
   * Created by fer on 3/11/16.
   */
-case class Gaussian_MultinomialParents(variable: MainVariable,
-                                       multinomialParents: Set[MainVariable],
+case class Gaussian_MultinomialParents(variable: ModelVariable,
+                                       multinomialParents: Set[ModelVariable],
                                        parameterizedConditionalDistributions: Map[Assignments, Gaussian]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, parameterizedConditionalDistributions){
+
+  require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of gaussian type")
+
   /**
     * Returns the label of the distribution.
     *
@@ -37,9 +41,7 @@ object Gaussian_MultinomialParents {
     * @return a new [[Gaussian_MultinomialParents]] distribution with random parameters.
     */
   @throws[IllegalArgumentException]
-  def apply(variable: MainVariable, multinomialParents: Set[MainVariable]): Gaussian_MultinomialParents ={
-    require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of gaussian type")
-    require(!multinomialParents.exists(!_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
+  def apply(variable: ModelVariable, multinomialParents: Set[ModelVariable]): Gaussian_MultinomialParents ={
 
     val parametrizedMultinomialDistributions = BaseDistribution_MultinomialParents.generateAssignmentCombinations(multinomialParents)
       // .view makes it much faster because it avoids creating intermediate results.
