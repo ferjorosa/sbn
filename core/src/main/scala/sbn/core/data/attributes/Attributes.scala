@@ -21,10 +21,10 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
     case (attr, attrRepetitionsList)  if attrRepetitionsList.lengthCompare(1) > 0 => attr
   }.isEmpty, "Repeated values in the attributeOrder collection")
 
-  // TODO: doc
+  /** Size of the [[Attribute]] collection. */
   override val size: Int = this.attributeList.size
 
-  // TODO: doc
+  /** Mapping between each Attribute with its index. */
   val attributeIndexes: Map[Attribute, Int] = attributeList.zipWithIndex.toMap
 
   /**
@@ -65,7 +65,14 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
   @throws[IndexOutOfBoundsException]
   def apply(attributeIndex: Int): Attribute = this.attributeList(this.attributeOrder(attributeIndex))
 
-  //TODO: doc
+  /**
+    * Return the index associated to the [[Attribute]] object.
+    *
+    * @param attribute the passed [[Attribute]] object.
+    * @throws NoSuchElementException if the attribute is not present.
+    * @return the index of the attribute.
+    */
+  @throws[NoSuchElementException]
   def indexOf(attribute: Attribute): Int = attributeIndexes(attribute)
 
 }

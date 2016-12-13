@@ -5,7 +5,7 @@ import sbn.core.data.attributes.{Attribute, Attributes, FiniteStateSpace, RealSt
 import scala.util.Try
 
 /**
-  * This class represents a data sample. It consists of a number of Attributes and its corresponding values.
+  * This class represents a data row. It consists of a number of Attributes and its corresponding values.
   *
   * @param attributes the [[Attributes]] object representing the columns of the data instance.
   * @param values the values assigned to the columns.
@@ -15,6 +15,14 @@ import scala.util.Try
 case class DataInstance (attributes: Attributes, values: Vector[Double]){
   require(attributes.size == values.size, "attributes and values sizes differ")
 
+  /**
+    * Returns the value associated to the attribute.
+    *
+    * @param attribute the column of the data instance.
+    * @throws NoSuchElementException if the attribute doesn't belong to the Attributes object of the DataInstance.
+    * @return the value associated to the attribute.
+    */
+  @throws[NoSuchElementException]
   def value(attribute: Attribute) = values(attributes.indexOf(attribute))
 }
 

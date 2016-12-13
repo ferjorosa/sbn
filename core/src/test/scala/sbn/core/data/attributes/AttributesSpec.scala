@@ -156,4 +156,47 @@ class AttributesSpec extends CustomSpec{
     assert(attributes.filter(_.name equals "attribute3").size == 0)
   }
 
+  "Attributes.attributeIndexes" should "return a Map associating each attribute to it index" in {
+    Given("a manually created Attributes object with 2 attributes")
+    val attribute1 = Attribute("attribute1", RealStateSpace())
+    val attribute2 = Attribute("attribute2", FiniteStateSpace(3))
+    val attributes = Attributes(List(attribute1, attribute2))
+
+    When("calling attributes.attributeIndexes")
+    val attributeIndexMapping = attributes.attributeIndexes
+
+    Then("a Map[Attribute, Int] of size 2 should be returned")
+    assert(attributeIndexMapping.size == 2)
+    assert(attributeIndexMapping(attribute1) == 0)
+    assert(attributeIndexMapping(attribute2) == 1)
+  }
+
+  "Attributes.indexOf(attribute)" should "throw a NoSuchElementException if the attribute is not present" in {
+    Given("a manually created Attributes object with 2 attributes")
+    val attribute1 = Attribute("attribute1", RealStateSpace())
+    val attribute2 = Attribute("attribute2", FiniteStateSpace(3))
+    val attributes = Attributes(List(attribute1, attribute2))
+
+    When("calling attributes.indexOf(attributeNotPresent)")
+    val attributeNotPresent = Attribute("attributeNotPresent", RealStateSpace())
+
+    Then("a NoSuchElementException should be thrown")
+    a[NoSuchElementException] should be thrownBy{
+      attributes.indexOf(attributeNotPresent)
+    }
+  }
+
+  "Attributes.indexOf(attribute)" should "return the correct index if the attribute is present" in {
+    Given("a manually created Attributes object with 2 attributes")
+    val attribute1 = Attribute("attribute1", RealStateSpace())
+    val attribute2 = Attribute("attribute2", FiniteStateSpace(3))
+    val attributes = Attributes(List(attribute1, attribute2))
+
+    When("calling attributes.indexOf(attribute1)")
+
+    Then("0 should be returned")
+    assert(attributes.indexOf(attribute1) == 0)
+    assert(attributes.indexOf(attribute2) == 1)
+  }
+
 }
