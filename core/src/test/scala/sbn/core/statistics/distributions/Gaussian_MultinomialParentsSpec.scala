@@ -99,24 +99,19 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     And("getUnivariateDistribution(parent1_2states = 1, parent2_2states = 1) should return the gaussian distribution with mean = 0 & variance = 3")
     assert(dist.getUnivariateDistribution(assignments1_1).parameters equals Vector(0, 16))
 
-    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw an NoSuchElementException")
+    a[NoSuchElementException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent1_2states, -1), Assignment(parent2_2states, 1))))
     }
 
-    And("getUnivariateDistribution(parent1_2states = 99, parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
-      dist.getUnivariateDistribution(Assignments(Set(Assignment(parent1_2states, 99), Assignment(parent2_2states, 1))))
-    }
-
-    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw an NoSuchElementException")
+    a[NoSuchElementException] should be thrownBy {
       val newVariable = ModelVariablesFactory.newMultinomialLV("newVariable", 2)
       dist.getUnivariateDistribution(Assignments(Set(Assignment(newVariable, 0), Assignment(parent2_2states,1))))
     }
 
-    And("getUnivariateDistribution(parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("getUnivariateDistribution(parent2_2states = 1) should throw an NoSuchElementException")
+    a[NoSuchElementException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent2_2states,0))))
     }
   }
@@ -215,6 +210,35 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Then("logConditionalDensity(assignments1_0, -93) must equal log(0.00874) with an epsilon of 0.001")
     // error adds up, so the epsilon has to be reduced even more
     assert(Utils.eqDouble(dist.logConditionalDensity(assignments1_0, -93), FastMath.log(0.00874), 0.001))
+  }
+
+  "Gaussian_MultinomialParents.toEF_Distribution" should "return an equivalent EF_Gaussian_Multinomial object" in {
+
+    Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
+
+    When("creating a Gaussian_MultinomialParents distribution from it")
+    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+
+    Then("dist.toEF_Distribution should return an equivalent EF_Gaussian_Multinomial object")
+    val ef_dist = dist.toEF_Distribution
+    assert(dist.variable equals ef_dist.variable)
+    assert(dist.multinomialParents equals ef_dist.parents)
+
+    val distAssignments = dist.assignedDistributions.keys
+    val ef_distAssignments = ef_dist.assignedDistributions
+
+    assert(distAssignments.size == ef_distAssignments.size)
+    // Compare both distributions probabilities (their moment parameters)
+    distAssignments.foreach{x =>
+      assert(
+        (dist.assignedDistributions(x).mean
+          equals
+          ef_dist.assignedDistributions(x).mean)
+        &&
+        (dist.assignedDistributions(x).variance
+          equals
+          ef_dist.assignedDistributions(x).variance)
+      )}
   }
 
 }

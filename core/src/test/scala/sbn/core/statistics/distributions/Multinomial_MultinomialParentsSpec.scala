@@ -99,24 +99,19 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     And("getUnivariateDistribution(parent1_2states = 1, parent2_2states = 1) should return the multinomial distribution with parameters [0.01, 0.99, 0.0]")
     assert(dist.getUnivariateDistribution(assignments1_1).parameters equals Vector(0.01, 0.99, 0.0))
 
-    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw an NoSuchElementException")
+    a[NoSuchElementException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent1_2states, -1), Assignment(parent2_2states, 1))))
     }
 
-    And("getUnivariateDistribution(parent1_2states = 99, parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
-      dist.getUnivariateDistribution(Assignments(Set(Assignment(parent1_2states, 99), Assignment(parent2_2states, 1))))
-    }
-
-    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw an NoSuchElementException")
+    a[NoSuchElementException] should be thrownBy {
       val newVariable = ModelVariablesFactory.newMultinomialLV("newVariable", 2)
       dist.getUnivariateDistribution(Assignments(Set(Assignment(newVariable, 0), Assignment(parent2_2states, 1))))
     }
 
-    And("getUnivariateDistribution(parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("getUnivariateDistribution(parent2_2states = 1) should throw an NoSuchElementException")
+    a[NoSuchElementException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent2_2states,0))))
     }
   }
@@ -240,4 +235,28 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     }
   }
 
+  "Multinomial_MultinomialParents.toEF_Distribution" should "return an equivalent EF_Multinomial_Multinomial object" in {
+
+    Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
+
+    When("creating a Multinomial_MultinomialParents distribution from it")
+    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+
+    Then("dist.toEF_Distribution should return an equivalent EF_Multinomial_Multinomial object")
+    val ef_dist = dist.toEF_Distribution
+    assert(dist.variable equals ef_dist.variable)
+    assert(dist.multinomialParents equals ef_dist.parents)
+
+    val distAssignments = dist.assignedDistributions.keys
+    val ef_distAssignments = ef_dist.assignedDistributions.keys
+
+    assert(distAssignments.size == ef_distAssignments.size)
+    // Compare both distributions probabilities (their moment parameters)
+    distAssignments.foreach{x =>
+      assert(
+        dist.assignedDistributions(x).probabilities
+        equals
+        ef_dist.assignedDistributions(x).probabilities
+      )}
+  }
 }

@@ -50,10 +50,10 @@ trait ConditionalDistribution extends Distribution{
     * a row of this matrix, which corresponds o a [[UnivariateDistribution]].
     *
     * @param assignments the values of the conditioning variables.
-    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
+    * @throws NoSuchElementException if the provided [[Assignments]] object is invalid for the distribution.
     * @return a new [[UnivariateDistribution]] object associated to the [[Assignment]]
     */
-  @throws[IllegalArgumentException]
+  @throws[NoSuchElementException]
   def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution
 
   /**

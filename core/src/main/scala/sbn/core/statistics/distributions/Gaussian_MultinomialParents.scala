@@ -1,15 +1,24 @@
 package sbn.core.statistics.distributions
 
-import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
+import sbn.core.statistics.exponentialfamily.distributions.{EF_Distribution, EF_Gaussian_Multinomial}
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{GaussianType, ModelVariable}
+import sbn.core.variables.model.MultinomialType
 
 /**
-  * Created by fer on 3/11/16.
+  * This class extends the [[BaseDistribution_MultinomialParents]] class and defines the conditional distribution of a
+  * variable of [[GaussianType]] whose parents are of [[MultinomialType]].
+  *
+  * This distribution is composed of several [[Gaussian]] distributions, each one of them related to an Assignment of
+  * the multinomial parents, resulting in a matrix of parameters.
+  * 
+  * @param variable the main variable of the distribution.
+  * @param multinomialParents its multinomial parents.
+  * @param assignedDistributions the resulting gaussian distributions of the variable.
   */
 case class Gaussian_MultinomialParents(variable: ModelVariable,
                                        multinomialParents: Set[ModelVariable],
-                                       parameterizedConditionalDistributions: Map[Assignments, Gaussian]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, parameterizedConditionalDistributions){
+                                       assignedDistributions: Map[Assignments, Gaussian]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, assignedDistributions){
 
   require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of gaussian type")
 
@@ -25,7 +34,7 @@ case class Gaussian_MultinomialParents(variable: ModelVariable,
     *
     * @return the distribution in its Exponential Family form.
     */
-  override def toEF_Distribution: EF_Distribution = ???
+  override def toEF_Distribution: EF_Gaussian_Multinomial = EF_Gaussian_Multinomial(this)
 }
 
 /** The factory containing specific methods for creating [[Gaussian_MultinomialParents]] distribution objects */
@@ -44,7 +53,6 @@ object Gaussian_MultinomialParents {
   def apply(variable: ModelVariable, multinomialParents: Set[ModelVariable]): Gaussian_MultinomialParents ={
 
     val parametrizedMultinomialDistributions = BaseDistribution_MultinomialParents.generateAssignmentCombinations(multinomialParents)
-      // .view makes it much faster because it avoids creating intermediate results.
       .view.map(assignments => assignments -> Gaussian(variable)).toMap
 
     Gaussian_MultinomialParents(variable, multinomialParents, parametrizedMultinomialDistributions)
