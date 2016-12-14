@@ -1,4 +1,4 @@
-package sbn.core.statistics.exponentialfamily.distributions
+package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
 import sbn.core.variables.Assignments

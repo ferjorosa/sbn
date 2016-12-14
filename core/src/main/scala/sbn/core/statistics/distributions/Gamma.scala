@@ -2,7 +2,7 @@ package sbn.core.statistics.distributions
 
 import org.apache.commons.math3.distribution.GammaDistribution
 import org.apache.commons.math3.util.FastMath
-import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
+import sbn.core.statistics.distributions.exponentialfamily.EF_Distribution
 import sbn.core.variables.model.{GammaType, ModelVariable}
 
 /**

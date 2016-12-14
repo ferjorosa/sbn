@@ -1,11 +1,11 @@
-package sbn.core.statistics.exponentialfamily.distributions
+package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.distributions.Distribution
-import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
-import sbn.core.variables.{Assignment, Assignments}
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.variables.model.ModelVariable
+import sbn.core.variables.{Assignment, Assignments}
 
 /**
   * This trait abstracts the Exponential family of distributions. This family is composed of a set of probability distributions

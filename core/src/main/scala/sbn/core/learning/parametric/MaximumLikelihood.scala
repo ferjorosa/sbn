@@ -2,7 +2,8 @@ package sbn.core.learning.parametric
 import breeze.linalg.{DenseVector, sum}
 import sbn.core.data.{DataInstance, ImmutableDataSet}
 import sbn.core.models.EF_BayesianNetwork
-import sbn.core.statistics.exponentialfamily.distributions.{EF_ConditionalDistribution, EF_Distribution, EF_UnivariateDistribution}
+import sbn.core.statistics.distributions.exponentialfamily.{EF_ConditionalDistribution, EF_Distribution, EF_UnivariateDistribution}
+import sbn.core.statistics.exponentialfamily.distributions.{EF_ConditionalDistribution, EF_UnivariateDistribution}
 import sbn.core.variables.model.ModelVariable
 import sbn.core.variables.{Assignment, Assignments}
 

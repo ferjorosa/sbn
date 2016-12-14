@@ -1,6 +1,7 @@
 package sbn.core.statistics.distributions
 
-import sbn.core.statistics.exponentialfamily.distributions.{EF_Distribution, EF_Gaussian_Multinomial}
+import sbn.core.statistics.distributions.exponentialfamily.EF_Gaussian_Multinomial
+import sbn.core.statistics.exponentialfamily.distributions.EF_Gaussian_Multinomial
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{GaussianType, ModelVariable}
 import sbn.core.variables.model.MultinomialType

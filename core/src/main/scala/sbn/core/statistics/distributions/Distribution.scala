@@ -1,6 +1,6 @@
 package sbn.core.statistics.distributions
 
-import sbn.core.statistics.exponentialfamily.distributions.EF_Distribution
+import sbn.core.statistics.distributions.exponentialfamily.EF_Distribution
 import sbn.core.variables.model.ModelVariable
 import sbn.core.variables.{Assignment, Assignments}
 

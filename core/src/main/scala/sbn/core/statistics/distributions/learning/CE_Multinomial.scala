@@ -1,4 +1,4 @@
-package sbn.core.statistics.exponentialfamily.distributions.learning
+package sbn.core.statistics.distributions.learning
 
 import sbn.core.variables.model.{DirichletType, ModelVariable, MultinomialType}
 

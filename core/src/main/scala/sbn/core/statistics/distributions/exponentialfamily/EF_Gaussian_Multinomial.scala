@@ -1,8 +1,8 @@
-package sbn.core.statistics.exponentialfamily.distributions
+package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.statistics.distributions.{Distribution, Gaussian, Gaussian_MultinomialParents}
-import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{GaussianType, ModelVariable}
 

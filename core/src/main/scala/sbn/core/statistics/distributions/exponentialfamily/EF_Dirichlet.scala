@@ -1,9 +1,9 @@
-package sbn.core.statistics.exponentialfamily.distributions
+package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.distributions.Distribution
-import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.variables._
 import sbn.core.variables.model.{DirichletType, ModelVariable}
 

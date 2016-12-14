@@ -1,11 +1,12 @@
-package sbn.core.statistics.exponentialfamily.distributions
+package sbn.core.statistics.distributions.exponentialfamily
+
 import java.util.concurrent.ThreadLocalRandom
 
 import breeze.linalg.{DenseVector, sum}
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.statistics.distributions.{Distribution, Multinomial}
-import sbn.core.statistics.exponentialfamily.distributions.learning.CE_Distribution
 import sbn.core.utils.Utils
 import sbn.core.variables._
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
