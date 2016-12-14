@@ -9,7 +9,7 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
   * variable of [[MultinomialType]] whose parents are all also of [[MultinomialType]].
   *
   * This distribution is composed of several [[Multinomial]] distributions, each one of them related to an Assignment of
-  * the multinomial parents, resulting in a matrix of parameters.
+  * the multinomial parents, resulting in a vector of [[Multinomial]] distributions (or a matrix of parameters).
   *
   * For example, if the variable (V) has 3 states (s0, s1, s2) and 1 parent (P) with 2 states (p0, p1), we would have the resulting
   * matrix (the Conditional Probability Table), where each row can be considered a [[Multinomial]] distribution
@@ -39,7 +39,10 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
   * @param variable the main variable of the distribution.
   * @param multinomialParents the parents of the variable.
   * @param assignedDistributions the resulting multinomial distributions of the variable.
+  * @throws IllegalArgumentException if there is a parent whose type is not multinomial or
+  *                                  if the variable's type is not multinomial.
   */
+@throws[IllegalArgumentException]
 case class Multinomial_MultinomialParents(variable: ModelVariable,
                                           multinomialParents: Set[ModelVariable],
                                           assignedDistributions: Map[Assignments, Multinomial]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, assignedDistributions) {

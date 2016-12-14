@@ -5,12 +5,19 @@ import sbn.core.variables.Assignments
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
 /**
+  * This class abstracts the exponential-family distributions generated from a set of multinomial parents (i.e.,
+  * [[EF_Multinomial_Multinomial]], [[EF_Gaussian_Multinomial]], etc.). All of them have a similar form and, to reduce
+  * the repeated code, this class implements some of their methods.
   *
+  * It is composed of several rows, where each of them is an [[EF_UnivariateDistribution]].
   *
-  * @param variable
-  * @param parents
-  * @param assignedDistributions
+  * @param variable the main variable of the distribution.
+  * @param parents its multinomial parents.
+  * @param assignedDistributions each row represents a [[EF_UnivariateDistribution]], identified by an [[Assignments]] object
+  *                              that represents its parent values.
+  * @throws IllegalArgumentException if there is a parent whose type is not multinomial.
   */
+@throws[IllegalArgumentException]
 abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
                                                 parents: Set[ModelVariable],
                                                 assignedDistributions: Map[Assignments, EF_UnivariateDistribution]) extends EF_ConditionalDistribution{
@@ -34,6 +41,10 @@ abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
     getEF_UnivariateDistribution(assignments).momentParameters
 
   /** @inheritdoc */
+  override def logNormalizer(assignments: Assignments): Double =
+  getEF_UnivariateDistribution(assignments).logNormalizer
+
+  /** @inheritdoc */
   override def sufficientStatistics(assignments: Assignments, x: Double): DenseVector[Double] =
     getEF_UnivariateDistribution(assignments).sufficientStatistics(x)
 
@@ -50,12 +61,7 @@ abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
     getEF_UnivariateDistribution(assignments).logBaseMeasure(x)
 
   /** @inheritdoc */
-  override def logNormalizer(assignments: Assignments): Double =
-    getEF_UnivariateDistribution(assignments).logNormalizer
-
-  /** @inheritdoc */
   override def getEF_UnivariateDistribution(assignments: Assignments): EF_UnivariateDistribution = try {
     assignedDistributions(assignments)
   } catch{ case nse: NoSuchElementException => throw new IllegalArgumentException("Invalid assignments for the distribution")}
-
-  }
+}

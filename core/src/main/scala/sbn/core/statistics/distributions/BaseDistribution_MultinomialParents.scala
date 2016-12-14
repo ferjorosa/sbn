@@ -6,7 +6,7 @@ import sbn.core.variables.{Assignment, Assignments}
 
 /**
   * This class abstracts the distributions generated from a set of multinomial parents (i.e., [[Multinomial_MultinomialParents]],
-  * [[Gaussian_MultinomialParents]], etc.). All of them have a similar form, and to reduce the repeated code this class
+  * [[Gaussian_MultinomialParents]], etc.). All of them have a similar form and, to reduce the repeated code, this class
   * implements some of their methods.
   *
   * It is composed of several rows, where each of them is an [[UnivariateDistribution]].
@@ -15,7 +15,10 @@ import sbn.core.variables.{Assignment, Assignments}
   * @param multinomialParents its multinomial parents.
   * @param assignedDistributions each row represents a [[UnivariateDistribution]], identified by an [[Assignments]] object
   *                              that represents its parent values.
+  * @throws IllegalArgumentException if there is a parent whose type is not multinomial.
   */
+@throws[IllegalArgumentException]
+// TODO: needs a require that tests if the number of distributions is adequate (multinomial index/size)
 abstract class BaseDistribution_MultinomialParents(variable: ModelVariable,
                                                    multinomialParents: Set[ModelVariable],
                                                    assignedDistributions: Map[Assignments, UnivariateDistribution]) extends ConditionalDistribution {

@@ -9,12 +9,15 @@ import sbn.core.variables.model.{GaussianType, ModelVariable, MultinomialType}
   * variable of [[GaussianType]] whose parents are of [[MultinomialType]].
   *
   * This distribution is composed of several [[Gaussian]] distributions, each one of them related to an Assignment of
-  * the multinomial parents, resulting in a matrix of parameters.
+  * the multinomial parents, resulting in a vector of [[Gaussian]] distributions (or a matrix of parameters).
   * 
   * @param variable the main variable of the distribution.
   * @param multinomialParents its multinomial parents.
   * @param assignedDistributions the resulting gaussian distributions of the variable.
+  * @throws IllegalArgumentException if there is a parent whose type is not multinomial or
+  *                                  if the variable's type is not gaussian.
   */
+@throws[IllegalArgumentException]
 case class Gaussian_MultinomialParents(variable: ModelVariable,
                                        multinomialParents: Set[ModelVariable],
                                        assignedDistributions: Map[Assignments, Gaussian]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, assignedDistributions){
@@ -43,7 +46,7 @@ object Gaussian_MultinomialParents {
     * Factory method that creates a [[Gaussian_MultinomialParents]] distribution with random parameters.
     *
     * @param variable the main variable of the distribution.
-    * @param multinomialParents the conditioning variables
+    * @param multinomialParents the conditioning variables.
     * @throws IllegalArgumentException if the variable is not [[GaussianType]] or
     *                                  if parents are not [[GaussianType]].
     * @return a new [[Gaussian_MultinomialParents]] distribution with random parameters.

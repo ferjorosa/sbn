@@ -15,13 +15,13 @@ case class EF_Gamma(variable: ModelVariable) extends EF_UnivariateDistribution{
 
   override val momentParameters: DenseVector[Double] = ???
 
+  override val logNormalizer: Double = ???
+
   override def sufficientStatistics(x: Double): DenseVector[Double] = ???
 
   override def zeroSufficientStatistics: DenseVector[Double] = ???
 
   override def logBaseMeasure(x: Double): Double = ???
-
-  override def logNormalizer: Double = ???
 
   override def toConjugateExponentialDistribution: CE_Distribution = ???
 

@@ -10,13 +10,13 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
 /**
   * This class represents the Multinomial distribution. This distribution can be used to compute the probabilities in situations
-  * in which there are a limited set of possible outcomes. It has a parameter for each of these states. For more information
+  * in which there are a limited set of possible outcomes. It assigns a probability to each of these states. For more information
   * about this distribution, visit https://en.wikipedia.org/wiki/Multinomial_distribution).
   *
   * @param variable the associated variable.
   * @param probabilities the parameters of the distributions. Each state of the variable has an associated probability value.
   * @throws IllegalArgumentException if [[variable.distributionType]] is not [[MultinomialType]] or
-  *                                  if nStates != [[probabilities.size]] or
+  *                                  if variable.nStates != [[probabilities.size]] or
   *                                  if [[probabilities.sum]] != 1.0
   */
 @throws[IllegalArgumentException]

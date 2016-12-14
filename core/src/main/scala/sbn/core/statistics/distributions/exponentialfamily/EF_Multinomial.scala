@@ -12,8 +12,18 @@ import sbn.core.variables._
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
 /**
-  * Created by fer on 1/12/16.
+  * This class represents the Multinomial distribution in its exponential-family form. This distribution can be used to
+  * compute the probabilities in situations in which there are a limited set of possible outcomes. It assigns a probability
+  * to each of these states. These probabilities correspond to the 'moment parameters' of the distribution. The natural
+  * parameters can be obtained from them.
+  *
+  * @param variable the associated variable.
+  * @param probabilities the parameters of the distributions. Each state of the variable has an associated probability value.
+  * @throws IllegalArgumentException if [[variable.distributionType]] is not [[MultinomialType]] or
+  *                                  if variable.nStates != [[probabilities.size]] or
+  *                                  if [[probabilities.sum]] != 1.0
   */
+@throws[IllegalArgumentException]
 // TODO: definir o revisar el uso de un vector inmutable para numeros Double
 case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]) extends EF_UnivariateDistribution{
 
@@ -36,8 +46,11 @@ case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]
   override val momentParameters: DenseVector[Double] = DenseVector[Double](probabilities.toArray)
 
   /** @inheritdoc */
+  override val logNormalizer: Double = FastMath.log(sum(naturalParameters.map(FastMath.exp)))
+
+  /** @inheritdoc */
   override def sufficientStatistics(x: Double): DenseVector[Double] = {
-    val zeroes = DenseVector.zeros[Double](naturalParameters.activeSize)
+    val zeroes = zeroSufficientStatistics
     zeroes.update(x.asInstanceOf[Int], 1)
     zeroes
   }
@@ -46,16 +59,15 @@ case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]
   override def zeroSufficientStatistics: DenseVector[Double] = DenseVector.zeros(variableStateSpace.numberOfStates)
 
   /** @inheritdoc */
-  override def generalZeroSufficientStatistics: Map[Assignments, DenseVector[Double]] = Map(Assignments(Set.empty[Assignment]) -> this.zeroSufficientStatistics)
+  override def generalZeroSufficientStatistics: Map[Assignments, DenseVector[Double]] =
+    Map(Assignments(Set.empty[Assignment]) -> this.zeroSufficientStatistics)
 
   /** @inheritdoc */
   override def logBaseMeasure(x: Double): Double = 0
 
   /** @inheritdoc */
-  override def logNormalizer: Double = FastMath.log(sum(naturalParameters.map(FastMath.exp)))
-
-  /** @inheritdoc */
-  override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = EF_Multinomial(this.variable, momentParameters)
+  override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution =
+    EF_Multinomial(this.variable, momentParameters)
 
   /** @inheritdoc */
   override def toDistribution: Distribution = Multinomial(this.variable, this.probabilities)
@@ -71,10 +83,27 @@ case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]
   }
 }
 
+/** The factory that contains specific methods for creating [[EF_Multinomial]] objects. */
 object EF_Multinomial {
 
-  def apply(variable: ModelVariable, momentParameters: DenseVector[Double]): EF_Multinomial = EF_Multinomial(variable, momentParameters.data.toVector)
+  /**
+    * Factory method that produces a new [[EF_Multinomial]] object from a variable and a vector of moment parameters.
+    *
+    * @param variable the distribution's variable.
+    * @param momentParameters the moment parameters vector of the distribution.
+    * @return a new object of the corresponding [[EF_Multinomial]] distribution.
+    */
+  def apply(variable: ModelVariable, momentParameters: DenseVector[Double]): EF_Multinomial =
+    EF_Multinomial(variable, momentParameters.data.toVector)
 
+  /**
+    * Factory method that produces a new [[EF_Multinomial]] distribution with a randomly created moment parameters vector.
+    *
+    * @param variable the distribution's variable.
+    * @throws IllegalArgumentException if the variable's state space is not [[FiniteStateSpace]] or
+    *                                  if the variable's distributionType is not [[MultinomialType]].
+    * @return a new [[EF_Multinomial]] distribution with a randomly created moment parameters vector.
+    */
   def apply(variable: ModelVariable): EF_Multinomial = {
     require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
 

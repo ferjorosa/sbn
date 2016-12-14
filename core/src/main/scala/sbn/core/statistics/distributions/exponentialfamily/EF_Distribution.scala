@@ -59,6 +59,14 @@ trait EF_UnivariateDistribution extends EF_Distribution{
   val naturalParameters: DenseVector[Double]
 
   /**
+    * Represents the log-normalization function used to normalize the resulting probability distribution. It is also called
+    * the log.partition function and its value doesn't depend on the data but on the distribution.
+    *
+    * It is one of the four key elements that participate in the probability density function.
+    */
+  val logNormalizer: Double
+
+  /**
     * Returns a vector representing the sufficient statistics of the distribution for a specific value. In the exponential
     * family, the sufficient statistic is a function of the data that fully summarizes the data x within the density function.
     * This means that, for any data sets x and y, the density value is the same if ss(x) = ss(y).
@@ -90,16 +98,6 @@ trait EF_UnivariateDistribution extends EF_Distribution{
     * @return the result of applying the logarithm of the base to the data x.
     */
   def logBaseMeasure(x: Double): Double
-
-  /**
-    * Represents the log-normalization function used to normalize the resulting probability distribution. It is also called
-    * the log.partition function and its value doesn't depend on the data but on the distribution.
-    *
-    * It is one of the four key elements that participate in the probability density function.
-    *
-    * @return the value of the log-normalizer function of the distribution.
-    */
-  def logNormalizer: Double
 
   /**
     * Returns the natural logarithm of the probability density function at the specified point x. This function is one of the
@@ -181,6 +179,17 @@ trait EF_ConditionalDistribution extends EF_Distribution {
   def momentParameters(assignments: Assignments): DenseVector[Double]
 
   /**
+    * Represents the log-normalization function used to normalize the resulting probability distribution. It is also called
+    * the log.partition function and its value doesn't depend on the data but on the distribution.
+    *
+    * It is one of the four key elements that participate in the probability density function.
+    *
+    * @param assignments the [[Assignments]] object that represents the parent values.
+    * @return the value of the log-normalizer function of the distribution.
+    */
+  def logNormalizer(assignments: Assignments): Double
+
+  /**
     * Returns a compound vector where all its internal vectors are full of zeroes, representing a 'void' sufficient statistics
     * vector.
     *
@@ -219,17 +228,6 @@ trait EF_ConditionalDistribution extends EF_Distribution {
     * @return
     */
   def logBaseMeasure(assignments: Assignments, x: Double): Double
-
-  /**
-    * Represents the log-normalization function used to normalize the resulting probability distribution. It is also called
-    * the log.partition function and its value doesn't depend on the data but on the distribution.
-    *
-    * It is one of the four key elements that participate in the probability density function.
-    *
-    * @param assignments the [[Assignments]] object that represents the parent values.
-    * @return the value of the log-normalizer function of the distribution.
-    */
-  def logNormalizer(assignments: Assignments): Double
 
   /**
     * Returns the natural logarithm of the probability density function at the specified point x. This function is one of the
