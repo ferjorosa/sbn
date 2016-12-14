@@ -19,6 +19,7 @@ import sbn.core.variables.model.{DirichletType, ModelVariable}
   *                                  if [[scale]] < 1.0
   */
 @throws[IllegalArgumentException]
+//TODO: Pasarlo a notación de Wikipedia, que si me permitiría hacer update en la distribucion.
 case class EF_Dirichlet(variable: ModelVariable, scale: Double) extends EF_UnivariateDistribution{
 
   /** The state space of the dirichlet variable. */

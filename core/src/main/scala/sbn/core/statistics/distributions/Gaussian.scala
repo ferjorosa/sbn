@@ -9,14 +9,17 @@ import sbn.core.statistics.distributions.exponentialfamily.{EF_Distribution, EF_
 import sbn.core.variables.model.{GaussianType, ModelVariable}
 
 /**
-  * This class represents a Gaussian distribution. The Gaussian (or normal) distribution is a very common continuous
-  * probability distribution mostly because of the central limit theorem. It is composed of two parameters: the mean and the variance.
+  * This class represents the Gaussian distribution. The Gaussian (or normal) distribution is a very common continuous
+  * probability distribution mostly because of the central limit theorem. It is composed of two parameters: the mean and
+  * the variance.
   *
   * For more information about this distribution or the theorem, visit https://en.wikipedia.org/wiki/Normal_distribution.
   *
   * @param variable the associated variable.
   * @param mean the mean value of the distribution, its central value.
-  * @param variance the variance of the distribution. It informally measures how far the set of values are spread out from their mean.
+  *             It is a location parameter (more info in https://en.wikipedia.org/wiki/Location_parameter)
+  * @param variance the variance of the distribution. It informally measures how far the set of values are spread out
+  *                 from their mean. It is a scale parameter (more info in https://en.wikipedia.org/wiki/Scale_parameter).
   * @throws IllegalArgumentException if the variable is not of [[GaussianType]] or
   *                                  if the variance is <= 0
   */

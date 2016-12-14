@@ -23,6 +23,7 @@ import sbn.core.variables.model.{GaussianType, ModelVariable}
   *                                  if the variance is <= 0
   */
 @throws[IllegalArgumentException]
+//TODO: put in wikipedia's form (using natural parameters)
 case class EF_Gaussian(variable: ModelVariable, mean: Double, variance: Double) extends EF_UnivariateDistribution{
   require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of GaussianType")
   require(variance > 0, "Variance must be > 0")
