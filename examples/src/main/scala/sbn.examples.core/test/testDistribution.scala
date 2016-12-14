@@ -3,7 +3,7 @@ package sbn.examples.core.test
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.distributions.exponentialfamily.{EF_Gaussian, EF_Multinomial}
 import sbn.core.statistics.distributions.{Gaussian, Multinomial}
-import sbn.core.statistics.exponentialfamily.distributions.EF_Multinomial
+import sbn.core.statistics.distributions.exponentialfamily.distributions.EF_Multinomial
 import sbn.core.variables.model.ModelVariablesFactory
 
 /**

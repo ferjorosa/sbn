@@ -1,4 +1,4 @@
-package sbn.core.statistics.exponentialfamily
+package sbn.core.statistics.distributions.exponentialfamily
 
 /**
   * Created by fer on 13/12/16.
