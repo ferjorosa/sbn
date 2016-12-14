@@ -6,7 +6,6 @@ import org.apache.commons.math3.distribution.NormalDistribution
 import org.apache.commons.math3.exception.NumberIsTooLargeException
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.distributions.exponentialfamily.{EF_Distribution, EF_Gaussian}
-import sbn.core.statistics.exponentialfamily.distributions.EF_Gaussian
 import sbn.core.variables.model.{GaussianType, ModelVariable}
 
 /**

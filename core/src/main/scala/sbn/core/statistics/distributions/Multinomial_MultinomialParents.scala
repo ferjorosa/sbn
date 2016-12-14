@@ -1,7 +1,6 @@
 package sbn.core.statistics.distributions
 
 import sbn.core.statistics.distributions.exponentialfamily.EF_Multinomial_Multinomial
-import sbn.core.statistics.exponentialfamily.distributions.EF_Multinomial_Multinomial
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 

@@ -14,9 +14,7 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
 /**
   * Created by fer on 1/12/16.
   */
-//TODO: require variable de tipo multinomial
 // TODO: definir o revisar el uso de un vector inmutable para numeros Double
-//TODO: revisar si es conveniente tener un parameterDistributionType
 case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]) extends EF_UnivariateDistribution{
 
   /** The state space of the multinomial variable. */
@@ -31,29 +29,38 @@ case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]
   require(variableStateSpace.numberOfStates == probabilities.size, "One probability per state")
   require(Utils.eqDouble(probabilities.sum, 1.0), "Probabilities must sum 1.0 (sum = " + probabilities.sum + ")")
 
-  /** */
+  /** @inheritdoc */
   override val naturalParameters: DenseVector[Double] = DenseVector[Double] (probabilities.map(x => FastMath.log(x)).toArray)
 
+  /** @inheritdoc */
   override val momentParameters: DenseVector[Double] = DenseVector[Double](probabilities.toArray)
 
+  /** @inheritdoc */
   override def sufficientStatistics(x: Double): DenseVector[Double] = {
     val zeroes = DenseVector.zeros[Double](naturalParameters.activeSize)
     zeroes.update(x.asInstanceOf[Int], 1)
     zeroes
   }
 
+  /** @inheritdoc */
   override def zeroSufficientStatistics: DenseVector[Double] = DenseVector.zeros(variableStateSpace.numberOfStates)
 
+  /** @inheritdoc */
   override def generalZeroSufficientStatistics: Map[Assignments, DenseVector[Double]] = Map(Assignments(Set.empty[Assignment]) -> this.zeroSufficientStatistics)
 
+  /** @inheritdoc */
   override def logBaseMeasure(x: Double): Double = 0
 
+  /** @inheritdoc */
   override def logNormalizer: Double = FastMath.log(sum(naturalParameters.map(FastMath.exp)))
 
+  /** @inheritdoc */
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = EF_Multinomial(this.variable, momentParameters)
 
+  /** @inheritdoc */
   override def toDistribution: Distribution = Multinomial(this.variable, this.probabilities)
 
+  /** @inheritdoc */
   override def toConjugateExponentialDistribution: CE_Distribution = {
     ???
     /*

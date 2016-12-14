@@ -3,7 +3,6 @@ package sbn.core.variables.model
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
 import sbn.core.statistics.distributions.exponentialfamily._
 import sbn.core.statistics.distributions.{Multinomial_MultinomialParents, _}
-import sbn.core.statistics.exponentialfamily.distributions._
 
 /**
   * Represents the [[UnivariateDistribution]] type of a variable.

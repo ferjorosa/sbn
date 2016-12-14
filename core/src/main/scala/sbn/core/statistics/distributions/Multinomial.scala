@@ -5,7 +5,6 @@ import java.util.concurrent.ThreadLocalRandom
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.distributions.exponentialfamily.{EF_Distribution, EF_Multinomial}
-import sbn.core.statistics.exponentialfamily.distributions.EF_Multinomial
 import sbn.core.utils.Utils
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
