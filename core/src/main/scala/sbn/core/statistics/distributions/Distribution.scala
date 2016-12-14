@@ -134,12 +134,12 @@ trait ConditionalDistribution extends Distribution{
 
   /**
     * Returns the univariate distribution of an [[Assignment]] given a conditional distribution. If we think of the
-    * [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), this method would return
-    * a row of this matrix, which corresponds o a [[UnivariateDistribution]].
+    * [[ConditionalDistribution]] as a compound vector of parameters (a Conditional Probability Table), this method would return
+    * a row of this compound vector, which corresponds o a [[UnivariateDistribution]].
     *
     * @param assignments the values of the conditioning variables.
     * @throws NoSuchElementException if the provided [[Assignments]] object is invalid for the distribution.
-    * @return a new [[UnivariateDistribution]] object associated to the [[Assignment]]
+    * @return the [[UnivariateDistribution]] associated to the parents' [[Assignments]].
     */
   @throws[NoSuchElementException]
   def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution
@@ -153,7 +153,7 @@ trait ConditionalDistribution extends Distribution{
     * In other words, this method represents the conditional probability mass function (CPMF) for this distribution
     * given the values of its conditioning variables.
     *
-    * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
+    * If we think of the [[ConditionalDistribution]] as a compound vector of parameters (a Conditional Probability Table), the
     * assignments would represent a specific row of the CPT and x would represent a column. In the case that the
     * variable's type is Real (not finite), the probability associated to x will be 0, given the infinite number of
     * columns (infinite number of points).
@@ -173,7 +173,7 @@ trait ConditionalDistribution extends Distribution{
     * In other words, this method represents the logarithm of the conditional probability mass function (CPMF) for this
     * distribution given the values of its conditioning variables.
     *
-    * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
+    * If we think of the [[ConditionalDistribution]] as a compound vector of parameters (a Conditional Probability Table), the
     * assignments would represent a specific row of the CPT and x would represent a column. In the case that the
     * variable's type is Real (not finite), the probability associated to x will be 0, given the infinite number of
     * columns (infinite number of points). Therefore its logProbability will be log(0).
@@ -190,7 +190,7 @@ trait ConditionalDistribution extends Distribution{
     * For a random variable X whose values are distributed according to this distribution, which is constrained to a
     * set of conditioning variables S that take specific values ([[Assignments]]), this method returns P(x0 < X <= x1 | assignments).
     *
-    * If we think of the [[ConditionalDistribution]] as a matrix of parameters (a Conditional Probability Table), the
+    * If we think of the [[ConditionalDistribution]] as a compound vector of parameters (a Conditional Probability Table), the
     * assignments would represent a specific row of the CPT and [x0, x1] would represent an interval. This method would return
     * the probability associated to that interval of values.
     *
