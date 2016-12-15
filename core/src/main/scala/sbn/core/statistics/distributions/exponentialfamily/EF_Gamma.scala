@@ -1,12 +1,12 @@
 package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
-import org.apache.commons.math3.special.Gamma
+import org.apache.commons.math3.special.{Gamma => ApacheGamma}
 import org.apache.commons.math3.util.FastMath
-import sbn.core.statistics.distributions.{Distribution, Gamma}
 import sbn.core.statistics.distributions.learning.CE_Distribution
-import sbn.core.variables.{Assignment, Assignments}
+import sbn.core.statistics.distributions.{Distribution, Gamma}
 import sbn.core.variables.model.{GammaType, ModelVariable}
+import sbn.core.variables.{Assignment, Assignments}
 
 /**
   * This class represents the Gamma distribution in its exponential-family form. The Gamma distribution is a very common
@@ -49,7 +49,7 @@ case class EF_Gamma(variable: ModelVariable, shape: Double, rate: Double) extend
 
   /** @inheritdoc */
   override val logNormalizer: Double =
-    Gamma.logGamma(naturalParameters(0) + 1) - (naturalParameters(0) + 1) * FastMath.log(-naturalParameters(1))
+    ApacheGamma.logGamma(naturalParameters(0) + 1) - (naturalParameters(0) + 1) * FastMath.log(-naturalParameters(1))
 
   /** @inheritdoc */
   override def sufficientStatistics(x: Double): DenseVector[Double] = DenseVector(x, FastMath.log(x))

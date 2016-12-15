@@ -1,6 +1,6 @@
 package sbn.core.statistics.distributions
 
-import org.apache.commons.math3.distribution.GammaDistribution
+import org.apache.commons.math3.distribution.{GammaDistribution => ApacheGamma}
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.distributions.exponentialfamily.{EF_Distribution, EF_Gamma}
 import sbn.core.variables.model.{GammaType, ModelVariable}
@@ -39,7 +39,7 @@ case class Gamma(variable: ModelVariable, shape: Double, scale: Double) extends 
   val mean = shape / rate
 
   /** Apache implementation of the Gaussian (Normal) distribution */
-  private val implementation: GammaDistribution = new GammaDistribution(shape, scale)
+  private val implementation: ApacheGamma = new ApacheGamma(shape, scale)
 
   /** @inheritdoc */
   override def label: String = "Gamma"

@@ -2,10 +2,10 @@ package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
-import sbn.core.statistics.distributions.{Distribution, Gaussian}
 import sbn.core.statistics.distributions.learning.CE_Distribution
-import sbn.core.variables.{Assignment, Assignments}
+import sbn.core.statistics.distributions.{Distribution, Gaussian}
 import sbn.core.variables.model.{GaussianType, ModelVariable}
+import sbn.core.variables.{Assignment, Assignments}
 
 /**
   * This class represents a Gaussian distribution in its exponential-family form. The Gaussian (or normal) distribution
