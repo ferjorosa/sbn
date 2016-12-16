@@ -158,7 +158,7 @@ case class GammaType() extends DistributionType {
   override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = ???
 
   /** @inheritdoc */
-  override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Gamma(variable)
+  override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Gamma(variable, 1, 1)
 }
 
 case class DirichletType() extends DistributionType {
