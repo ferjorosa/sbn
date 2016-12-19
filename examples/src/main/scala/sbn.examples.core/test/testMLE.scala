@@ -1,7 +1,7 @@
 package sbn.examples.core.test
 
 import sbn.core.io.DataFileLoader
-import sbn.core.learning.parametric.{MaximumLikelihood, ParameterLearningAlgorithm}
+import sbn.core.learning.parametric.{MaximumLikelihood, ParameterLearning}
 import sbn.core.models.BayesianNetwork
 import sbn.core.models.graph.DirectedGraph
 import sbn.core.variables.model.{ModelVariable, ModelVariablesFactory}
@@ -111,7 +111,7 @@ object testMLE {
 
     val data = DataFileLoader.loadImmutableDataSet("datasets/ferjorosaData/sprinklerData300_oneVar.arff")
 
-    val parameterLearningAlgorithm: ParameterLearningAlgorithm = new MaximumLikelihood
+    val parameterLearningAlgorithm: ParameterLearning = new MaximumLikelihood
 
     val successfulDataSet = data match {
       case Success(dataSet) => dataSet

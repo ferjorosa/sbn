@@ -12,7 +12,7 @@ import scala.collection.parallel.immutable.ParVector
   * Created by fer on 5/12/16.
   */
 // In the exponential family, the mle can be seen as a transformation from moment to natural parameters
-class MaximumLikelihood extends ParameterLearningAlgorithm{
+class MaximumLikelihood extends ParameterLearning{
 
   def learn(ef_BayesianNetwork: EF_BayesianNetwork, dataSet: ImmutableDataSet): EF_BayesianNetwork = {
     //univariateMLE(ef_BayesianNetwork, dataSet)
