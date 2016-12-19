@@ -29,7 +29,7 @@ trait ModelVariable extends Variable {
     * @param parents the parents of the variable.
     * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
     */
-  def newConditionalDistribution(parents: Set[ModelVariable]): ConditionalDistribution =
+  def newConditionalDistribution(parents: Vector[ModelVariable]): ConditionalDistribution =
     distributionType.newConditionalDistribution(this, parents)
 
   /**
@@ -48,6 +48,7 @@ trait ModelVariable extends Variable {
   * @param attribute the [[Attribute]] used to create the variable.
   * @param distributionType the distribution type of the variable.
   * @param id the variable's ID.
+  * @throws RuntimeException if the provided attribute is not compatible with the distribution type.
   */
 case class ManifestVariable (attribute: Attribute,
                              distributionType: DistributionType,
@@ -63,6 +64,7 @@ case class ManifestVariable (attribute: Attribute,
   * @param attribute the [[Attribute]] used to create the variable.
   * @param distributionType the distribution type of the variable.
   * @param id the variable's ID.
+  * @throws RuntimeException if the provided attribute is not compatible with the distribution type.
   */
 case class LatentVariable (attribute: Attribute,
                            distributionType: DistributionType,
@@ -83,11 +85,10 @@ object ModelVariablesFactory {
     * Creates a manifest multinomial variable from an attribute.
     *
     * @param attribute the [[Attribute]].
-    * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not finite.
+    * @throws RuntimeException if the attribute's [[StateSpaceType]] is not finite.
     * @return a new [[ManifestVariable]] of multinomial type.
     */
-  @throws[IllegalArgumentException]
-  def newMultinomialMV(attribute: Attribute): ModelVariable =
+  def newMultinomialMV(attribute: Attribute): ManifestVariable =
     ManifestVariable(attribute, new MultinomialType, UUID.randomUUID())
 
   /**
@@ -97,7 +98,7 @@ object ModelVariablesFactory {
     * @param nStates the number of states of its associated univariate multinomial distribution.
     * @return a new [[LatentVariable]] of multinomial type.
     */
-  def newMultinomialLV(name: String, nStates: Int): ModelVariable = {
+  def newMultinomialLV(name: String, nStates: Int): LatentVariable = {
     val attribute = Attribute(name, FiniteStateSpace(nStates))
     LatentVariable(attribute, new MultinomialType, UUID.randomUUID())
   }
@@ -107,10 +108,9 @@ object ModelVariablesFactory {
     *
     * @param attribute the [[Attribute]].
     * @return a new [[ManifestVariable]] of gaussian type.
-    * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not real.
+    * @throws RuntimeException if the attribute's [[StateSpaceType]] is not real.
     */
-  @throws[IllegalArgumentException]
-  def newGaussianMV(attribute: Attribute): ModelVariable =
+  def newGaussianMV(attribute: Attribute): ManifestVariable =
     ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
 
   /**
@@ -121,7 +121,7 @@ object ModelVariablesFactory {
     * @param max the maximum value of the interval.
     * @return a new [[LatentVariable]] of gaussian type.
     */
-  def newGaussianLV(name: String, min: Double, max: Double): ModelVariable = {
+  def newGaussianLV(name: String, min: Double, max: Double): LatentVariable = {
     val attribute = Attribute(name, RealStateSpace(min, max))
     LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }
@@ -132,7 +132,7 @@ object ModelVariablesFactory {
     * @param name the name of the latent variable.
     * @return a new [[LatentVariable]] of gaussian type.
     */
-  def newGaussianLV(name: String): ModelVariable = {
+  def newGaussianLV(name: String): LatentVariable = {
     val attribute = Attribute(name, RealStateSpace())
     LatentVariable(attribute, new GaussianType, UUID.randomUUID())
   }
@@ -142,10 +142,9 @@ object ModelVariablesFactory {
     *
     * @param attribute the [[Attribute]].
     * @return a new [[ManifestVariable]] of gamma type.
-    * @throws IllegalArgumentException if the attribute's [[StateSpaceType]] is not real.
+    * @throws Exception if the attribute's [[StateSpaceType]] is not real.
     */
-  @throws[IllegalArgumentException]
-  def newGammaMV(attribute: Attribute): ModelVariable =
+  def newGammaMV(attribute: Attribute): ManifestVariable =
     ManifestVariable(attribute, new GammaType, UUID.randomUUID())
 
   /**
@@ -156,7 +155,7 @@ object ModelVariablesFactory {
     * @param max the maximum value of the interval.
     * @return a new [[LatentVariable]] of gamma type.
     */
-  def newGammaLV(name: String, min: Double, max: Double): ModelVariable = {
+  def newGammaLV(name: String, min: Double, max: Double): LatentVariable = {
     val attribute = Attribute(name, RealStateSpace(min, max))
     LatentVariable(attribute, new GammaType, UUID.randomUUID())
   }
@@ -167,7 +166,7 @@ object ModelVariablesFactory {
     * @param name the name of the latent variable.
     * @return a new [[LatentVariable]] of gaussian type.
     */
-  def newGammaLV(name: String): ModelVariable = {
+  def newGammaLV(name: String): LatentVariable = {
     val attribute = Attribute(name, RealStateSpace())
     LatentVariable(attribute, new GammaType, UUID.randomUUID())
   }
@@ -179,7 +178,7 @@ object ModelVariablesFactory {
     * @param nStates the number of states of its associated univariate dirichlet distribution.
     * @return a new [[LatentVariable]] of dirichlet type
     */
-  def newDirichletLV(name: String, nStates: Int): ModelVariable = {
+  def newDirichletLV(name: String, nStates: Int): LatentVariable = {
     val attribute = Attribute(name, FiniteStateSpace(nStates))
     LatentVariable(attribute, new DirichletType, UUID.randomUUID())
   }

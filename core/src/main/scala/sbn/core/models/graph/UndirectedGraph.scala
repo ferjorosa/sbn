@@ -2,7 +2,7 @@ package sbn.core.models.graph
 
 import sbn.core.variables.Variable
 
-import scalax.collection.GraphEdge.{DiEdge, UnDiEdge}
+import scalax.collection.GraphEdge.UnDiEdge
 import scalax.collection.config.CoreConfig
 import scalax.collection.immutable.Graph
 

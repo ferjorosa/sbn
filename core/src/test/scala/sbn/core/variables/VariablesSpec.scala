@@ -21,7 +21,7 @@ class VariablesSpec extends CustomSpec{
     val variables = Variables(variablesMap)
 
     Then("a new Variables[ModelVariable] object should be created")
-    assert(variables.isInstanceOf[Variables[ModelVariable]])
+    assert(!variables.exists(!_.isInstanceOf[ModelVariable]))
   }
 
   it should "create a Variables object if a correct Set[V <: variable] is provided" in {
@@ -35,7 +35,7 @@ class VariablesSpec extends CustomSpec{
     val variables = Variables(variableSet)
 
     Then("a new Variables[ModelVariable] object should be created")
-    assert(variables.isInstanceOf[Variables[ModelVariable]])
+    assert(!variables.exists(!_.isInstanceOf[ModelVariable]))
   }
 
   "Variables.apply(variableName)" should "return a V <: Variable object if the name corresponds to an available variable" in {
@@ -53,7 +53,7 @@ class VariablesSpec extends CustomSpec{
     assert(multinomialVar equals variable)
   }
 
-  it should "throw an Exception if the name doesn't exists" in {
+  it should "throw a RuntimeException if the name doesn't exists" in {
 
     Given("Variables[ModelVariable] of size 3")
     val multinomialVar = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
@@ -64,7 +64,7 @@ class VariablesSpec extends CustomSpec{
     When("calling Variables.apply(variableName) with an available variable name")
 
     Then("a exception should be thrown")
-    a[Exception] should be thrownBy {
+    a[RuntimeException] should be thrownBy {
       variables("dirichlet")
     }
   }

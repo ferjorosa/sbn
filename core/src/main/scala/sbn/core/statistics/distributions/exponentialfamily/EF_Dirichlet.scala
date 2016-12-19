@@ -14,11 +14,10 @@ import sbn.core.variables.model.{DirichletType, ModelVariable}
   *
   * @param variable the associated variable.
   * @param scale the scale of the natural parameters.
-  * @throws IllegalArgumentException if [[variable.distributionType]] is not [[DirichletType]] or
-  *                                  if variable.nStates < 2 or
-  *                                  if [[scale]] < 1.0
+  * @throws RuntimeException if [[variable.distributionType]] is not [[DirichletType]] or
+  *                          or if variable.nStates < 2
+  *                          or if [[scale]] < 1.0 .
   */
-@throws[IllegalArgumentException]
 //TODO: Pasarlo a notación de Wikipedia, que si me permitiría hacer update en la distribucion.
 case class EF_Dirichlet(variable: ModelVariable, scale: Double) extends EF_UnivariateDistribution{
 

@@ -22,14 +22,13 @@ trait StateSpaceType{
   * @param numberOfStates the number of states.
   * @param stateNames the collection of state names.
   * @param mapStatesNames the map between the index of the state and its name.
-  * @throws IllegalArgumentException if [[numberOfStates]] <= 0
-  *                                  or if [[stateNames]].size != [[numberOfStates]]
-  *                                  or if [[mapStatesNames]].keys.size != [[numberOfStates]]
-  *                                  or if there are repeated [[mapStatesNames]].keys
-  *                                  or if there are repeated [[mapStatesNames]].values.
+  * @throws RuntimeException if [[numberOfStates]] <= 0
+  *                          or if [[stateNames]].size != [[numberOfStates]]
+  *                          or if [[mapStatesNames]].keys.size != [[numberOfStates]]
+  *                          or if there are repeated [[mapStatesNames]].keys
+  *                          or if there are repeated [[mapStatesNames]].values.
   */
-@throws[IllegalArgumentException]
-case class FiniteStateSpace (numberOfStates: Int, stateNames :Vector[String], mapStatesNames: Map[String, Int]) extends StateSpaceType{
+case class FiniteStateSpace (numberOfStates: Int, stateNames: Vector[String], mapStatesNames: Map[String, Int]) extends StateSpaceType{
   require(numberOfStates > 0, "Number of states > 0")
   require(numberOfStates == stateNames.size, "The stateNames collection must have the same size as the number of states")
   require(mapStatesNames.keys.size == numberOfStates, "Mapping collection size and the numberOfStates doesn't coincide")
@@ -42,14 +41,14 @@ case class FiniteStateSpace (numberOfStates: Int, stateNames :Vector[String], ma
     * Returns the index associated to the state name.
     *
     * @param stateName the provided state name.
-    * @throws NoSuchElementException if the state name doesn't correspond to an index.
+    * @throws RuntimeException if the state name doesn't correspond to an index.
     * @return the index associated to the state name.
     */
-  @throws[NoSuchElementException]
   def getIndexOfState (stateName : String): Int = this.mapStatesNames(stateName)
 
   /**
     * Returns a collection of the state indexes, same size as the [[stateNames]].
+    *
     * @return a collection of the state indexes, same size as the [[stateNames]].
     */
   def stateIndexes: Vector[Int] = (for( i<-0 until numberOfStates) yield i).toVector

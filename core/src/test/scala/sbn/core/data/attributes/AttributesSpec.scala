@@ -6,16 +6,16 @@ import sbn.core.CustomSpec
 
 class AttributesSpec extends CustomSpec{
 
-  "Attributes constructor" should "throw an IllegalArgumentException if there are repeated attribute names" in {
+  "Attributes constructor" should "throw an RuntimeException if there are repeated attribute names" in {
     val manifestAttr1 = Attribute("manifestAttr1", RealStateSpace())
     val manifestAttr2 = Attribute("manifestAttr1", FiniteStateSpace(2))
 
-    a[IllegalArgumentException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       Attributes(List(manifestAttr1, manifestAttr2))
     }
   }
 
-  "Attributes constructor" should "throw an IllegalArgumentException if there are order values out of bound" in {
+  "Attributes constructor" should "throw an RuntimeException if there are order values out of bound" in {
     val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
     val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
@@ -26,12 +26,12 @@ class AttributesSpec extends CustomSpec{
     // Size = 4, "8" is out of bounds
     val order = List(0,1,2,8)
 
-    a[IllegalArgumentException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       Attributes(attributeList, order)
     }
   }
 
-  "Attributes constructor" should "throw an IllegalArgumentException if the sizes of attributeList and attributeOrder differ" in {
+  "Attributes constructor" should "throw an RuntimeException if the sizes of attributeList and attributeOrder differ" in {
     val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
     val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
@@ -42,12 +42,12 @@ class AttributesSpec extends CustomSpec{
     // Size = 3
     val order = List(0,1,2)
 
-    a[IllegalArgumentException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       Attributes(attributeList, order)
     }
   }
 
-  "Attributes constructor" should "throw an IllegalArgumentException if there are repeated values in the attributeOrder collection" in {
+  "Attributes constructor" should "throw an RuntimeException if there are repeated values in the attributeOrder collection" in {
     val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
     val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val manifestAttr2 = Attribute("manifestAttr2", RealStateSpace(0, 2))
@@ -58,7 +58,7 @@ class AttributesSpec extends CustomSpec{
     // Size = 4, "2" is repeated
     val order = List(0,1,2,2)
 
-    a[IllegalArgumentException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       Attributes(attributeList, order)
     }
   }
@@ -124,13 +124,13 @@ class AttributesSpec extends CustomSpec{
 
   }
 
-  "Attributes.apply(index)" should "throw an IndexOutOfBoundsException if the index doesn't correspond to an Attribute object" in {
+  "Attributes.apply(index)" should "throw an RuntimeException if the index doesn't correspond to an Attribute object" in {
     val manifestAttr0 = Attribute("manifestAttr0", RealStateSpace())
     val manifestAttr1 = Attribute("manifestAttr1", FiniteStateSpace(3))
     val attributeList = List(manifestAttr0,manifestAttr1)
     val attributes = Attributes(attributeList)
 
-    a[IndexOutOfBoundsException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       attributes(2)
     }
   }
@@ -153,7 +153,7 @@ class AttributesSpec extends CustomSpec{
     //Trying some of the Iterable[+T] methods
     assert(attributes.map(_.name).size == 2)
     assert(attributes.count(_.stateSpaceType.isInstanceOf[RealStateSpace]) == 1)
-    assert(attributes.filter(_.name equals "attribute3").size == 0)
+    assert(!attributes.exists(_.name equals "attribute3"))
   }
 
   "Attributes.attributeIndexes" should "return a Map associating each attribute to it index" in {
@@ -201,5 +201,4 @@ class AttributesSpec extends CustomSpec{
     assert(attributes.indexOf(attribute1) == 0)
     assert(attributes.indexOf(attribute2) == 1)
   }
-
 }

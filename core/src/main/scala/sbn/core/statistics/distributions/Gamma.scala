@@ -20,11 +20,11 @@ import sbn.core.variables.model.{GammaType, ModelVariable}
   * @param variable the distribution's variable.
   * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
   * @param scale the scale parameter of the distribution (more info in https://en.wikipedia.org/wiki/Scale_parameter).
-  * @throws IllegalArgumentException if the variable is not of [[GammaType]] or
-  *                                  if the shape is <= 0 or
-  *                                  if the scale is <= 0
+  * @throws RuntimeException if the variable is not of [[GammaType]]
+  *                          or if the shape is <= 0
+  *                          or if the scale is <= 0
+  *                          or if the scale is <= 0
   */
-@throws[IllegalArgumentException]
 //TODO: create different constructors for the different parametrizations.
 case class Gamma(variable: ModelVariable, shape: Double, scale: Double) extends UnivariateDistribution {
 
@@ -118,5 +118,4 @@ object Gamma {
     */
   def createUsingMeanParameter(variable: ModelVariable, shape: Double, mean: Double): Gamma =
     Gamma(variable, shape, mean / shape)
-
 }

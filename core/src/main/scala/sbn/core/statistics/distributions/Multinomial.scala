@@ -15,11 +15,10 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
   *
   * @param variable the associated variable.
   * @param probabilities the parameters of the distributions. Each state of the variable has an associated probability value.
-  * @throws IllegalArgumentException if [[variable.distributionType]] is not [[MultinomialType]] or
-  *                                  if variable.nStates != [[probabilities.size]] or
-  *                                  if [[probabilities.sum]] != 1.0
+  * @throws RuntimeException if [[variable.distributionType]] is not [[MultinomialType]]
+  *                          or if variable.nStates != [[probabilities.size]]
+  *                          or if [[probabilities.sum]] != 1.0
   */
-@throws[IllegalArgumentException]
 case class Multinomial(variable: ModelVariable, probabilities: Vector[Double]) extends UnivariateDistribution{
 
   /** The state space of the multinomial variable. */
@@ -49,13 +48,11 @@ case class Multinomial(variable: ModelVariable, probabilities: Vector[Double]) e
     * possible state of the distribution and log represented the natural logarithm.
     *
     * @param x a double value representing a possible state of the Multinomial distribution.
-    * @throws IllegalArgumentException if x < 0 or x > nStates
+    * @throws Exception if x < 0 or x > nStates
     * @return the Probability for a given state of the distribution.
     */
-  @throws[IllegalArgumentException]
-  override def probability(x: Double): Double = try {
-    this.probabilities(x.asInstanceOf[Int])
-  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value")}
+  override def probability(x: Double): Double = this.probabilities(x.asInstanceOf[Int])
+
 
   /**
     * This method represents the probability mass function (PMF) for the distribution. For a random variable X whose
@@ -63,10 +60,9 @@ case class Multinomial(variable: ModelVariable, probabilities: Vector[Double]) e
     * of the distribution.
     *
     * @param x a double value representing a possible state of the Multinomial distribution.
-    * @throws IllegalArgumentException if x0 > x1 or if x0, x1 are invalid.
+    * @throws Exception if x0 > x1 or if x0, x1 are invalid.
     * @return the Probability for a given state of the distribution.
     */
-  @throws[IllegalArgumentException]
   override def logProbability(x: Double): Double = FastMath.log(probability(x))
 
   /** @inheritdoc */
@@ -80,9 +76,7 @@ case class Multinomial(variable: ModelVariable, probabilities: Vector[Double]) e
   override def cumulativeProbability(value: Double): Double = {
     if(value < 0) throw new IllegalArgumentException("Invalid value. State index has to be > 0")
 
-    try {
-      (for (i <- 0 to value.asInstanceOf[Int]) yield probabilities(i)).sum
-    } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid value. State index is out of bounds.")}
+    (for (i <- 0 to value.asInstanceOf[Int]) yield probabilities(i)).sum
   }
 
   /** @inheritdoc */
@@ -113,13 +107,10 @@ case class Multinomial(variable: ModelVariable, probabilities: Vector[Double]) e
     * Returns the state name of the associated multinomial variable for a given index.
     *
     * @param index the stste's index.
-    * @throws IllegalArgumentException if index < 0 or index >= numberOfParameters.
+    * @throws Exception if index < 0 or index >= numberOfParameters.
     * @return the corresponding state name.
     */
-  @throws[IllegalArgumentException]
-  def getStateName(index: Int): String = try {
-    this.variableStateSpace.stateNames(index)
-  } catch { case e: IndexOutOfBoundsException => throw new IllegalArgumentException("Invalid index")}
+  def getStateName(index: Int): String = this.variableStateSpace.stateNames(index)
 
   override def toString: String = {
     val sb: StringBuilder = new StringBuilder
@@ -138,11 +129,10 @@ object Multinomial{
     * Factory method that produces a new Multinomial distribution with randomly created parameter values.
     *
     * @param variable the variable used to create the distribution.
-    * @throws IllegalArgumentException if the variable's state space is not [[FiniteStateSpace]] or
-    *                                  if the variable's distributionType is not [[MultinomialType]].
+    * @throws RuntimeException if the variable's state space is not [[FiniteStateSpace]]
+    *                          or if the variable's distributionType is not [[MultinomialType]].
     * @return a new [[Multinomial]] distribution with randomly created parameter values.
     */
-  @throws[IllegalArgumentException]
   def apply(variable: ModelVariable): Multinomial = {
     require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
 

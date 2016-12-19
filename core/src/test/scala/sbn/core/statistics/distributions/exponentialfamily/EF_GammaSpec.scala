@@ -10,41 +10,41 @@ import sbn.core.variables.model.ModelVariablesFactory
   */
 class EF_GammaSpec extends CustomSpec{
 
-  "EF_Gamma constructor" should "throw an IllegalArgumentException if the variable's distribution type is not Gamma" in {
+  "EF_Gamma constructor" should "throw a RuntimeException if the variable's distribution type is not Gamma" in {
 
     Given("a multinomial variable")
     val multinomialVar = ModelVariablesFactory.newMultinomialLV("gamma wars", 2)
 
     When("creating a EF_Gamma distribution from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       EF_Gamma(multinomialVar, 2.54, 0.64)
     }
   }
 
-  it should "throw an IllegalArgumentException if the shape <= 0" in {
+  it should "throw a RuntimeException if the shape <= 0" in {
 
     Given("a gamma variable")
     val gammaVar = ModelVariablesFactory.newGammaLV("gamma_noBounds")
 
     When("creating a Gamma distribution with shape = -0.0001 from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       EF_Gamma(gammaVar, -0.0001, 5)
     }
   }
 
-  it should "throw an IllegalArgumentException if the RATE <= 0" in {
+  it should "throw a RuntimeException if the RATE <= 0" in {
 
     Given("a gamma variable")
     val gammaVar = ModelVariablesFactory.newGammaLV("gamma_noBounds")
 
     When("creating a Gamma distribution with scale = -0.0001 from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       EF_Gamma(gammaVar, 5, -0.0001)
     }
   }

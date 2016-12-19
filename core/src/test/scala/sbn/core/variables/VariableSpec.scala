@@ -15,8 +15,8 @@ class VariableSpec extends CustomSpec{
 
     When("creating a manifest variable of gaussian type")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       val variable = ManifestVariable(attribute, new GaussianType, UUID.randomUUID())
     }
   }
@@ -28,15 +28,15 @@ class VariableSpec extends CustomSpec{
 
     When("creating a latent variable of gaussian type")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       val variable = LatentVariable(attribute, new GaussianType, UUID.randomUUID())
     }
   }
 
-  "VariableFactory.newMultinomialMV(attribute)" should "throw an IllegalArgumentException if its attribute's state space is not finite" in {
+  "VariableFactory.newMultinomialMV(attribute)" should "throw a RuntimeException if its attribute's state space is not finite" in {
     val attribute = Attribute("attr", RealStateSpace())
-    a[IllegalArgumentException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       ModelVariablesFactory.newMultinomialMV(attribute)
     }
   }
@@ -67,9 +67,9 @@ class VariableSpec extends CustomSpec{
     assert(!multinomialLatentVariable.id.equals(null))
   }
 
-  "VariableFactory.newGaussianMV(attribute)" should "throw an IllegalArgumentException if its attribute's state space is not real" in {
+  "VariableFactory.newGaussianMV(attribute)" should "throw a RuntimeException if its attribute's state space is not real" in {
     val attribute = Attribute("attr", FiniteStateSpace(2))
-    a[IllegalArgumentException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       ModelVariablesFactory.newGaussianMV(attribute)
     }
   }
@@ -101,9 +101,9 @@ class VariableSpec extends CustomSpec{
     assert(!gaussianLatentVariable1.id.equals(null) && !gaussianLatentVariable1.id.equals(null))
   }
 
-  "VariableFactory.newGammaMV(attribute)" should "throw an IllegalArgumentException if its attribute's state space is not real" in {
+  "VariableFactory.newGammaMV(attribute)" should "throw a RuntimeException if its attribute's state space is not real" in {
     val attribute = Attribute("attr", FiniteStateSpace(2))
-    a[IllegalArgumentException] should be thrownBy{
+    a[RuntimeException] should be thrownBy{
       ModelVariablesFactory.newGammaMV(attribute)
     }
   }

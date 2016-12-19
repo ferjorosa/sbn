@@ -19,7 +19,7 @@ case class Variables[V <: Variable](content: Map[String, V]) extends Iterable[V]
     * Returns the variable associated to the provided name.
     *
     * @param variableName the provided variable's name.
-    * @throws NoSuchElementException if the provided string doesn't correspond to any of the stored variable's name.
+    * @throws RuntimeException if the provided string doesn't correspond to any of the stored variable's name.
     * @return the associated variable.
     */
   def apply(variableName: String): V = content(variableName)

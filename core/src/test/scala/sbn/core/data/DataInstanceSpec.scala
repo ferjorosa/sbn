@@ -6,7 +6,7 @@ import sbn.core.utils.Utils
 
 class DataInstanceSpec extends CustomSpec {
 
-  "DataInstance.value(attribute)" should "throw an NoSuchElementException if the attribute doesn't belong to its Attributes" in {
+  "DataInstance.value(attribute)" should "throw a RuntimeException if the attribute doesn't belong to its Attributes" in {
 
     Given("a  manually created DataInstance with a manually created Attributes object")
     val attribute1 = Attribute("attribute1", RealStateSpace())
@@ -17,8 +17,8 @@ class DataInstanceSpec extends CustomSpec {
     When("trying to get a value with an Attribute not present in Attributes")
     val attributeNotPresent = Attribute("attributeNotPresent", FiniteStateSpace(2))
 
-    Then("an NoSuchElementException is thrown")
-    a[NoSuchElementException] should be thrownBy{
+    Then("a RuntimeException is thrown")
+    a[RuntimeException] should be thrownBy{
       instance.value(attributeNotPresent)
     }
   }

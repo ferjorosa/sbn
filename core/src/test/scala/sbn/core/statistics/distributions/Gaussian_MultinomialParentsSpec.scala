@@ -8,7 +8,7 @@ import sbn.core.variables.{Assignment, Assignments}
 
 class Gaussian_MultinomialParentsSpec extends CustomSpec{
 
-  "Gaussian_MultinomialParents.apply" should "throw an IllegalArgumentException if the variable is not of GaussianType" in{
+  "Gaussian_MultinomialParents.apply" should "throw a RuntimeException if the variable is not of GaussianType" in{
 
     Given("a variable of Multinomial type and a set of multinomial parents")
     val variable = ModelVariablesFactory.newMultinomialLV("multinomial", 15)
@@ -17,9 +17,9 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
 
     When("creating a Gaussian_MultinomialParents distribution from it")
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
-      Gaussian_MultinomialParents(variable, Set(parent1, parent2))
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
+      Gaussian_Multinomial(variable, Vector(parent1, parent2))
     }
   }
 
@@ -32,9 +32,9 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
 
     When("creating a Gaussian_MultinomialParents distribution from it")
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
-      Gaussian_MultinomialParents(variable, Set(parent1, parent2))
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
+      Gaussian_Multinomial(variable, Vector(parent1, parent2))
     }
   }
 
@@ -46,7 +46,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     val parent2 = ModelVariablesFactory.newMultinomialLV("mult2", 4)
 
     When("creating a Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(variable, Set(parent1, parent2))
+    val dist = Gaussian_Multinomial(variable, Vector(parent1, parent2))
 
     Then("its label must be 'Gaussian | Multinomial'")
     assert(dist.label == "Gaussian | Multinomial")
@@ -60,7 +60,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     val parent2 = ModelVariablesFactory.newMultinomialLV("mult2", 8)
 
     When("creating a Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(variable, Set(parent1, parent2))
+    val dist = Gaussian_Multinomial(variable, Vector(parent1, parent2))
 
     Then("this distribution should have 2*(3*8) parameters")
     assert(dist.numberOfParameters == 2*3*8)
@@ -91,7 +91,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a specific Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("getUnivariateDistribution(parent1_2states = 0, parent2_2states = 1) should return the gaussian distribution with mean = -5 & variance = 5")
     assert(dist.getUnivariateDistribution(assignments0_1).parameters equals Vector(-5, 25))
@@ -99,19 +99,19 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     And("getUnivariateDistribution(parent1_2states = 1, parent2_2states = 1) should return the gaussian distribution with mean = 0 & variance = 3")
     assert(dist.getUnivariateDistribution(assignments1_1).parameters equals Vector(0, 16))
 
-    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw an NoSuchElementException")
-    a[NoSuchElementException] should be thrownBy {
+    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent1_2states, -1), Assignment(parent2_2states, 1))))
     }
 
-    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw an NoSuchElementException")
-    a[NoSuchElementException] should be thrownBy {
+    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       val newVariable = ModelVariablesFactory.newMultinomialLV("newVariable", 2)
       dist.getUnivariateDistribution(Assignments(Set(Assignment(newVariable, 0), Assignment(parent2_2states,1))))
     }
 
-    And("getUnivariateDistribution(parent2_2states = 1) should throw an NoSuchElementException")
-    a[NoSuchElementException] should be thrownBy {
+    And("getUnivariateDistribution(parent2_2states = 1) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent2_2states,0))))
     }
   }
@@ -121,7 +121,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a specific Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("conditionalProbability(X = 1.5 | parent1_2states = 0, parent2_2states = 1) should return 0.0")
     assert(Utils.eqDouble(dist.conditionalProbability(assignments0_1, 1.5), 0))
@@ -135,7 +135,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a specific Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("logConditionalProbability(X = 1.5 | parent1_2states = 0, parent2_2states = 1) should return -infinity")
     assert(dist.logConditionalProbability(assignments0_1, 1.5) == FastMath.log(0))
@@ -149,7 +149,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("conditionalProbability(1 < X <= 2 | parent1_2states = 0, parent2_2states = 1) must equal cumulativeProbability(assignments0_1, 2) - cumulativeProbability(assignments0_1, 1)")
     assert(Utils.eqDouble(
@@ -169,7 +169,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variabl and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("cumulativeConditionalProbability(X <= 2 | parent1_2states = 0, parent2_2states = 1) must equal 0.91924 with an epsilon of 0.00001")
     println(dist.cumulativeConditionalProbability(assignments0_1, 2))
@@ -187,7 +187,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("conditionalDensity(assignments0_1, -0.5) must equal 0.05321 with an epsilon of 0.0001")
     assert(Utils.eqDouble(dist.conditionalDensity(assignments0_1, -0.5), 0.05321, 0.0001))
@@ -201,7 +201,7 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("logConditionalDensity(assignments0_1, -0.5) must equal log(0.05321) with an epsilon of 0.001")
     // error adds up, so the epsilon has to be reduced even more
@@ -217,12 +217,12 @@ class Gaussian_MultinomialParentsSpec extends CustomSpec{
     Given("a gaussian variable and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Gaussian_MultinomialParents distribution from it")
-    val dist = Gaussian_MultinomialParents(st_gaussian, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Gaussian_Multinomial(st_gaussian, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("dist.toEF_Distribution should return an equivalent EF_Gaussian_Multinomial object")
     val ef_dist = dist.toEF_Distribution
     assert(dist.variable equals ef_dist.variable)
-    assert(dist.multinomialParents equals ef_dist.parents)
+    assert(dist.parents equals ef_dist.parents)
 
     val distAssignments = dist.assignedDistributions.keys
     val ef_distAssignments = ef_dist.assignedDistributions

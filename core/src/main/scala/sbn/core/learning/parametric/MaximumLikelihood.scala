@@ -30,7 +30,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         case univariate: EF_UnivariateDistribution =>
           (Assignments(Set.empty[Assignment]), univariate.sufficientStatistics(instance.value(univariate.variable.attribute)))
         case condicional: EF_ConditionalDistribution =>
-          val assignments = MaximumLikelihood.generateAssignments(condicional.parents, instance)
+          val assignments = MaximumLikelihood.generateAssignments(condicional.parents.toSet, instance)
           (assignments, condicional.sufficientStatistics(assignments, instance.value(condicional.variable.attribute)))
       }
     }.transpose.map(_.groupBy(_._1)
@@ -56,7 +56,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         dist
     })
 
-    EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions)
+    EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions.toVector)
   }
 
   def parallelMLE(ef_BayesianNetwork: EF_BayesianNetwork, dataSet: ImmutableDataSet) = {
@@ -70,7 +70,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         case univariate: EF_UnivariateDistribution =>
           (Assignments(Set.empty[Assignment]), univariate.sufficientStatistics(instance.value(univariate.variable.attribute)))
         case condicional: EF_ConditionalDistribution =>
-          val assignments = MaximumLikelihood.generateAssignments(condicional.parents, instance)
+          val assignments = MaximumLikelihood.generateAssignments(condicional.parents.toSet, instance)
           (assignments, condicional.sufficientStatistics(assignments, instance.value(condicional.variable.attribute)))
       }
     }.transpose.par.map(_.groupBy(_._1)
@@ -96,7 +96,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         dist
     })
 
-    EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions)
+    EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions.toVector)
 
   }
 
@@ -111,7 +111,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         case univariate: EF_UnivariateDistribution =>
           (Assignments(Set.empty[Assignment]), univariate.sufficientStatistics(instance.value(univariate.variable.attribute)))
         case condicional: EF_ConditionalDistribution =>
-          val assignments = MaximumLikelihood.generateAssignments(condicional.parents, instance)
+          val assignments = MaximumLikelihood.generateAssignments(condicional.parents.toSet, instance)
           (assignments, condicional.sufficientStatistics(assignments, instance.value(condicional.variable.attribute)))
       }
     }.foldLeft(observedDistributions.map(_.generalZeroSufficientStatistics)) {
@@ -142,7 +142,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         dist
     })
 
-    val newBn = EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions)
+    val newBn = EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions.toVector)
 
     newBn
   }
@@ -157,7 +157,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         case univariate: EF_UnivariateDistribution =>
           (Assignments(Set.empty[Assignment]), univariate.sufficientStatistics(instance.value(univariate.variable.attribute)))
         case condicional: EF_ConditionalDistribution =>
-          val assignments = MaximumLikelihood.generateAssignments(condicional.parents, instance)
+          val assignments = MaximumLikelihood.generateAssignments(condicional.parents.toSet, instance)
           (assignments, condicional.sufficientStatistics(assignments, instance.value(condicional.variable.attribute)))
       }
     }.foldLeft(observedDistributions.map(_.generalZeroSufficientStatistics)) {
@@ -188,7 +188,7 @@ class MaximumLikelihood extends ParameterLearningAlgorithm{
         dist
     })
 
-    val newBn = EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions)
+    val newBn = EF_BayesianNetwork(ef_BayesianNetwork.name, ef_BayesianNetwork.dag, learnedDistributions.toVector)
 
     newBn
   }

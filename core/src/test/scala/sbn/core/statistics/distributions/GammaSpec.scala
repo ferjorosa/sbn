@@ -10,15 +10,15 @@ import sbn.core.variables.model.ModelVariablesFactory
 // TODO: All the probability, density, etc methods (not easy to check, I can trust the Apache implementation...)
 class GammaSpec extends CustomSpec{
 
-  "Gamma constructor" should "throw an IllegalArgumentException if the variable's distribution type is not Gamma" in {
+  "Gamma constructor" should "throw an RuntimeException if the variable's distribution type is not Gamma" in {
 
     Given("a multinomial variable")
     val multinomialVar = ModelVariablesFactory.newMultinomialLV("gamma wars", 2)
 
     When("creating a Gamma distribution from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       Gamma(multinomialVar, 2.54, 0.64)
     }
   }
@@ -30,8 +30,8 @@ class GammaSpec extends CustomSpec{
 
     When("creating a Gamma distribution with shape = -0.0001 from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       Gamma(gammaVar, -0.0001, 5)
     }
   }
@@ -43,8 +43,8 @@ class GammaSpec extends CustomSpec{
 
     When("creating a Gamma distribution with scale = -0.0001 from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       Gamma(gammaVar, 5, -0.0001)
     }
   }

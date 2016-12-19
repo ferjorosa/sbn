@@ -9,9 +9,8 @@ import scala.util.Try
   *
   * @param attributes the [[Attributes]] object representing the columns of the data instance.
   * @param values the values assigned to the columns.
-  * @throws IllegalArgumentException if [[attributes]].size != [[values]].size
+  * @throws RuntimeException if [[attributes]].size != [[values]].size
   */
-@throws[IllegalArgumentException]
 case class DataInstance (attributes: Attributes, values: Vector[Double]){
   require(attributes.size == values.size, "attributes and values sizes differ")
 
@@ -19,10 +18,9 @@ case class DataInstance (attributes: Attributes, values: Vector[Double]){
     * Returns the value associated to the attribute.
     *
     * @param attribute the column of the data instance.
-    * @throws NoSuchElementException if the attribute doesn't belong to the Attributes object of the DataInstance.
+    * @throws RuntimeException if the attribute doesn't belong to the Attributes object of the DataInstance.
     * @return the value associated to the attribute.
     */
-  @throws[NoSuchElementException]
   def value(attribute: Attribute) = values(attributes.indexOf(attribute))
 }
 

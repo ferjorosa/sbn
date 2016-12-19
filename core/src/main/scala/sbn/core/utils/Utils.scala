@@ -36,7 +36,8 @@ object Utils {
     * @param b
     * @return
     */
-  def eqDouble(a: Double, b: Double): Boolean = eqDouble(a, b, 1.11e-14) // IEEE standard for binary 64 (technically is 1.11e-16, but i found some problems with e-16 and with e-15)
+  // IEEE standard for binary 64 (technically is 1.11e-16, but i found some problems with e-16 and with e-15)
+  def eqDouble(a: Double, b: Double): Boolean = eqDouble(a, b, 1.11e-14)
 
   /**
     *

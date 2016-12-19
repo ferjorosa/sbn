@@ -2,7 +2,7 @@ package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
 import sbn.core.statistics.distributions.learning.CE_Distribution
-import sbn.core.statistics.distributions.{Distribution, Multinomial, Multinomial_MultinomialParents}
+import sbn.core.statistics.distributions.{Distribution, Multinomial, Multinomial_Multinomial}
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
@@ -16,12 +16,11 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
   * @param variable the main variable of the distribution.
   * @param parents its multinomial parents.
   * @param assignedDistributions the resulting gaussian distributions of the variable.
-  * @throws IllegalArgumentException if there is a parent whose type is not multinomial or
-  *                                  if the variable's type is not multinomial.
+  * @throws Exception if there is a parent whose type is not multinomial or
+  *                   if the variable's type is not multinomial.
   */
-@throws[IllegalArgumentException]
 case class EF_Multinomial_Multinomial(variable: ModelVariable,
-                                      parents: Set[ModelVariable],
+                                      parents: Vector[ModelVariable],
                                       assignedDistributions: Map[Assignments, EF_Multinomial]) extends EF_BaseDistribution_Multinomial(variable, parents, assignedDistributions){
 
   require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
@@ -33,7 +32,7 @@ case class EF_Multinomial_Multinomial(variable: ModelVariable,
 
   /** @inheritdoc */
   override def toDistribution: Distribution =
-    Multinomial_MultinomialParents(this.variable,
+    Multinomial_Multinomial(this.variable,
       this.parents,
       this.assignedDistributions.mapValues(_.toDistribution.asInstanceOf[Multinomial]))
 
@@ -47,12 +46,12 @@ object EF_Multinomial_Multinomial {
   /**
     * Factory method that creates a new [[EF_Multinomial_Multinomial]] distribution form its equivalent in non-exponential form.
     *
-    * @param distribution the [[Multinomial_MultinomialParents]] distribution object used to create the new EF distribution.
-    * @return a new [[EF_Gaussian_Multinomial]] distribution from a [[Multinomial_MultinomialParents]] object.
+    * @param distribution the [[Multinomial_Multinomial]] distribution object used to create the new EF distribution.
+    * @return a new [[EF_Gaussian_Multinomial]] distribution from a [[Multinomial_Multinomial]] object.
     */
-  def apply(distribution: Multinomial_MultinomialParents): EF_Multinomial_Multinomial = EF_Multinomial_Multinomial(
+  def apply(distribution: Multinomial_Multinomial): EF_Multinomial_Multinomial = EF_Multinomial_Multinomial(
       distribution.variable,
-      distribution.multinomialParents,
+      distribution.parents,
       distribution.assignedDistributions.map{case (assignment, dist) => (assignment, dist.toEF_Distribution.asInstanceOf[EF_Multinomial])})
 
   /**
@@ -65,7 +64,7 @@ object EF_Multinomial_Multinomial {
     * @return a new [[EF_Multinomial_Multinomial]] distribution from a set of assigned moment parameter vectors.
     */
   // TODO cambiar porque el tipo de momentParameters no se tiene en cuenta y da duplicado el apply
-  def create(variable: ModelVariable, parents: Set[ModelVariable], momentParameters: Map[Assignments, DenseVector[Double]]): EF_Multinomial_Multinomial =
+  def create(variable: ModelVariable, parents: Vector[ModelVariable], momentParameters: Map[Assignments, DenseVector[Double]]): EF_Multinomial_Multinomial =
     EF_Multinomial_Multinomial(variable, parents, momentParameters.mapValues(EF_Multinomial(variable, _)))
 
 }

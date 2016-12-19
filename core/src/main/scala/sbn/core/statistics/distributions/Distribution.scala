@@ -9,6 +9,9 @@ import sbn.core.variables.{Assignment, Assignments}
   */
 trait Distribution extends Product with Serializable{
 
+  /** */
+  val variable: ModelVariable
+
   /**
     * Returns the label of the distribution.
     *
@@ -54,10 +57,9 @@ trait UnivariateDistribution extends Distribution{
     * P(X = x). In other  words, this method represents the probability mass function (PMF) for the distribution.
     *
     * @param x the provided point at which the PMF is evaluated.
-    * @throws IllegalArgumentException if x is an invalid value.
+    * @throws RuntimeException if x is an invalid value.
     * @return the value of the PMF at the provided point.
     */
-  @throws[IllegalArgumentException]
   def probability(x: Double): Double
 
   /**
@@ -66,10 +68,9 @@ trait UnivariateDistribution extends Distribution{
     * logarithm of the probability mass function (PMF) for the distribution.
     *
     * @param x the provided point at which the PMF is evaluated.
-    * @throws IllegalArgumentException if x is an invalid value.
+    * @throws RuntimeException if x is an invalid value.
     * @return the value of the log(PMF) at the provided point.
     */
-  @throws[IllegalArgumentException]
   def logProbability(x: Double): Double
 
   /**
@@ -78,10 +79,9 @@ trait UnivariateDistribution extends Distribution{
     *
     * @param x0 the lower bound.
     * @param x1 the upper bound.
-    * @throws IllegalArgumentException if x0 > x1.
+    * @throws RuntimeException if x0 > x1.
     * @return the probability that this distribution will take a value in the interval (x0, x1].
     */
-  @throws[IllegalArgumentException]
   def probability(x0: Double, x1: Double): Double
 
   /**
@@ -92,7 +92,6 @@ trait UnivariateDistribution extends Distribution{
     * @param x the point at which the CDF is evaluated.
     * @return the probability that a variable with this distribution will take a value less than or equal to x.
     */
-  @throws[IllegalArgumentException]
   def cumulativeProbability(x: Double): Double
 
   /**
@@ -125,12 +124,8 @@ trait UnivariateDistribution extends Distribution{
 // TODO: this ConditionalDistribution correctly abstract the distributions that have multinomial parents only (Normal_Normal would be different, for example)
 trait ConditionalDistribution extends Distribution{
 
-  /**
-    * Returns the set of variables that condition it.
-    *
-    * @return the set of variables that condition it.
-    */
-  def conditioningVariables: Set[ModelVariable]
+  /** The set of variables that condition the distribution. */
+  val parents: Vector[ModelVariable]
 
   /**
     * Returns the univariate distribution of an [[Assignment]] given a conditional distribution. If we think of the
@@ -138,10 +133,9 @@ trait ConditionalDistribution extends Distribution{
     * a row of this compound vector, which corresponds o a [[UnivariateDistribution]].
     *
     * @param assignments the values of the conditioning variables.
-    * @throws NoSuchElementException if the provided [[Assignments]] object is invalid for the distribution.
+    * @throws RuntimeException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the [[UnivariateDistribution]] associated to the parents' [[Assignments]].
     */
-  @throws[NoSuchElementException]
   def getUnivariateDistribution(assignments: Assignments): UnivariateDistribution
 
   /**
@@ -160,10 +154,9 @@ trait ConditionalDistribution extends Distribution{
     *
     * @param assignments the values assigned to the conditioning variables.
     * @param x the value of the main variable.
-    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
+    * @throws RuntimeException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the conditional probability represented by a [[Double]] value.
     */
-  @throws[IllegalArgumentException]
   def conditionalProbability(assignments: Assignments, x: Double): Double
 
   /**
@@ -180,10 +173,9 @@ trait ConditionalDistribution extends Distribution{
     *
     * @param assignments the values assigned to the conditioning variables.
     * @param x the value of the main variable.
-    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
+    * @throws RuntimeException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the log conditional probability represented by a [[Double]] value.
     */
-  @throws[IllegalArgumentException]
   def logConditionalProbability(assignments: Assignments, x: Double): Double
 
   /**
@@ -197,11 +189,11 @@ trait ConditionalDistribution extends Distribution{
     * @param assignments the conditioning variables and their associated values.
     * @param x0 the lower bound.
     * @param x1 the upper bound.
-    * @throws IllegalArgumentException if x0 > x1 or if the provided [[Assignments]] object is invalid for the distribution.
+    * @throws RuntimeException if x0 > x1 or
+    *                   if the provided [[Assignments]] object is invalid for the distribution.
     * @return the probability that this distribution will take a value in the interval (x0, x1], given its conditioning
     *         variables' values.
     */
-  @throws[IllegalArgumentException]
   def conditionalProbability(assignments: Assignments, x0: Double, x1: Double): Double
 
   /**
@@ -213,11 +205,10 @@ trait ConditionalDistribution extends Distribution{
     *
     * @param assignments the conditioning variables and their associated values.
     * @param x the value of the main variable that represent the point at which the CCDF is evaluated.
-    * @throws IllegalArgumentException if the provided [[Assignments]] object is invalid for the distribution.
+    * @throws RuntimeException if the provided [[Assignments]] object is invalid for the distribution.
     * @return the probability that a variable with this distribution will take a value less than or equal to x, given its set of
     *         conditioning variables.
     */
-  @throws[IllegalArgumentException]
   def cumulativeConditionalProbability(assignments: Assignments, x: Double): Double
 
   /**

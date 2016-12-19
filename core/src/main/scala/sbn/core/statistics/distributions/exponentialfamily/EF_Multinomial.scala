@@ -19,11 +19,10 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
   *
   * @param variable the associated variable.
   * @param probabilities the parameters of the distributions. Each state of the variable has an associated probability value.
-  * @throws IllegalArgumentException if [[variable.distributionType]] is not [[MultinomialType]] or
-  *                                  if variable.nStates != [[probabilities.size]] or
-  *                                  if [[probabilities.sum]] != 1.0
+  * @throws Exception if [[variable.distributionType]] is not [[MultinomialType]] or
+  *                   if variable.nStates != [[probabilities.size]] or
+  *                   if [[probabilities.sum]] != 1.0
   */
-@throws[IllegalArgumentException]
 // TODO: definir o revisar el uso de un vector inmutable para numeros Double
 case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]) extends EF_UnivariateDistribution{
 

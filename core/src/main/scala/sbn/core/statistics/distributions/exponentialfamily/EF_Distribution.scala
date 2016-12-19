@@ -7,6 +7,8 @@ import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.variables.model.ModelVariable
 import sbn.core.variables.{Assignment, Assignments}
 
+// TODO: exceptions in documentation
+
 /**
   * This trait abstracts the Exponential family of distributions. This family is composed of a set of probability distributions
   * represented by a certain form. The exponential families include many of the most common distributions, including the Gaussian,
@@ -141,7 +143,7 @@ trait EF_UnivariateDistribution extends EF_Distribution{
 trait EF_ConditionalDistribution extends EF_Distribution {
 
   /** The set of variables that condition the distribution. */
-  val parents: Set[ModelVariable]
+  val parents: Vector[ModelVariable]
 
   /**
     * The moment parameters are the "standard" form of the distribution parameters. They are transformed to natural parameters

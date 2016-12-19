@@ -5,7 +5,7 @@ import sbn.core.variables.Assignments
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
 /**
-  * This class extends the [[BaseDistribution_MultinomialParents]] class and defines the conditional distribution of a
+  * This class extends the [[BaseDistribution_Multinomial]] class and defines the conditional distribution of a
   * variable of [[MultinomialType]] whose parents are all also of [[MultinomialType]].
   *
   * This distribution is composed of several [[Multinomial]] distributions, each one of them related to an Assignment of
@@ -37,15 +37,14 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
   * </table>
   *
   * @param variable the main variable of the distribution.
-  * @param multinomialParents the parents of the variable.
+  * @param parents the parents of the variable.
   * @param assignedDistributions the resulting multinomial distributions of the variable.
-  * @throws IllegalArgumentException if there is a parent whose type is not multinomial or
-  *                                  if the variable's type is not multinomial.
+  * @throws RuntimeException if there is a parent whose type is not multinomial
+  *                          or if the variable's type is not multinomial.
   */
-@throws[IllegalArgumentException]
-case class Multinomial_MultinomialParents(variable: ModelVariable,
-                                          multinomialParents: Set[ModelVariable],
-                                          assignedDistributions: Map[Assignments, Multinomial]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, assignedDistributions) {
+case class Multinomial_Multinomial(variable: ModelVariable,
+                                   parents: Vector[ModelVariable],
+                                   assignedDistributions: Map[Assignments, Multinomial]) extends BaseDistribution_Multinomial(variable, parents, assignedDistributions) {
 
   require(variable.distributionType.isInstanceOf[MultinomialType], "Variable must be of multinomial type")
 
@@ -56,26 +55,24 @@ case class Multinomial_MultinomialParents(variable: ModelVariable,
   override def toEF_Distribution: EF_Multinomial_Multinomial = EF_Multinomial_Multinomial(this)
 }
 
-/** The factory containing specific methods for creating [[Multinomial_MultinomialParents]] distribution objects */
-object Multinomial_MultinomialParents {
+/** The factory containing specific methods for creating [[Multinomial_Multinomial]] distribution objects */
+object Multinomial_Multinomial {
 
   /**
-    * Factory method that creates a [[Multinomial_MultinomialParents]] distribution with random parameters.
+    * Factory method that creates a [[Multinomial_Multinomial]] distribution with random parameters.
     *
     * @param variable the main variable of the distribution.
     * @param multinomialParents the conditioning variables
-    * @throws IllegalArgumentException if the variable is not [[MultinomialType]] or
-    *                                  if parents are not [[MultinomialType]].
-    * @return a new [[Multinomial_MultinomialParents]] distribution with random parameters.
+    * @throws RuntimeException if the variable is not [[MultinomialType]] or
+    *                          or if parents are not [[MultinomialType]].
+    * @return a new [[Multinomial_Multinomial]] distribution with random parameters.
     */
-  @throws[IllegalArgumentException]
-  def apply(variable: ModelVariable, multinomialParents: Set[ModelVariable]): Multinomial_MultinomialParents ={
+  def apply(variable: ModelVariable, multinomialParents: Vector[ModelVariable]): Multinomial_Multinomial ={
 
-    val parametrizedMultinomialDistributions = BaseDistribution_MultinomialParents.generateAssignmentCombinations(multinomialParents)
+    val parametrizedMultinomialDistributions = BaseDistribution_Multinomial.generateAssignmentCombinations(multinomialParents)
       // .view makes it much faster because it avoids creating intermediate results.
       .view.map(assignments => assignments -> Multinomial(variable)).toMap
 
-    Multinomial_MultinomialParents(variable, multinomialParents, parametrizedMultinomialDistributions)
+    Multinomial_Multinomial(variable, multinomialParents, parametrizedMultinomialDistributions)
   }
-
 }

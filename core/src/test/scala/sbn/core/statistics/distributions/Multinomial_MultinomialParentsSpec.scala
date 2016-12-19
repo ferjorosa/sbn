@@ -8,7 +8,7 @@ import sbn.core.variables.{Assignment, Assignments}
 
 class Multinomial_MultinomialParentsSpec extends CustomSpec{
 
-  "Multinomial_MultinomialParents.apply" should "throw an IllegalArgumentException if the variable is not of MultinomialType" in{
+  "Multinomial_MultinomialParents.apply" should "throw a RuntimeException if the variable is not of MultinomialType" in{
 
     Given("a variable of Gaussian type and a set of multinomial parents")
     val variable = ModelVariablesFactory.newGaussianLV("gaussian")
@@ -17,13 +17,13 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
 
     When("creating a Multinomial_MultinomialParents distribution from it")
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
-      Multinomial_MultinomialParents(variable, Set(parent1, parent2))
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
+      Multinomial_Multinomial(variable, Vector(parent1, parent2))
     }
   }
 
-  it should "throw an IllegalArgumentException if parents are not exclusively of MultinomialType" in {
+  it should "throw a RuntimeException if parents are not exclusively of MultinomialType" in {
 
     Given("a variable of Multinomial type and a set of mixed-type parents")
     val variable = ModelVariablesFactory.newMultinomialLV("multinomial",3)
@@ -32,9 +32,9 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
 
     When("creating a Multinomial_MultinomialParents distribution from it")
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
-      Multinomial_MultinomialParents(variable, Set(parent1, parent2))
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
+      Multinomial_Multinomial(variable, Vector(parent1, parent2))
     }
   }
 
@@ -46,7 +46,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     val parent2 = ModelVariablesFactory.newMultinomialLV("mult2", 4)
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(variable, Set(parent1, parent2))
+    val dist = Multinomial_Multinomial(variable, Vector(parent1, parent2))
 
     Then("its label must be 'Multinomial | Multinomial'")
     assert(dist.label == "Multinomial | Multinomial")
@@ -60,7 +60,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     val parent2 = ModelVariablesFactory.newMultinomialLV("mult2", 8)
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(variable, Set(parent1, parent2))
+    val dist = Multinomial_Multinomial(variable, Vector(parent1, parent2))
 
     Then("this distribution should have 3*(4*8) parameters")
     assert(dist.numberOfParameters == 3*4*8)
@@ -91,7 +91,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("getUnivariateDistribution(parent1_2states = 0, parent2_2states = 1) should return the multinomial distribution with parameters [0.5, 0.4, 0.1]")
     assert(dist.getUnivariateDistribution(assignments0_1).parameters equals Vector(0.5, 0.4, 0.1))
@@ -99,19 +99,19 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     And("getUnivariateDistribution(parent1_2states = 1, parent2_2states = 1) should return the multinomial distribution with parameters [0.01, 0.99, 0.0]")
     assert(dist.getUnivariateDistribution(assignments1_1).parameters equals Vector(0.01, 0.99, 0.0))
 
-    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw an NoSuchElementException")
-    a[NoSuchElementException] should be thrownBy {
+    And("getUnivariateDistribution(parent1_2states = -1, parent2_2states = 1) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent1_2states, -1), Assignment(parent2_2states, 1))))
     }
 
-    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw an NoSuchElementException")
-    a[NoSuchElementException] should be thrownBy {
+    And("getUnivariateDistribution(newVariable = 0, parent2_2states = 1) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       val newVariable = ModelVariablesFactory.newMultinomialLV("newVariable", 2)
       dist.getUnivariateDistribution(Assignments(Set(Assignment(newVariable, 0), Assignment(parent2_2states, 1))))
     }
 
-    And("getUnivariateDistribution(parent2_2states = 1) should throw an NoSuchElementException")
-    a[NoSuchElementException] should be thrownBy {
+    And("getUnivariateDistribution(parent2_2states = 1) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       dist.getUnivariateDistribution(Assignments(Set(Assignment(parent2_2states,0))))
     }
   }
@@ -121,7 +121,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("conditionalProbability(X = 1 | parent1_2states = 0, parent2_2states = 1) should return 0.4")
     assert(Utils.eqDouble(dist.conditionalProbability(assignments0_1, 1), 0.4))
@@ -129,8 +129,8 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     And("conditionalProbability(X = 2 | parent1_2states = 1, parent2_2states = 1) should return 0.0")
     assert(Utils.eqDouble(dist.conditionalProbability(assignments1_1, 2), 0.0))
 
-    And("conditionalProbability(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
-    a[IllegalArgumentException] should be thrownBy {
+    And("conditionalProbability(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw a RuntimeException (X = 6 is an invalid value)")
+    a[RuntimeException] should be thrownBy {
       dist.conditionalProbability(assignments1_1, 6)
     }
   }
@@ -140,7 +140,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("logConditionalProbability(X = 1 | parent1_2states = 0, parent2_2states = 1) should return log(0.4)")
     assert(Utils.eqDouble(dist.logConditionalProbability(assignments0_1, 1), FastMath.log(0.4)))
@@ -149,8 +149,8 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     // -infinity
     assert(dist.logConditionalProbability(assignments1_1, 2) == FastMath.log(0.0))
 
-    And("logConditionalProbability(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
-    a[IllegalArgumentException] should be thrownBy {
+    And("logConditionalProbability(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw a RuntimeException (X = 6 is an invalid value)")
+    a[RuntimeException] should be thrownBy {
       dist.logConditionalProbability(assignments1_1, 6)
     }
   }
@@ -160,18 +160,18 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("conditionalProbability(1 < X <= 2 | parent1_2states = 0, parent2_2states = 1) should return 0.1")
     assert(Utils.eqDouble(dist.conditionalProbability(assignments0_1, 1, 2), 0.1))
 
-    And("conditionalProbability(-1 < X <= 2 | parent1_2states = 1, parent2_2states = 0) should throw and IllegalArgumentException (x0 = -1 is an invalid value)")
-    a[IllegalArgumentException] should be thrownBy {
+    And("conditionalProbability(-1 < X <= 2 | parent1_2states = 1, parent2_2states = 0) should throw a RuntimeException (x0 = -1 is an invalid value)")
+    a[RuntimeException] should be thrownBy {
       println(dist.conditionalProbability(assignments1_0, -1, 2))
     }
 
-    And("conditionalProbability(1 < X <= 0 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (x0 > x1)")
-    a[IllegalArgumentException] should be thrownBy {
+    And("conditionalProbability(1 < X <= 0 | parent1_2states = 1, parent2_2states = 1) should throw aRuntimeException (x0 > x1)")
+    a[RuntimeException] should be thrownBy {
       dist.conditionalProbability(assignments1_1, 1, 0)
     }
   }
@@ -181,17 +181,17 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("cumulativeConditionalProbability(X <= 2 | parent1_2states = 1, parent2_2states = 1) should return 1.0")
     assert(Utils.eqDouble(dist.cumulativeConditionalProbability(assignments0_1, 2), 1.0))
 
-    And("cumulativeConditionalProbability(X <= 7 | parent1_2states = 0, parent2_2states = 1) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("cumulativeConditionalProbability(X <= 7 | parent1_2states = 0, parent2_2states = 1) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       dist.logConditionalProbability(assignments0_1, 7)
     }
-    And("cumulativeConditionalProbability(X <= -1 | parent1_2states = 1, parent2_2states = 0) should throw an IllegalArgumentException")
-    a[IllegalArgumentException] should be thrownBy {
+    And("cumulativeConditionalProbability(X <= -1 | parent1_2states = 1, parent2_2states = 0) should throw a RuntimeException")
+    a[RuntimeException] should be thrownBy {
       dist.logConditionalProbability(assignments1_0, -1)
     }
   }
@@ -201,7 +201,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("conditionalDensity(X = 1 | parent1_2states = 0, parent2_2states = 1) should return 0.4")
     assert(Utils.eqDouble(dist.conditionalDensity(assignments0_1, 1), 0.4))
@@ -209,8 +209,8 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     And("conditionalDensity(X = 2 | parent1_2states = 1, parent2_2states = 1) should return 0.0")
     assert(Utils.eqDouble(dist.conditionalDensity(assignments1_1, 2), 0.0))
 
-    And("conditionalDensity(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
-    a[IllegalArgumentException] should be thrownBy {
+    And("conditionalDensity(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw a RuntimeException (X = 6 is an invalid value)")
+    a[RuntimeException] should be thrownBy {
       dist.conditionalDensity(assignments1_1, 6)
     }
   }
@@ -220,7 +220,7 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("logConditionalDensity(X = 1 | parent1_2states = 0, parent2_2states = 1) should return log(0.4)")
     assert(Utils.eqDouble(dist.logConditionalDensity(assignments0_1, 1), FastMath.log(0.4)))
@@ -229,8 +229,8 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     // -infinity
     assert(dist.logConditionalDensity(assignments1_1, 2) == FastMath.log(0.0))
 
-    And("logConditionalDensity(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw and IllegalArgumentException (X = 6 is an invalid value)")
-    a[IllegalArgumentException] should be thrownBy {
+    And("logConditionalDensity(X = 6 | parent1_2states = 1, parent2_2states = 1) should throw a RuntimeException (X = 6 is an invalid value)")
+    a[RuntimeException] should be thrownBy {
       dist.logConditionalDensity(assignments1_1, 6)
     }
   }
@@ -240,12 +240,12 @@ class Multinomial_MultinomialParentsSpec extends CustomSpec{
     Given("a multinomial variable with 3 parameters and a set of 2 multinomial parents with 2 parameters each (manual parameters)")
 
     When("creating a Multinomial_MultinomialParents distribution from it")
-    val dist = Multinomial_MultinomialParents(mult_3states, Set(parent1_2states, parent2_2states), parameterizedDistributions)
+    val dist = Multinomial_Multinomial(mult_3states, Vector(parent1_2states, parent2_2states), parameterizedDistributions)
 
     Then("dist.toEF_Distribution should return an equivalent EF_Multinomial_Multinomial object")
     val ef_dist = dist.toEF_Distribution
     assert(dist.variable equals ef_dist.variable)
-    assert(dist.multinomialParents equals ef_dist.parents)
+    assert(dist.parents equals ef_dist.parents)
 
     val distAssignments = dist.assignedDistributions.keys
     val ef_distAssignments = ef_dist.assignedDistributions.keys

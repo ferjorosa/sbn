@@ -8,6 +8,7 @@ package sbn.core.variables
   *
   * @param variable the selected variable.
   * @param value the variable's assigned value.
+  * @throws RuntimeException if the value is not permitted.
   */
 case class Assignment(variable: Variable, value: Double) {
   require(variable.isValuePermitted(value), variable.name + " = " + value + " is not permitted")
@@ -32,9 +33,8 @@ object Assignment{
   * functionality.
   *
   * @param assignments the native collection containing the [[Assignment]] objects.
-  * @throws IllegalArgumentException if there are repeated variables in [[assignments]].
+  * @throws RuntimeException if there are repeated variables in [[assignments]].
   */
-@throws[IllegalArgumentException]
 case class Assignments(assignments: Set[Assignment]) {
   require(assignments.map(_.variable).size == assignments.size, "There cannot exist repeated variables in the Assignments")
 

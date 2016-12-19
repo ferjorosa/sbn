@@ -20,7 +20,7 @@ case class DirectedGraph[V <: Variable](self: Graph[V, DiEdge]) {
     *
     * @return the Set of [[V]] belonging to the graph.
     */
-  def nodes: Set[V] = self.nodes.toOuter
+  val nodes: Set[V] = self.nodes.toOuter
 
   /**
     * Returns the set of edges belonging to the graph.

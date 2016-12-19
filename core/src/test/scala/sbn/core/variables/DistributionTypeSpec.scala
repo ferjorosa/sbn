@@ -2,7 +2,7 @@ package sbn.core.variables
 
 import sbn.core.CustomSpec
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
-import sbn.core.statistics.distributions.{Gaussian, Gaussian_MultinomialParents, Multinomial, Multinomial_MultinomialParents}
+import sbn.core.statistics.distributions.{Gaussian, Gaussian_Multinomial, Multinomial, Multinomial_Multinomial}
 import sbn.core.variables.model.{GaussianType, ModelVariablesFactory, MultinomialType}
 
 class DistributionTypeSpec extends CustomSpec{
@@ -74,13 +74,13 @@ class DistributionTypeSpec extends CustomSpec{
     val parent2 = ModelVariablesFactory.newMultinomialLV("parent2", 15)
 
     When("creating a conditional distribution from its distributionType")
-    val dist = multinomialVar.distributionType.newConditionalDistribution(multinomialVar, Set(parent1, parent2))
+    val dist = multinomialVar.distributionType.newConditionalDistribution(multinomialVar, Vector(parent1, parent2))
 
     Then("it should be a Multinomial_MultinomialParents distribution")
-    assert(dist.isInstanceOf[Multinomial_MultinomialParents])
+    assert(dist.isInstanceOf[Multinomial_Multinomial])
   }
 
-  it should "throw an IllegalArgumentException otherwise" in {
+  it should "throw a RuntimeException otherwise" in {
 
     Given("a multinomial variable and a mixed set of multinomial and gaussian parents")
     val multinomialVar = ModelVariablesFactory.newMultinomialLV("gaussian",5)
@@ -89,9 +89,9 @@ class DistributionTypeSpec extends CustomSpec{
 
     When("creating a conditional distribution from its distributionType")
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
-      val dist = multinomialVar.distributionType.newConditionalDistribution(multinomialVar, Set(parent1, parent2))
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
+      val dist = multinomialVar.distributionType.newConditionalDistribution(multinomialVar, Vector(parent1, parent2))
     }
   }
 
@@ -163,13 +163,13 @@ class DistributionTypeSpec extends CustomSpec{
     val parent2 = ModelVariablesFactory.newMultinomialLV("parent2", 15)
 
     When("creating a conditional distribution from its distributionType")
-    val dist = gaussianVar.distributionType.newConditionalDistribution(gaussianVar, Set(parent1, parent2))
+    val dist = gaussianVar.distributionType.newConditionalDistribution(gaussianVar, Vector(parent1, parent2))
 
     Then("it should be a Gaussian_MultinomialParents distribution")
-    assert(dist.isInstanceOf[Gaussian_MultinomialParents])
+    assert(dist.isInstanceOf[Gaussian_Multinomial])
   }
 
-  it should "throw an IllegalArgumentException otherwise" in {
+  it should "throw a RuntimeException otherwise" in {
 
     Given("a gaussian variable and a mixed set of multinomial and gaussian parents")
     val gaussianVar = ModelVariablesFactory.newGaussianLV("gaussian")
@@ -178,9 +178,9 @@ class DistributionTypeSpec extends CustomSpec{
 
     When("creating a conditional distribution from its distributionType")
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
-      val dist = gaussianVar.distributionType.newConditionalDistribution(gaussianVar, Set(parent1, parent2))
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
+      val dist = gaussianVar.distributionType.newConditionalDistribution(gaussianVar, Vector(parent1, parent2))
     }
   }
 

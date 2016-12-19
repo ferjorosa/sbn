@@ -7,27 +7,27 @@ import sbn.core.variables.model.ModelVariablesFactory
 
 class MultinomialSpec extends CustomSpec{
 
-  "Multinomial constructor" should "throw an IllegalArgumentException if variable.distributionType is not MultinomialType" in {
+  "Multinomial constructor" should "throw a RuntimeException if variable.distributionType is not MultinomialType" in {
 
     Given("a variable of Gaussian type")
     val variable = ModelVariablesFactory.newGaussianLV("tonto el que lo lea")
 
     When("Creating a Multinomial distribution from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       Multinomial(variable, Vector(0.0, 0.5, 0.5))
     }
   }
 
-  it should "throw an IllegalArgumentException if the numberOfStates of the variable =! probabilities.size" in {
-    a[IllegalArgumentException] should be thrownBy {
+  it should "throw a RuntimeException if the numberOfStates of the variable =! probabilities.size" in {
+    a[RuntimeException] should be thrownBy {
       Multinomial(ModelVariablesFactory.newMultinomialLV("multinomial", 2), Vector(0.33, 0.33, 0.34))
     }
   }
 
-  it should "throw an IllegalArgumentException if the sum of probabilities != 1.0" in {
-    a[IllegalArgumentException] should be thrownBy {
+  it should "throw a RuntimeException if the sum of probabilities != 1.0" in {
+    a[RuntimeException] should be thrownBy {
       Multinomial(ModelVariablesFactory.newMultinomialLV("multinomial", 2), Vector(0.5, 0))
     }
   }

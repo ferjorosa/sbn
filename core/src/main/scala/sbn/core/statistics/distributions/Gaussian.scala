@@ -20,10 +20,9 @@ import sbn.core.variables.model.{GaussianType, ModelVariable}
   *             It is a location parameter (more info in https://en.wikipedia.org/wiki/Location_parameter)
   * @param variance the variance of the distribution. It informally measures how far the set of values are spread out
   *                 from their mean. It is a scale parameter (more info in https://en.wikipedia.org/wiki/Scale_parameter).
-  * @throws IllegalArgumentException if the variable is not of [[GaussianType]] or
-  *                                  if the variance is <= 0
+  * @throws RuntimeException if the variable is not of [[GaussianType]]
+  *                          or if the variance is <= 0
   */
-@throws[IllegalArgumentException]
 case class Gaussian(variable: ModelVariable, mean: Double, variance: Double) extends UnivariateDistribution{
   require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of GaussianType")
   require(variance > 0, "Variance must be > 0")

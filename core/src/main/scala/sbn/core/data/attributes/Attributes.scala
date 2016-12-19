@@ -1,18 +1,15 @@
 package sbn.core.data.attributes
 
-import java.util.NoSuchElementException
-
 /**
   * Represents a custom immutable collection of [[Attribute]] objects.
   *
   * @param attributeList the native collection containing the [[Attribute]] objects.
   * @param attributeOrder the specific order of the attributes.
-  * @throws IllegalArgumentException if there are repeated attribute names in the [[attributeList]]
-  *                                  or if the [[attributeList]].size != [[attributeOrder]].size
-  *                                  or if the [[attributeOrder]] contains values out of bound
-  *                                  or if the [[attributeOrder]] contains repeated values.
+  * @throws RuntimeException if there are repeated attribute names in the [[attributeList]]
+  *                          or if the [[attributeList]].size != [[attributeOrder]].size
+  *                          or if the [[attributeOrder]] contains values out of bound
+  *                          or if the [[attributeOrder]] contains repeated values.
   */
-@throws[IllegalArgumentException]
 case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]) extends Iterable[Attribute]{
   require(attributeList.map(_.name).distinct.size == attributeList.size, "Attribute names cannot be repeated")
   require(attributeList.size == attributeOrder.size, "The size of the attribute list should be the same of the attribute order collection.")
@@ -43,10 +40,9 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
     * Returns the requested [[Attribute]] object.
     *
     * @param name the requested attribute's name.
-    * @throws NoSuchElementException if the requested name doesn't exists.
+    * @throws RuntimeException if the requested name doesn't exists.
     * @return the requested Attribute.
     */
-  @throws[NoSuchElementException]
   def getAttributeByName(name: String): Attribute = {
     this.attributeList.find(attr => attr.name.equals(name))
       .getOrElse(throw new NoSuchElementException("the provided name doesn't coincide with an attribute"))
@@ -56,20 +52,18 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
    * Returns the attribute associated to the provided index.
     *
    * @param attributeIndex the index of the attribute.
-   * @throws IndexOutOfBoundsException if attributeIndex exceeds the bounds of [[attributeList]].
+   * @throws RuntimeException if attributeIndex exceeds the bounds of [[attributeList]].
    * @return the attribute associated to the provided index.
    */
-  @throws[IndexOutOfBoundsException]
   def apply(attributeIndex: Int): Attribute = this.attributeList(this.attributeOrder(attributeIndex))
 
   /**
     * Return the index associated to the [[Attribute]] object.
     *
     * @param attribute the passed [[Attribute]] object.
-    * @throws NoSuchElementException if the attribute is not present.
+    * @throws RuntimeException if the attribute is not present.
     * @return the index of the attribute.
     */
-  @throws[NoSuchElementException]
   def indexOf(attribute: Attribute): Int = attributeIndexes(attribute)
 
 }

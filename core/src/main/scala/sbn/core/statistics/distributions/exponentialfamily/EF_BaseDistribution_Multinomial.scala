@@ -1,6 +1,7 @@
 package sbn.core.statistics.distributions.exponentialfamily
 
 import breeze.linalg.DenseVector
+import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
@@ -15,14 +16,19 @@ import sbn.core.variables.model.{ModelVariable, MultinomialType}
   * @param parents its multinomial parents.
   * @param assignedDistributions each row represents a [[EF_UnivariateDistribution]], identified by an [[Assignments]] object
   *                              that represents its parent values.
-  * @throws IllegalArgumentException if there is a parent whose type is not multinomial.
+  * @throws RuntimeException if there is a parent whose type is not multinomial
+  *                          or if there is a repeated parent
+  *                          or if the number of assigned distributions is incorrect.
   */
-@throws[IllegalArgumentException]
 abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
-                                                parents: Set[ModelVariable],
+                                                parents: Vector[ModelVariable],
                                                 assignedDistributions: Map[Assignments, EF_UnivariateDistribution]) extends EF_ConditionalDistribution{
 
   require(!parents.exists(!_.distributionType.isInstanceOf[MultinomialType]), "Parents must be of multinomial type")
+  require(parents.distinct equals parents, "Parents cannot be repeated")
+  require(assignedDistributions.size equals
+    parents.map(_.attribute.stateSpaceType.asInstanceOf[FiniteStateSpace].numberOfStates).product,
+    "The number of assigned distributions is incorrect")
 
   /** @inheritdoc */
   override val naturalParameters: Vector[DenseVector[Double]] =
@@ -61,7 +67,6 @@ abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
     getEF_UnivariateDistribution(assignments).logBaseMeasure(x)
 
   /** @inheritdoc */
-  override def getEF_UnivariateDistribution(assignments: Assignments): EF_UnivariateDistribution = try {
+  override def getEF_UnivariateDistribution(assignments: Assignments): EF_UnivariateDistribution =
     assignedDistributions(assignments)
-  } catch{ case nse: NoSuchElementException => throw new IllegalArgumentException("Invalid assignments for the distribution")}
 }

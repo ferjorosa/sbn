@@ -28,7 +28,7 @@ class BayesianNetworkSpec extends CustomSpec{
     DiEdge(latent_multinomial2, manifest_multinomial2),
     DiEdge(latent_multinomial2, latent_multinomial)))
 
-  "BayesianNetwork.constructor" should "throw an IllegalArgumentException if the graph is not acyclic" in {
+  "BayesianNetwork.constructor" should "throw a RuntimeException if the graph is not acyclic" in {
 
     Given("an cyclic graph composed of 4 variables and 4 edges")
     val cyclicGraph = constructCyclicGraph
@@ -37,13 +37,13 @@ class BayesianNetworkSpec extends CustomSpec{
     // We create a set of false distributions (just to fulfill the size requirement)
     val distributions = cyclicGraph.nodes.map(Multinomial(_)).toSeq
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy{
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy{
       val bn = new BayesianNetwork("bn", cyclicGraph, distributions)
     }
   }
 
-  it should "throw an IllegalArgumentException if the number of distributions does not coincide with the number of graph nodes" in {
+  it should "throw a RuntimeException if the number of distributions does not coincide with the number of graph nodes" in {
 
     Given("an acyclic graph composed of 4 variables and 4 edges")
     val cyclicGraph = constructCyclicGraph
@@ -52,8 +52,8 @@ class BayesianNetworkSpec extends CustomSpec{
     // We create a set of false distributions (just to fulfill the size requirement)
     val distributions = cyclicGraph.nodes.map(Multinomial(_)).toSeq.drop(3) // 3 = position of the last distribution
 
-    Then("a IllegalArgumentException should be thrown (3 =! 4)")
-    a[IllegalArgumentException] should be thrownBy{
+    Then("a RuntimeException should be thrown (3 =! 4)")
+    a[RuntimeException] should be thrownBy{
       val bn = new BayesianNetwork("bn", cyclicGraph, distributions)
     }
   }

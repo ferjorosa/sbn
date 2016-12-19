@@ -19,10 +19,9 @@ import sbn.core.variables.{Assignment, Assignments}
   * @param variable the associated variable.
   * @param mean the mean value of the distribution, its central value.
   * @param variance the variance of the distribution. It informally measures how far the set of values are spread out from their mean.
-  * @throws IllegalArgumentException if the variable is not of [[GaussianType]] or
-  *                                  if the variance is <= 0
+  * @throws RuntimeException if the variable is not of [[GaussianType]]
+  *                          or if the variance is <= 0
   */
-@throws[IllegalArgumentException]
 //TODO: put in wikipedia's form (using natural parameters)
 case class EF_Gaussian(variable: ModelVariable, mean: Double, variance: Double) extends EF_UnivariateDistribution{
   require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of GaussianType")

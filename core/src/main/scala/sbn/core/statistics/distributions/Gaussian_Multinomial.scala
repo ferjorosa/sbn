@@ -5,22 +5,21 @@ import sbn.core.variables.Assignments
 import sbn.core.variables.model.{GaussianType, ModelVariable, MultinomialType}
 
 /**
-  * This class extends the [[BaseDistribution_MultinomialParents]] class and defines the conditional distribution of a
+  * This class extends the [[BaseDistribution_Multinomial]] class and defines the conditional distribution of a
   * variable of [[GaussianType]] whose parents are of [[MultinomialType]].
   *
   * This distribution is composed of several [[Gaussian]] distributions, each one of them related to an Assignment of
   * the multinomial parents, resulting in a vector of [[Gaussian]] distributions (or a matrix of parameters).
   * 
   * @param variable the main variable of the distribution.
-  * @param multinomialParents its multinomial parents.
+  * @param parents its multinomial parents.
   * @param assignedDistributions the resulting gaussian distributions of the variable.
-  * @throws IllegalArgumentException if there is a parent whose type is not multinomial or
-  *                                  if the variable's type is not gaussian.
+  * @throws RuntimeException if there is a parent whose type is not multinomial
+  *                          or if the variable's type is not gaussian.
   */
-@throws[IllegalArgumentException]
-case class Gaussian_MultinomialParents(variable: ModelVariable,
-                                       multinomialParents: Set[ModelVariable],
-                                       assignedDistributions: Map[Assignments, Gaussian]) extends BaseDistribution_MultinomialParents(variable, multinomialParents, assignedDistributions){
+case class Gaussian_Multinomial(variable: ModelVariable,
+                                parents: Vector[ModelVariable],
+                                assignedDistributions: Map[Assignments, Gaussian]) extends BaseDistribution_Multinomial(variable, parents, assignedDistributions){
 
   require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of gaussian type")
 
@@ -39,25 +38,23 @@ case class Gaussian_MultinomialParents(variable: ModelVariable,
   override def toEF_Distribution: EF_Gaussian_Multinomial = EF_Gaussian_Multinomial(this)
 }
 
-/** The factory containing specific methods for creating [[Gaussian_MultinomialParents]] distribution objects */
-object Gaussian_MultinomialParents {
+/** The factory containing specific methods for creating [[Gaussian_Multinomial]] distribution objects */
+object Gaussian_Multinomial {
 
   /**
-    * Factory method that creates a [[Gaussian_MultinomialParents]] distribution with random parameters.
+    * Factory method that creates a [[Gaussian_Multinomial]] distribution with random parameters.
     *
     * @param variable the main variable of the distribution.
     * @param multinomialParents the conditioning variables.
-    * @throws IllegalArgumentException if the variable is not [[GaussianType]] or
-    *                                  if parents are not [[GaussianType]].
-    * @return a new [[Gaussian_MultinomialParents]] distribution with random parameters.
+    * @throws RuntimeException if the variable is not [[GaussianType]]
+    *                          or if parents are not [[GaussianType]].
+    * @return a new [[Gaussian_Multinomial]] distribution with random parameters.
     */
-  @throws[IllegalArgumentException]
-  def apply(variable: ModelVariable, multinomialParents: Set[ModelVariable]): Gaussian_MultinomialParents ={
+  def apply(variable: ModelVariable, multinomialParents: Vector[ModelVariable]): Gaussian_Multinomial = {
 
-    val parametrizedMultinomialDistributions = BaseDistribution_MultinomialParents.generateAssignmentCombinations(multinomialParents)
+    val parametrizedMultinomialDistributions = BaseDistribution_Multinomial.generateAssignmentCombinations(multinomialParents)
       .view.map(assignments => assignments -> Gaussian(variable)).toMap
 
-    Gaussian_MultinomialParents(variable, multinomialParents, parametrizedMultinomialDistributions)
+    Gaussian_Multinomial(variable, multinomialParents, parametrizedMultinomialDistributions)
   }
-
 }

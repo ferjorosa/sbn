@@ -11,28 +11,28 @@ import sbn.core.variables.model.ModelVariablesFactory
   */
 class EF_GaussianSpec extends CustomSpec{
 
-  "EF_Gaussian constructor" should "throw an IllegalArgumentException if the variable's distribution type is not Gaussian" in {
+  "EF_Gaussian constructor" should "throw a RuntimeException if the variable's distribution type is not Gaussian" in {
 
     Given("a multinomial variable")
     val multinomialVar = ModelVariablesFactory.newMultinomialLV("star wars rogue", 2)
 
     When("creating a Gaussian distribution from it")
 
-    Then("an IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       EF_Gaussian(multinomialVar, 2.54, 0.64)
     }
   }
 
-  it should "throw an IllegalArgumentException if the variance <= 0" in {
+  it should "throw a RuntimeException if the variance <= 0" in {
 
     Given("a gaussian variable")
     val gaussianVar = ModelVariablesFactory.newGaussianLV("gaussian_noBounds")
 
     When("creating a Gaussian ditribution with variance = -0.0001 from it")
 
-    Then("a IllegalArgumentException should be thrown")
-    a[IllegalArgumentException] should be thrownBy {
+    Then("a RuntimeException should be thrown")
+    a[RuntimeException] should be thrownBy {
       EF_Gaussian(gaussianVar, 5, -0.0001)
     }
   }

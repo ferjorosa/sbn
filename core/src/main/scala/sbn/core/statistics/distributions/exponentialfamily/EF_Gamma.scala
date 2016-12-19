@@ -23,11 +23,10 @@ import sbn.core.variables.{Assignment, Assignments}
   * @param variable the distribution's variable.
   * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
   * @param rate the rate parameter of the distribution (more info in https://en.wikipedia.org/wiki/Scale_parameter#Rate_parameter).
-  * @throws IllegalArgumentException if the variable is not of [[GammaType]] or
-  *                                  if the shape is <= 0 or
-  *                                  if the rate is <= 0
+  * @throws RuntimeException if the variable is not of [[GammaType]]
+  *                          or if the shape is <= 0
+  *                          or if the rate is <= 0
   */
-@throws[IllegalArgumentException]
 case class EF_Gamma(variable: ModelVariable, shape: Double, rate: Double) extends EF_UnivariateDistribution{
 
   require(variable.distributionType.isInstanceOf[GammaType], "Variable must be of GammaType")

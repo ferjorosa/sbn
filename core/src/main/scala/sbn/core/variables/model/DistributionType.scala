@@ -2,7 +2,7 @@ package sbn.core.variables.model
 
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
 import sbn.core.statistics.distributions.exponentialfamily._
-import sbn.core.statistics.distributions.{Multinomial_MultinomialParents, _}
+import sbn.core.statistics.distributions.{Multinomial_Multinomial, _}
 
 /**
   * Represents the [[UnivariateDistribution]] type of a variable.
@@ -41,19 +41,18 @@ trait DistributionType{
     *
     * @param variable the variable used as base for the distribution.
     * @param parents the parents of the variable.
-    * @throws IllegalArgumentException if the parent set is empty or
-    *                                  if the parent set is not compatible.
+    * @throws RuntimeException if the parent set is empty
+    *                          or if the parent set is not compatible.
     * @return a new [[ConditionalDistribution]] whose type is inferred from the variable and its parents.
     */
   //TODO: this method can only be called by ModelVariables until all the ConditionalDistribution implementations have been done
-  @throws[IllegalArgumentException]
-  def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution
+  def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution
 
   /**
     * Creates a new [[EF_UnivariateDistribution]] object of the distribution type.
     *
     * @param variable the variable used as base for the distribution.
-    * @return
+    * @return a new univariate distribution in its exponential-family form.
     */
   //TODO: This method can be called by both main and parameter variables.
   def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution
@@ -81,14 +80,13 @@ case class MultinomialType() extends DistributionType{
   override def newUnivariateDistribution(variable: ModelVariable): Multinomial = Multinomial(variable)
 
   /** @inheritdoc */
-  @throws[IllegalArgumentException]
-  override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = {
+  override def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution = {
     require(parents.nonEmpty, "The parent set cannot be empty")
 
-    val distributionTypes = parents.map(_.distributionType)
+    val distributionTypes = parents.map(_.distributionType).distinct
 
     if(distributionTypes.size == 1) distributionTypes.head match {
-        case _: MultinomialType => Multinomial_MultinomialParents(variable, parents)
+        case _: MultinomialType => Multinomial_Multinomial(variable, parents)
         case _ => throw new IllegalArgumentException("The parent set is not compatible")
       }
     else throw new IllegalArgumentException("The parent set is not compatible")
@@ -120,13 +118,13 @@ case class GaussianType() extends DistributionType{
   override def newUnivariateDistribution(variable: ModelVariable): Gaussian = Gaussian(variable)
 
   /** @inheritdoc */
-  override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = {
+  override def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution = {
     require(parents.nonEmpty, "The parent set cannot be empty")
 
-    val distributionTypes = parents.map(_.distributionType)
+    val distributionTypes = parents.map(_.distributionType).distinct
 
     if(distributionTypes.size == 1) distributionTypes.head match {
-      case _: MultinomialType => Gaussian_MultinomialParents(variable, parents)
+      case _: MultinomialType => Gaussian_Multinomial(variable, parents)
       case _ => throw new IllegalArgumentException("The parent set is not compatible")
     }
     else throw new IllegalArgumentException("The parent set is not compatible")
@@ -136,6 +134,9 @@ case class GaussianType() extends DistributionType{
   override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Gaussian(variable)
 }
 
+/**
+  * This class represents a gamma distribution type.
+  */
 case class GammaType() extends DistributionType {
 
   /** @inheritdoc */
@@ -155,12 +156,15 @@ case class GammaType() extends DistributionType {
 
   /** @inheritdoc */
   // TODO
-  override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = ???
+  override def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution = ???
 
   /** @inheritdoc */
   override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Gamma(variable, 1, 1)
 }
 
+/**
+  * This class represents a dirichlet distribution type.
+  */
 case class DirichletType() extends DistributionType {
 
   /** @inheritdoc */
@@ -176,7 +180,7 @@ case class DirichletType() extends DistributionType {
   override def newUnivariateDistribution(variable: ModelVariable): UnivariateDistribution = ???
 
   /** @inheritdoc */
-  override def newConditionalDistribution(variable: ModelVariable, parents: Set[ModelVariable]): ConditionalDistribution = ???
+  override def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution = ???
 
   /** @inheritdoc */
   override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Dirichlet(variable)
