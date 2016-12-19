@@ -32,19 +32,26 @@ case class Gamma(variable: ModelVariable, shape: Double, scale: Double) extends 
   require(shape > 0, "Shape must be > 0")
   require(scale > 0, "Scale must be > 0")
 
-  /** This is the inverse of the scale parameter, mostly used in Bayesian statistics. */
+  /**
+    * This is the inverse of the scale parameter, mostly used in Bayesian statistics.
+    * It is a rate parameter. More info in: https://en.wikipedia.org/wiki/Scale_parameter#Rate_parameter
+    */
   val rate = 1 / scale
 
-  /** This is the mean parameter, which belongs to the third parametrization. */
+  /**
+    * This is the mean parameter, which belongs to the third parametrization.
+    * It is a location parameter. More info in: https://en.wikipedia.org/wiki/Location_parameter
+    */
   val mean = shape / rate
 
-  /** Apache implementation of the Gaussian (Normal) distribution */
+  /** Apache implementation of the Gamma distribution */
   private val implementation: ApacheGamma = new ApacheGamma(shape, scale)
 
   /** @inheritdoc */
   override def label: String = "Gamma"
 
   /** @inheritdoc */
+  // TODO: Note: This always returns the first parametrization vector
   override def parameters: Vector[Double] = Vector(this.shape, this.scale)
 
   /** @inheritdoc */
@@ -73,4 +80,43 @@ case class Gamma(variable: ModelVariable, shape: Double, scale: Double) extends 
 
   /** @inheritdoc */
   override def toEF_Distribution: EF_Distribution = EF_Gamma(this.variable, this.shape, this.rate)
+}
+
+/** The factory containing specific methods for creating [[Gamma]] distribution objects */
+object Gamma {
+
+  /**
+    * Factory method that corresponds to the first possible parametrization of the GammaDistribution. This method corresponds
+    * to the main constructor of the class (and its companion object's apply method).
+    *
+    * @param variable the distribution's variable
+    * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
+    * @param scale the scale parameter of the distribution (more info in https://en.wikipedia.org/wiki/Scale_parameter).
+    * @return a new [[Gamma]] distribution using the 'scale' (first) parametrization.
+    */
+  def createUsingScaleParameter(variable: ModelVariable, shape: Double, scale: Double): Gamma =
+    Gamma(variable, shape, scale)
+
+  /**
+    * Factory method that corresponds to the second possible parametrization of the Gamma distribution.
+    *
+    * @param variable the distribution's variable
+    * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
+    * @param rate the inverse of the scale parameter (more info in https://en.wikipedia.org/wiki/Scale_parameter#Rate_parameter).
+    * @return a new [[Gamma]] distribution using the 'rate' (second) parametrization.
+    */
+  def createUsingRateParameter(variable: ModelVariable, shape: Double, rate: Double): Gamma =
+    Gamma(variable, shape, 1 / rate)
+
+  /**
+    * Factory method that corresponds to the third possible parametrization of the Gamma distribution.
+    *
+    * @param variable the distribution's variable
+    * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
+    * @param mean the mean parameter of the distribution (more info in https://en.wikipedia.org/wiki/Location_parameter).
+    * @return a new [[Gamma]] distribution using the 'mean' (third) parametrization.
+    */
+  def createUsingMeanParameter(variable: ModelVariable, shape: Double, mean: Double): Gamma =
+    Gamma(variable, shape, mean / shape)
+
 }

@@ -28,7 +28,6 @@ import sbn.core.variables.{Assignment, Assignments}
   *                                  if the rate is <= 0
   */
 @throws[IllegalArgumentException]
-//TODO: create different constructors for the different parametrizations.
 case class EF_Gamma(variable: ModelVariable, shape: Double, rate: Double) extends EF_UnivariateDistribution{
 
   require(variable.distributionType.isInstanceOf[GammaType], "Variable must be of GammaType")
@@ -73,5 +72,43 @@ case class EF_Gamma(variable: ModelVariable, shape: Double, rate: Double) extend
 
   /** @inheritdoc */
   override def toConjugateExponentialDistribution: CE_Distribution = ???
+}
+
+/** The factory containing specific methods for creating [[Gamma]] distribution objects */
+object EF_Gamma {
+
+  /**
+    * Factory method that corresponds to the first possible parametrization of the Gamma distribution. This method corresponds
+    * to the main constructor of the class (and its companion object's apply method).
+    *
+    * @param variable the distribution's variable
+    * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
+    * @param scale the scale parameter of the distribution (more info in https://en.wikipedia.org/wiki/Scale_parameter).
+    * @return a new [[EF_Gamma]] distribution using the 'scale' (first) parametrization.
+    */
+  def createUsingScaleParameter(variable: ModelVariable, shape: Double, scale: Double): EF_Gamma =
+   EF_Gamma(variable, shape, 1/ scale)
+
+  /**
+    * Factory method that corresponds to the second possible parametrization of the Gamma distribution.
+    *
+    * @param variable the distribution's variable
+    * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
+    * @param rate the inverse of the scale parameter (more info in https://en.wikipedia.org/wiki/Scale_parameter#Rate_parameter).
+    * @return a new [[EF_Gamma]] distribution using the 'rate' (second) parametrization.
+    */
+  def createUsingRateParameter(variable: ModelVariable, shape: Double, rate: Double): EF_Gamma =
+    EF_Gamma(variable, shape, rate)
+
+  /**
+    * Factory method that corresponds to the third possible parametrization of the Gamma distribution.
+    *
+    * @param variable the distribution's variable
+    * @param shape the shape parameter of the distribution (more info in https://en.wikipedia.org/wiki/Shape_parameter).
+    * @param mean the mean parameter of the distribution (more info in https://en.wikipedia.org/wiki/Location_parameter).
+    * @return a new [[EF_Gamma]] distribution using the 'mean' (third) parametrization.
+    */
+  def createUsingMeanParameter(variable: ModelVariable, shape: Double, mean: Double): EF_Gamma =
+    EF_Gamma(variable, shape, shape / mean)
 
 }
