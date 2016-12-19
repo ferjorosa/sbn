@@ -3,7 +3,7 @@ package sbn.core.variables.model
 import java.util.UUID
 
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace, StateSpaceType}
-import sbn.core.statistics.distributions.exponentialfamily.{EF_Dirichlet, EF_UnivariateDistribution}
+import sbn.core.statistics.distributions.exponentialfamily.EF_UnivariateDistribution
 import sbn.core.statistics.distributions.{ConditionalDistribution, UnivariateDistribution}
 import sbn.core.variables.Variable
 

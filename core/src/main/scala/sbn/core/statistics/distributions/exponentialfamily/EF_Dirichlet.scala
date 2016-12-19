@@ -62,7 +62,7 @@ case class EF_Dirichlet(variable: ModelVariable, scale: Double) extends EF_Univa
   override def logBaseMeasure(x: Double): Double = 0
 
   /** @inheritdoc */
-  override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = ??? // no tiene sentido por el momento
+  override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution = ???
 
   /** @inheritdoc */
   override def toDistribution: Distribution = ??? // no tiene sentido por el momento

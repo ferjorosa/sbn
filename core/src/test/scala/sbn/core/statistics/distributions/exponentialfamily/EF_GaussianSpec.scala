@@ -1,8 +1,8 @@
 package sbn.core.statistics.distributions.exponentialfamily
 
+import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.CustomSpec
-import sbn.core.statistics.distributions.Gaussian
 import sbn.core.utils.Utils
 import sbn.core.variables.model.ModelVariablesFactory
 
@@ -48,6 +48,30 @@ class EF_GaussianSpec extends CustomSpec{
     Then("its mean must be equal to 0 and its variance must be equal to 1.0")
     assert(Utils.eqDouble(dist.mean, 0))
     assert(Utils.eqDouble(dist.variance, 1.0))
+  }
+
+  "EF_Gaussian.momentParameters" should "be a Vector containing the mean and variance values" in {
+
+    Given("a gaussian variable")
+    val gaussianVar = ModelVariablesFactory.newGaussianLV("gaussian")
+
+    When("creating a Gaussian distribution with mean = 0.5 and variance = 3.84")
+    val dist = EF_Gaussian(gaussianVar, 0.5, 3.84)
+
+    Then("its moment parameters must be a Vector containing its mean and variance values")
+    assert(dist.momentParameters == DenseVector(0.5, 3.84))
+  }
+
+  "EF_Gaussian.naturalParameters" should "be a Vector of (mean / variance, - 1 / (2 * variance))" in {
+
+    Given("a gaussian variable")
+    val gaussianVar = ModelVariablesFactory.newGaussianLV("gaussian")
+
+    When("creating a Gaussian distribution with shape = 0.5 and scale = 1.76")
+    val dist = EF_Gaussian(gaussianVar, 0.5, 1.76)
+
+    Then("its natural parameters must be a Vector of (mean / variance, - 1 / (2 * variance))")
+    assert(dist.naturalParameters == DenseVector(0.5 / 1.76, - 1 / (2 * 1.76)))
   }
 
   "Gaussian.density(x)" should "return pdf(X = x)" in {

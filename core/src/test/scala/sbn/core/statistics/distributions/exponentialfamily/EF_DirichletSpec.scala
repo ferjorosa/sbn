@@ -1,5 +1,6 @@
 package sbn.core.statistics.distributions.exponentialfamily
 
+import breeze.linalg.DenseVector
 import sbn.core.CustomSpec
 import sbn.core.utils.Utils
 import sbn.core.variables.model.ModelVariablesFactory

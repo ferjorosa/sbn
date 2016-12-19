@@ -94,27 +94,27 @@ class EF_GammaSpec extends CustomSpec{
     assert(Utils.eqDouble(gammaDist.shape, shape))
   }
 
-  "Gamma.momentParameters" should "be a Vector containing the shape and scale values" in {
+  "EF_Gamma.momentParameters" should "be a Vector containing the shape and scale values" in {
 
-    Given("a gaussian variable")
+    Given("a gamma variable")
     val gammaVar = ModelVariablesFactory.newGammaLV("gamma_nobounds")
 
     When("creating a Gamma distribution with shape = 1 and scale = 1")
     val dist = EF_Gamma(gammaVar, 1, 1)
 
-    Then("its parameters must be a Vector containing its mean and variance values")
+    Then("its parameters must be a Vector containing its shape and scale values")
     assert(dist.momentParameters == DenseVector(1.0, 1.0))
   }
 
-  "Gamma.momentParameters" should "be a Vector containing the shape and scale values" in {
+  "EF_Gamma.naturalParameters" should "be a Vector of (shape - 1, -rate)" in {
 
-    Given("a gaussian variable")
+    Given("a gamma variable")
     val gammaVar = ModelVariablesFactory.newGammaLV("gamma_nobounds")
 
     When("creating a Gamma distribution with shape = 1 and scale = 1")
     val dist = EF_Gamma(gammaVar, 1, 1)
 
-    Then("its parameters must be a Vector containing its mean and variance values")
-    assert(dist.momentParameters == DenseVector(1.0, 1.0))
+    Then("its parameters must be a Vector of (0.0, -1.0)")
+    assert(dist.naturalParameters == DenseVector(0.0, -1.0))
   }
 }

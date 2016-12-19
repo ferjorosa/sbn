@@ -1,8 +1,8 @@
 package sbn.core.statistics.distributions.exponentialfamily
 
+import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.CustomSpec
-import sbn.core.statistics.distributions.Multinomial
 import sbn.core.utils.Utils
 import sbn.core.variables.model.ModelVariablesFactory
 
@@ -51,7 +51,29 @@ class EF_MultinomialSpec extends CustomSpec{
     assert(Utils.eqDouble(distribution.probabilities.sum, 1.0))
   }
 
+  "Multinomial.momentParameters" should "be a Vector containing its state probabilities" in {
 
+    Given("a multinomial variable with 3 states")
+    val multinomialVar = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
+
+    When("creating an EF_Multinomial distribution from it")
+    val dist = EF_Multinomial(multinomialVar, Vector(0.5, 0.2, 0.3))
+
+    Then("its moment parameters must be a Vector of (0.5, 0.2, 0.3)")
+    assert(dist.momentParameters == DenseVector(0.5, 0.2, 0.3))
+  }
+
+  "Multinomial.naturalParameters" should "be a Vector of log(Multinomial.momentParameters)" in {
+
+    Given("a multinomial variable with 3 states")
+    val multinomialVar = ModelVariablesFactory.newMultinomialLV("multinomial", 3)
+
+    When("creating an EF_Multinomial distribution from it")
+    val dist = EF_Multinomial(multinomialVar, Vector(0.5, 0.2, 0.3))
+
+    Then("its parameters must be a Vector containing its mean and variance values")
+    assert(dist.naturalParameters == DenseVector(0.5, 0.2, 0.3).map(FastMath.log))
+  }
 
   "Multinomial.density" should "return P(X = x)" in {
 
