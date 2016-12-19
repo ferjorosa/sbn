@@ -157,6 +157,7 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.attributeIndexes" should "return a Map associating each attribute to it index" in {
+
     Given("a manually created Attributes object with 2 attributes")
     val attribute1 = Attribute("attribute1", RealStateSpace())
     val attribute2 = Attribute("attribute2", FiniteStateSpace(3))
@@ -172,6 +173,7 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.indexOf(attribute)" should "throw a NoSuchElementException if the attribute is not present" in {
+
     Given("a manually created Attributes object with 2 attributes")
     val attribute1 = Attribute("attribute1", RealStateSpace())
     val attribute2 = Attribute("attribute2", FiniteStateSpace(3))
@@ -187,6 +189,7 @@ class AttributesSpec extends CustomSpec{
   }
 
   "Attributes.indexOf(attribute)" should "return the correct index if the attribute is present" in {
+
     Given("a manually created Attributes object with 2 attributes")
     val attribute1 = Attribute("attribute1", RealStateSpace())
     val attribute2 = Attribute("attribute2", FiniteStateSpace(3))

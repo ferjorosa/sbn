@@ -21,9 +21,6 @@ case class Attributes (attributeList: List[Attribute], attributeOrder: List[Int]
     case (attr, attrRepetitionsList)  if attrRepetitionsList.lengthCompare(1) > 0 => attr
   }.isEmpty, "Repeated values in the attributeOrder collection")
 
-  /** Size of the [[Attribute]] collection. */
-  override val size: Int = this.attributeList.size
-
   /** Mapping between each Attribute with its index. */
   val attributeIndexes: Map[Attribute, Int] = attributeList.zipWithIndex.toMap
 

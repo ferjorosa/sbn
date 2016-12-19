@@ -9,6 +9,9 @@ import scalax.collection.immutable.Graph
 /**
   * This class wraps the [[Graph]] class and offers an easier interface when working with variables.
   * For a more advanced use, just access the wrapped graph.
+  *
+  * @param self the wrapped [[Graph]] object that implements its main features.
+  * @tparam V the type of the variables that will act as nodes of the graph.
   */
 case class DirectedGraph[V <: Variable](self: Graph[V, DiEdge]) {
 
@@ -66,6 +69,7 @@ object DirectedGraph {
     * Auxiliary factory method. It is provided for an easier graph-building process.
     *
     * @param edges the set of directed edges of the graph.
+    * @tparam V the type of the variables that will act as nodes of the graph.
     * @return a new [[DirectedGraph]] object.
     */
   def apply[V <: Variable](edges: Set[DiEdge[V]]): DirectedGraph[V] = {
@@ -75,11 +79,13 @@ object DirectedGraph {
   }
 
   /**
-    * Auxiliary factory method. It is provided for an easier graph-building process
-    * @param variables
-    * @param edges
-    * @tparam V
-    * @return
+    * Auxiliary factory method. It is provided for an easier graph-building process when there are non-connected nodes
+    * in the graph.
+    *
+    * @param variables the collection of graph nodes.
+    * @param edges the set of undirected edges of the graph.
+    * @tparam V the type of the variables that will act as nodes of the graph.
+    * @return a new [[DirectedGraph]] object.
     */
   def apply[V <: Variable](variables: Set[V], edges: Set[DiEdge[V]]): DirectedGraph[V] = {
     val graphBuilder = Graph.newBuilder[V, DiEdge]
