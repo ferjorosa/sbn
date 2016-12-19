@@ -3,7 +3,7 @@ package sbn.core.variables.model
 import java.util.UUID
 
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace, StateSpaceType}
-import sbn.core.statistics.distributions.exponentialfamily.EF_UnivariateDistribution
+import sbn.core.statistics.distributions.exponentialfamily.{EF_Dirichlet, EF_UnivariateDistribution}
 import sbn.core.statistics.distributions.{ConditionalDistribution, UnivariateDistribution}
 import sbn.core.variables.Variable
 
@@ -170,6 +170,18 @@ object ModelVariablesFactory {
   def newGammaLV(name: String): ModelVariable = {
     val attribute = Attribute(name, RealStateSpace())
     LatentVariable(attribute, new GammaType, UUID.randomUUID())
+  }
+
+  /**
+    * Create a latent dirichlet variable with a specific number of states.
+    *
+    * @param name the name of the latent variable.
+    * @param nStates the number of states of its associated univariate dirichlet distribution.
+    * @return a new [[LatentVariable]] of dirichlet type
+    */
+  def newDirichletLV(name: String, nStates: Int): ModelVariable = {
+    val attribute = Attribute(name, FiniteStateSpace(nStates))
+    LatentVariable(attribute, new DirichletType, UUID.randomUUID())
   }
 
 }
