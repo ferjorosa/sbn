@@ -25,9 +25,9 @@ class GaussianSpec extends CustomSpec{
     Given("a gaussian variable")
     val gaussianVar = ModelVariablesFactory.newGaussianLV("gaussian_noBounds")
 
-    When("creating a Gaussian ditribution with variance = -0.0001 from it")
+    When("creating a Gaussian distribution with variance = -0.0001 from it")
 
-    Then("a IllegalArgumentException should be thrown")
+    Then("an IllegalArgumentException should be thrown")
     a[IllegalArgumentException] should be thrownBy {
       Gaussian(gaussianVar, 5, -0.0001)
     }

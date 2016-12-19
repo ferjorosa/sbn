@@ -83,5 +83,4 @@ object Gaussian {
     * @return a new [[Gaussian]] distribution with standard parameter values.
     */
   def apply(variable: ModelVariable): Gaussian = Gaussian(variable, 0, 1)
-
 }

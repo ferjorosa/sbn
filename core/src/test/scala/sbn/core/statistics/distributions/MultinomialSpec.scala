@@ -14,9 +14,9 @@ class MultinomialSpec extends CustomSpec{
 
     When("Creating a Multinomial distribution from it")
 
-    Then("a IllegalArgumentException should be thrown")
+    Then("an IllegalArgumentException should be thrown")
     a[IllegalArgumentException] should be thrownBy {
-      Multinomial(variable, Vector(0, 0.5, 0.5))
+      Multinomial(variable, Vector(0.0, 0.5, 0.5))
     }
   }
 
