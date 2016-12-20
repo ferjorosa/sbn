@@ -1,10 +1,13 @@
 package sbn.core.learning.parametric.bayesian
 
-import sbn.core.learning.parametric.ParameterLearning
+import sbn.core.data.ImmutableDataSet
+import sbn.core.models.BayesianNetwork
 
 /**
   * Created by fer on 19/12/16.
   */
-trait BayesianParameterLearning extends ParameterLearning{
+trait BayesianParameterLearning{
+
+  def learn(bayesianNetwork: BayesianNetwork, dataSet: ImmutableDataSet): BayesianNetwork
 
 }

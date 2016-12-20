@@ -35,6 +35,9 @@ case class BayesianNetwork(name: String, dag: DirectedGraph[ModelVariable], dist
     * @return an equivalent EF_BayesianNetwork object.
     */
   def toEF_BayesianNetwork: EF_BayesianNetwork = EF_BayesianNetwork(this.name, this.dag, this.distributions.map(_.toEF_Distribution))
+
+  //TODO: doc
+  def toCE_BayesianNetwork: CE_BayesianNetwork = CE_BayesianNetwork(this.name, this.dag, this.distributions.map(_.toCE_Distribution))
 }
 
 /** The factory containing specific methods for creating [[BayesianNetwork]] distribution objects */

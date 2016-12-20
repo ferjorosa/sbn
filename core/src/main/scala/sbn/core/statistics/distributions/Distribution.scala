@@ -1,6 +1,7 @@
 package sbn.core.statistics.distributions
 
 import sbn.core.statistics.distributions.exponentialfamily.EF_Distribution
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.variables.model.ModelVariable
 import sbn.core.variables.{Assignment, Assignments}
 
@@ -31,6 +32,9 @@ trait Distribution extends Product with Serializable{
     * @return the distribution in its Exponential Family form.
     */
   def toEF_Distribution: EF_Distribution
+
+  // TODO: doc
+  def toCE_Distribution: CE_Distribution
 }
 
 /**
