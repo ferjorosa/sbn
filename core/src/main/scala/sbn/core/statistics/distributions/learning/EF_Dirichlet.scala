@@ -10,7 +10,9 @@ import sbn.core.variables._
 import sbn.core.variables.model.{DirichletType, ModelVariable}
 
 /**
-  * This class represents a Dirichlet distribution in its exponential-family form.
+  * This class represents a Dirichlet distribution in its exponential-family form. This distribution is widely used in
+  * statistics. It has many applications (such as 'Latent Dirichlet Allocation') and it is the conjugate prior of the
+  * categorical distribution (https://en.wikipedia.org/wiki/Dirichlet_distribution#Conjugate_to_categorical.2Fmultinomial)
   *
   * @param variable the associated variable.
   * @param concentrationParameters it is the value assigned to each category (variable's state).

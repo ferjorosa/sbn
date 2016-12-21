@@ -2,6 +2,7 @@ package sbn.core.variables.model
 
 import sbn.core.data.attributes.{Attribute, FiniteStateSpace, RealStateSpace}
 import sbn.core.statistics.distributions.exponentialfamily._
+import sbn.core.statistics.distributions.learning.EF_Dirichlet
 import sbn.core.statistics.distributions.{Multinomial_Multinomial, _}
 
 /**
@@ -93,6 +94,7 @@ case class MultinomialType() extends DistributionType{
   }
 
   /** @inheritdoc */
+  //TODO: modificar doc (crea una categorical con probabilidades aleatorias)
   override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Multinomial(variable)
 }
 
@@ -131,6 +133,7 @@ case class GaussianType() extends DistributionType{
   }
 
   /** @inheritdoc */
+  //TODO: modificar doc (crea una Gaussian standard)
   override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Gaussian(variable)
 }
 
@@ -159,6 +162,7 @@ case class GammaType() extends DistributionType {
   override def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution = ???
 
   /** @inheritdoc */
+  //TODO: modificar doc
   override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Gamma(variable, 1, 1)
 }
 
@@ -183,5 +187,17 @@ case class DirichletType() extends DistributionType {
   override def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution = ???
 
   /** @inheritdoc */
-  override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = ???
+  //TODO: modificar doc (Creates a symmetric Dirichlet distribution in its exponential form)
+  override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = {
+
+    /** The state space of the dirichlet variable. */
+    val nStates: Int = variable.attribute.stateSpaceType match {
+      case finite: FiniteStateSpace => finite.numberOfStates
+      case _ => throw new IllegalArgumentException("state space of the variable must be finite")
+    }
+
+    val newConcentrationParameters = for(i <-0 until nStates) yield 2.0
+
+    EF_Dirichlet(variable, newConcentrationParameters.toVector)
+  }
 }

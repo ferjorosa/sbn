@@ -31,16 +31,31 @@ case class PlateauStructure(dataSet: ImmutableDataSet,
 
   val nReplications = dataSet.data.size
 
-  // Each replicated node corresponds to a data instance?
-  val replicatedNodes: ListBuffer[Node] = ListBuffer.empty
+  val ce_BayesianNetwork: CE_BayesianNetwork = bn.toCE_BayesianNetwork
 
   // Las variables que actuen como parametros (en las CE_Distributions) NO entrarian en este grupo
-  // no se si crear toda la parafernalia:
-  // - factory methods? (no se si tiene sentido porque se crean unicamente para las CE_BNs y no deberia ser algo publico, creo)
-  // - las clases y traits)
-  val replicatedVariables: ListBuffer[ModelVariable] = ListBuffer.empty
+  // por lo que solo utilizamos las variables presentes en el DAG
+  // TODO: si permitiemos el ignorar ciertas variables, haria falta un FILTER
+  var replicatedVariables: List[ModelVariable] = ce_BayesianNetwork.variables.toList
 
-  val ce_BayesianNetwork: CE_BayesianNetwork = bn.toCE_BayesianNetwork
+  // Aquellas que se les haya dicho al plateau que no hay que replicar
+  var nonReplicatedVariables: List[ModelVariable] = List.empty
+
+  replicateModel()
+
+  // Each replicated node corresponds to a data instance?
+  // Modified in replicateModel()
+  var replicatedNodes: List[List[Node]] =
+    (for(i <- 0 until nReplications)
+      yield
+        ce_BayesianNetwork.distributions.map(Node(_)).toList).toList
+
+  // Los nodos creados a partir de las distribuciones de las variables que no se deben de replicar
+  var nonReplicatedNodes: List[List[Node]] = List.empty
+
+  private def replicateModel():Unit = {
+
+  }
 }
 
 object PlateauStructure {

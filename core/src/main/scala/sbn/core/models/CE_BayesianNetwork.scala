@@ -9,5 +9,10 @@ import sbn.core.variables.model.ModelVariable
   */
 case class CE_BayesianNetwork(name: String, dag: DirectedGraph[ModelVariable], distributions: Seq[CE_Distribution]){
 
-
+  /**
+    * Returns the set of variables that consist the BN.
+    *
+    * @return the BN's variables.
+    */
+  val variables: Set[ModelVariable] = this.dag.nodes
 }

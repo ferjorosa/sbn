@@ -1,5 +1,7 @@
 package sbn.core.inference
 
+import sbn.core.statistics.distributions.learning.CE_Distribution
+
 import scala.collection.mutable.ListBuffer
 
 /**
@@ -13,7 +15,7 @@ import scala.collection.mutable.ListBuffer
 
 // Por lo que leo en la clase PlateuStructure, existe un map entre los nodos replicados y la variable a la que se refieren
 // es itneresante para el constructor porque puede que existan 2 tipos de nodos (con clase cada uno de ellos y pattern matching)
-case class Node() {
+case class Node(ce_distribution: CE_Distribution) {
 
   /** Parents of this node */
   val parents: ListBuffer[Node] = ListBuffer.empty
