@@ -31,12 +31,12 @@ abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
     "The number of assigned distributions is incorrect")
 
   /** @inheritdoc */
-  override val naturalParameters: Vector[DenseVector[Double]] =
-    assignedDistributions.values.map(_.naturalParameters).toVector
+  override val momentParameters: Vector[DenseVector[Double]] =
+  assignedDistributions.values.map(_.momentParameters).toVector
 
   /** @inheritdoc */
-  override val momentParameters: Vector[DenseVector[Double]] =
-    assignedDistributions.values.map(_.momentParameters).toVector
+  override val naturalParameters: Vector[DenseVector[Double]] =
+    assignedDistributions.values.map(_.naturalParameters).toVector
 
   /** @inheritdoc */
   override def naturalParameters(assignments: Assignments): DenseVector[Double] =
@@ -64,7 +64,7 @@ abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
 
   /** @inheritdoc */
   override def logBaseMeasure(assignments: Assignments, x: Double): Double =
-    getEF_UnivariateDistribution(assignments).logBaseMeasure(x)
+    getEF_UnivariateDistribution(assignments).baseMeasure(x)
 
   /** @inheritdoc */
   override def getEF_UnivariateDistribution(assignments: Assignments): EF_UnivariateDistribution =

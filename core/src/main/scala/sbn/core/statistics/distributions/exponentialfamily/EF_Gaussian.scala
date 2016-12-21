@@ -27,14 +27,18 @@ case class EF_Gaussian(variable: ModelVariable, mean: Double, variance: Double) 
   require(variable.distributionType.isInstanceOf[GaussianType], "Variable must be of GaussianType")
   require(variance > 0, "Variance must be > 0")
 
-  /** @inheritdoc */
-  override val naturalParameters: DenseVector[Double] = DenseVector(mean / variance, - 1 / (2 * variance))
+  /** The inverse of the variance parameter */
+  val precision = 1 / variance
 
   /** @inheritdoc */
   override val momentParameters: DenseVector[Double] = DenseVector[Double](mean, variance)
 
   /** @inheritdoc */
-  override val logNormalizer: Double = FastMath.log(1 / variance) / 2 - (mean * mean / (2 * variance))
+  override val naturalParameters: DenseVector[Double] = DenseVector(mean / variance, - 1 / (2 * variance))
+
+  /** @inheritdoc */
+  //override val logNormalizer: Double = FastMath.log(1 / variance) / 2 - (mean * mean / (2 * variance))
+  override val logNormalizer: Double = mean * mean / (2 * variance) - FastMath.log(FastMath.sqrt(variance))
 
   /** @inheritdoc */
   override def sufficientStatistics(x: Double): DenseVector[Double] = DenseVector(x, x * x)
@@ -47,7 +51,7 @@ case class EF_Gaussian(variable: ModelVariable, mean: Double, variance: Double) 
     Map(Assignments(Set.empty[Assignment]) -> this.zeroSufficientStatistics)
 
   /** @inheritdoc */
-  override def logBaseMeasure(x: Double): Double = - FastMath.log(2*FastMath.PI) / 2
+  override def baseMeasure(x: Double): Double = 1 / FastMath.sqrt(2 * FastMath.PI)
 
   /** @inheritdoc */
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution =

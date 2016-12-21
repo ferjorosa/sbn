@@ -2,7 +2,7 @@ package sbn.core.statistics.distributions.exponentialfamily
 
 import java.util.concurrent.ThreadLocalRandom
 
-import breeze.linalg.{DenseVector, sum}
+import breeze.linalg.DenseVector
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.distributions.learning.CE_Distribution
@@ -39,13 +39,13 @@ case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]
   require(Utils.eqDouble(probabilities.sum, 1.0), "Probabilities must sum 1.0 (sum = " + probabilities.sum + ")")
 
   /** @inheritdoc */
-  override val naturalParameters: DenseVector[Double] = DenseVector[Double] (probabilities.map(x => FastMath.log(x)).toArray)
-
-  /** @inheritdoc */
   override val momentParameters: DenseVector[Double] = DenseVector[Double](probabilities.toArray)
 
   /** @inheritdoc */
-  override val logNormalizer: Double = FastMath.log(sum(naturalParameters.map(FastMath.exp)))
+  override val naturalParameters: DenseVector[Double] = DenseVector[Double] (probabilities.map(x => FastMath.log(x)).toArray)
+
+  /** @inheritdoc */
+  override val logNormalizer: Double = 0
 
   /** @inheritdoc */
   override def sufficientStatistics(x: Double): DenseVector[Double] = {
@@ -62,7 +62,7 @@ case class EF_Multinomial(variable: ModelVariable, probabilities: Vector[Double]
     Map(Assignments(Set.empty[Assignment]) -> this.zeroSufficientStatistics)
 
   /** @inheritdoc */
-  override def logBaseMeasure(x: Double): Double = 0
+  override def baseMeasure(x: Double): Double = 1
 
   /** @inheritdoc */
   override def update(momentParameters: DenseVector[Double]): EF_UnivariateDistribution =

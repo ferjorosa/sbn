@@ -99,7 +99,7 @@ trait EF_UnivariateDistribution extends EF_Distribution{
     * @param x the corresponding value this function is applied to.
     * @return the result of applying the logarithm of the base to the data x.
     */
-  def logBaseMeasure(x: Double): Double
+  def baseMeasure(x: Double): Double
 
   /**
     * Returns the natural logarithm of the probability density function at the specified point x. This function is one of the
@@ -109,7 +109,7 @@ trait EF_UnivariateDistribution extends EF_Distribution{
     * @param x the point at which this function is evaluated.
     * @return the value of the normal logarithm of the density function at the point x.
     */
-  def logDensity(x: Double): Double = (naturalParameters dot sufficientStatistics(x)) + logBaseMeasure(x) - logNormalizer
+  def logDensity(x: Double): Double = FastMath.log(density(x))
 
   /**
     * Returns the probability density function at the specified point x.
@@ -117,7 +117,7 @@ trait EF_UnivariateDistribution extends EF_Distribution{
     * @param x the point at which this function is evaluated.
     * @return the value of the density function at the point x.
     */
-  def density(x: Double): Double = FastMath.exp(logDensity(x))
+  def density(x: Double): Double = baseMeasure(x) * FastMath.exp((naturalParameters dot sufficientStatistics(x)) - logNormalizer)
 
   /**
     * This method updates the [[EF_UnivariateDistribution]] with a new moment parameters vector, returning a new updated
@@ -243,8 +243,7 @@ trait EF_ConditionalDistribution extends EF_Distribution {
     * @param x the point at which this function is evaluated.
     * @return the value of the normal logarithm of the density function at the point x for a specific set of parent assignments.
     */
-  def logDensity(assignments: Assignments, x: Double): Double =
-    (naturalParameters(assignments) dot sufficientStatistics(assignments, x)) + logBaseMeasure(assignments, x) - logNormalizer(assignments)
+  def logDensity(assignments: Assignments, x: Double): Double = FastMath.log(density(assignments, x))
 
   /**
     * Returns the probability density function at the specified point x for a specific univariate distribution, selected
@@ -254,7 +253,8 @@ trait EF_ConditionalDistribution extends EF_Distribution {
     * @param x the point at which this function is evaluated.
     * @return the value of the density function at the point x.
     */
-  def density(assignments: Assignments, x: Double): Double = FastMath.exp(logDensity(assignments, x))
+  def density(assignments: Assignments, x: Double): Double =
+    logBaseMeasure(assignments, x) * FastMath.exp((naturalParameters(assignments) dot sufficientStatistics(assignments, x)) - logNormalizer(assignments))
 
   /**
     * Returns the [[EF_UnivariateDistribution]] associated to a set of parent values, represented by an [[Assignments]]

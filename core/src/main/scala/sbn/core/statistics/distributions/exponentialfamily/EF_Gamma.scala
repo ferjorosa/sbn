@@ -40,17 +40,16 @@ case class EF_Gamma(variable: ModelVariable, shape: Double, rate: Double) extend
   val mean = shape / rate
 
   /** @inheritdoc */
-  override val naturalParameters: DenseVector[Double] = DenseVector(shape - 1, - rate)
-
-  /** @inheritdoc */
   override val momentParameters: DenseVector[Double] = DenseVector(shape, rate)
 
   /** @inheritdoc */
-  override val logNormalizer: Double =
-    ApacheGamma.logGamma(naturalParameters(0) + 1) - (naturalParameters(0) + 1) * FastMath.log(-naturalParameters(1))
+  override val naturalParameters: DenseVector[Double] = DenseVector(shape - 1, - rate)
 
   /** @inheritdoc */
-  override def sufficientStatistics(x: Double): DenseVector[Double] = DenseVector(x, FastMath.log(x))
+  override val logNormalizer: Double = FastMath.log(ApacheGamma.logGamma(shape)) - shape * FastMath.log(rate)
+
+  /** @inheritdoc */
+  override def sufficientStatistics(x: Double): DenseVector[Double] = DenseVector(FastMath.log(x), x)
 
   /** @inheritdoc */
   override def zeroSufficientStatistics: DenseVector[Double] = DenseVector.zeros(2)
@@ -60,7 +59,7 @@ case class EF_Gamma(variable: ModelVariable, shape: Double, rate: Double) extend
     Map(Assignments(Set.empty[Assignment]) -> this.zeroSufficientStatistics)
 
   /** @inheritdoc */
-  override def logBaseMeasure(x: Double): Double = 0
+  override def baseMeasure(x: Double): Double = 1
 
   /** @inheritdoc */
   override def update(momentParameters: DenseVector[Double]): EF_Gamma =

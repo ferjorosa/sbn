@@ -1,7 +1,7 @@
 package sbn.core.statistics.distributions.exponentialfamily
 
 import sbn.core.CustomSpec
-import sbn.core.utils.Utils
+import sbn.core.statistics.distributions.learning.EF_Dirichlet
 import sbn.core.variables.model.ModelVariablesFactory
 
 /**
@@ -15,35 +15,30 @@ class EF_DirichletSpec extends CustomSpec{
     val variable = ModelVariablesFactory.newGaussianLV("gaussian")
 
     When("Creating a EF_Dirichlet distribution from it")
+    val concentrationParameters = Vector(1.0, 0.55)
 
     Then("a RuntimeException should be thrown")
     a[RuntimeException] should be thrownBy {
-      EF_Dirichlet(variable, 2)
+      EF_Dirichlet(variable, concentrationParameters)
     }
   }
 
   it should "throw a RuntimeException if the numberOfStates is < 2" in {
+
+    val concentrationParameters = Vector(1.0)
+
     a[RuntimeException] should be thrownBy {
-      EF_Dirichlet(ModelVariablesFactory.newDirichletLV("dirichlet", 1), 4.65)
+      EF_Dirichlet(ModelVariablesFactory.newDirichletLV("dirichlet", 1), concentrationParameters)
     }
   }
 
-  it should "throw a RuntimeException if the scale < 1.0" in {
+  it should "throw a RuntimeException if a concentration parameter is <= 0" in {
+
+    val concentrationParameters = Vector(1.0, 0.0)
+
     a[RuntimeException] should be thrownBy {
-      EF_Dirichlet(ModelVariablesFactory.newDirichletLV("dirichlet", 2), 0.99)
+      EF_Dirichlet(ModelVariablesFactory.newDirichletLV("dirichlet", 2), concentrationParameters)
     }
-  }
-
-  "EF_Dirichlet.apply" should "create a EF_Dirichlet distribution with a scale of 2 by default" in {
-
-    Given("a dirichlet variable with 3 states")
-    val variable = ModelVariablesFactory.newDirichletLV("dirichlet", 3)
-
-    When("creating an EF_Dirichlet distribution from it")
-    val distribution = EF_Dirichlet(variable)
-
-    And("The scale of the distribution should be 2.0")
-    assert(Utils.eqDouble(distribution.scale, 2.0))
   }
 
 }

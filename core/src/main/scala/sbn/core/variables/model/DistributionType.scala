@@ -183,5 +183,5 @@ case class DirichletType() extends DistributionType {
   override def newConditionalDistribution(variable: ModelVariable, parents: Vector[ModelVariable]): ConditionalDistribution = ???
 
   /** @inheritdoc */
-  override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = EF_Dirichlet(variable)
+  override def newEF_UnivariateDisitribution(variable: ModelVariable): EF_UnivariateDistribution = ???
 }
