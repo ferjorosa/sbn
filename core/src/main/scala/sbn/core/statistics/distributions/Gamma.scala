@@ -3,6 +3,7 @@ package sbn.core.statistics.distributions
 import org.apache.commons.math3.distribution.{GammaDistribution => ApacheGamma}
 import org.apache.commons.math3.util.FastMath
 import sbn.core.statistics.distributions.exponentialfamily.{EF_Distribution, EF_Gamma}
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.variables.model.{GammaType, ModelVariable}
 
 /**
@@ -80,6 +81,9 @@ case class Gamma(variable: ModelVariable, shape: Double, scale: Double) extends 
 
   /** @inheritdoc */
   override def toEF_Distribution: EF_Distribution = EF_Gamma(this.variable, this.shape, this.rate)
+
+  // TODO: doc
+  override def toCE_Distribution: CE_Distribution = ???
 }
 
 /** The factory containing specific methods for creating [[Gamma]] distribution objects */

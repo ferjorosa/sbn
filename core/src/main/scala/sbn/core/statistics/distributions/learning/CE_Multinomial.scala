@@ -1,5 +1,6 @@
 package sbn.core.statistics.distributions.learning
 
+import sbn.core.statistics.distributions.Distribution
 import sbn.core.variables.model.{DirichletType, ModelVariable, MultinomialType}
 
 /**
@@ -11,6 +12,8 @@ case class CE_Multinomial(variable: ModelVariable,
 
   require(variable.distributionType.isInstanceOf[MultinomialType])
   require(dirichletPrior.distributionType.isInstanceOf[DirichletType])
+
+  override def toDistribution: Distribution = ???
 }
 
 object CE_Multinomial{

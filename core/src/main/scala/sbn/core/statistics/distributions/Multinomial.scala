@@ -5,6 +5,7 @@ import java.util.concurrent.ThreadLocalRandom
 import org.apache.commons.math3.util.FastMath
 import sbn.core.data.attributes.FiniteStateSpace
 import sbn.core.statistics.distributions.exponentialfamily.{EF_Distribution, EF_Multinomial}
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.utils.Utils
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
@@ -99,6 +100,9 @@ case class Multinomial(variable: ModelVariable, probabilities: Vector[Double]) e
     }
     this.probabilities.length - 1
   }
+
+  // TODO: doc
+  override def toCE_Distribution: CE_Distribution = ???
 
   /** @inheritdoc */
   override def toEF_Distribution: EF_Distribution = EF_Multinomial(this.variable, this.probabilities)

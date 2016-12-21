@@ -3,7 +3,6 @@ package sbn.core.learning.parametric.bayesian.util
 import sbn.core.data.ImmutableDataSet
 import sbn.core.inference.{Node, VMP}
 import sbn.core.models.{BayesianNetwork, CE_BayesianNetwork}
-import sbn.core.models.graph.DirectedGraph
 import sbn.core.variables.model.ModelVariable
 
 import scala.collection.mutable.ListBuffer

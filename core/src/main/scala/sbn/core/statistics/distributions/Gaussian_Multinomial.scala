@@ -1,6 +1,7 @@
 package sbn.core.statistics.distributions
 
 import sbn.core.statistics.distributions.exponentialfamily.EF_Gaussian_Multinomial
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{GaussianType, ModelVariable, MultinomialType}
 
@@ -36,6 +37,9 @@ case class Gaussian_Multinomial(variable: ModelVariable,
     * @return the distribution in its Exponential Family form.
     */
   override def toEF_Distribution: EF_Gaussian_Multinomial = EF_Gaussian_Multinomial(this)
+
+  // TODO: doc
+  override def toCE_Distribution: CE_Distribution = ???
 }
 
 /** The factory containing specific methods for creating [[Gaussian_Multinomial]] distribution objects */

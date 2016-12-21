@@ -1,6 +1,7 @@
 package sbn.core.statistics.distributions
 
 import sbn.core.statistics.distributions.exponentialfamily.EF_Multinomial_Multinomial
+import sbn.core.statistics.distributions.learning.CE_Distribution
 import sbn.core.variables.Assignments
 import sbn.core.variables.model.{ModelVariable, MultinomialType}
 
@@ -53,6 +54,9 @@ case class Multinomial_Multinomial(variable: ModelVariable,
 
   /** @inheritdoc */
   override def toEF_Distribution: EF_Multinomial_Multinomial = EF_Multinomial_Multinomial(this)
+
+  // TODO: doc
+  override def toCE_Distribution: CE_Distribution = ???
 }
 
 /** The factory containing specific methods for creating [[Multinomial_Multinomial]] distribution objects */

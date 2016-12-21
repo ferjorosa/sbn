@@ -11,7 +11,7 @@ case class VariationalBayes(seed: Int) extends BayesianParameterLearning{
 
   override def learn(bayesianNetwork: BayesianNetwork, dataSet: ImmutableDataSet): BayesianNetwork = {
 
-    val plateauStructure = PlateauStructure(dataSet, this.seed, bayesianNetwork.dag)
+    val plateauStructure = PlateauStructure(dataSet, this.seed, bayesianNetwork)
 
     ???
   }
