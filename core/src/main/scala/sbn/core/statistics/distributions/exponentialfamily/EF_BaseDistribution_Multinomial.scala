@@ -32,7 +32,7 @@ abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
 
   /** @inheritdoc */
   override val momentParameters: Vector[DenseVector[Double]] =
-  assignedDistributions.values.map(_.momentParameters).toVector
+    assignedDistributions.values.map(_.momentParameters).toVector
 
   /** @inheritdoc */
   override val naturalParameters: Vector[DenseVector[Double]] =
@@ -48,7 +48,7 @@ abstract class EF_BaseDistribution_Multinomial (variable: ModelVariable,
 
   /** @inheritdoc */
   override def logNormalizer(assignments: Assignments): Double =
-  getEF_UnivariateDistribution(assignments).logNormalizer
+    getEF_UnivariateDistribution(assignments).logNormalizer
 
   /** @inheritdoc */
   override def sufficientStatistics(assignments: Assignments, x: Double): DenseVector[Double] =
