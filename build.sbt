@@ -31,6 +31,11 @@ lazy val core = project.in(file("core"))
     "org.scalaz" %% "scalaz-core" % "7.2.8")
   )
 
+// ===========  Module 'Hugin-link'  ============ //
+lazy val hugin_link = project.in(file("hugin_link"))
+  .dependsOn(core)
+  .settings(commonSettings:_*)
+
 // ===========  Module 'Ltm'  ============ //
 lazy val ltm = project.in(file("ltm"))
   .dependsOn(core)
@@ -38,7 +43,7 @@ lazy val ltm = project.in(file("ltm"))
 
 // =========  Module 'Examples'  ========= //
 lazy val examples = project.in(file("examples"))
-  .dependsOn(core,ltm)
+  .dependsOn(core,ltm, hugin_link)
   .settings(commonSettings:_*)
 
 // ========  Module 'Ltm-Server'  ======== //
@@ -47,4 +52,4 @@ lazy val ltm_server = project.in(file("ltm_server"))
   .settings(commonSettings:_*)
 
 lazy val main = project.in(file("."))
-  .aggregate(core, ltm, ltm_server)
+  .aggregate(core, ltm, ltm_server, hugin_link)

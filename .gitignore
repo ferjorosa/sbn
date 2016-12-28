@@ -4,6 +4,7 @@
 # Modules
 /core/target
 /core/project
+/hugin_link/target
 /ltm/target
 /examples/target
 /ltm_server/target
