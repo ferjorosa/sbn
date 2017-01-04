@@ -1,4 +1,4 @@
-package sbn.core.inference
+package sbn.core.inference.variational
 
 import sbn.core.statistics.distributions.exponentialfamily.EF_UnivariateDistribution
 import sbn.core.statistics.distributions.learning.CE_Distribution

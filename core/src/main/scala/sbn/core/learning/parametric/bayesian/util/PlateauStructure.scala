@@ -1,7 +1,7 @@
 package sbn.core.learning.parametric.bayesian.util
 
 import sbn.core.data.ImmutableDataSet
-import sbn.core.inference.{Node, VMP}
+import sbn.core.inference.variational.{Node, VMP}
 import sbn.core.models.{BayesianNetwork, CE_BayesianNetwork}
 import sbn.core.variables.model.ModelVariable
 
