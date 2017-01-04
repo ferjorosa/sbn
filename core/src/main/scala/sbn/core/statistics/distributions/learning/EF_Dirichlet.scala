@@ -43,7 +43,7 @@ case class EF_Dirichlet(variable: ModelVariable, concentrationParameters: Vector
   override val naturalParameters: DenseVector[Double] = momentParameters.map(x => x - 1.0)
 
   /** @inheritdoc */
-  override val logNormalizer: Double = sum(naturalParameters.map(x => Gamma.logGamma(x))) - Gamma.logGamma(sum(naturalParameters))
+  override val logNormalizer: Double = sum(momentParameters.map(x => Gamma.logGamma(x))) - Gamma.logGamma(sum(momentParameters))
 
   /** @inheritdoc */
   override def sufficientStatistics(x: Double): DenseVector[Double] = {
