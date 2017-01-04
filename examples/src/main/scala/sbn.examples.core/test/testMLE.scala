@@ -23,7 +23,7 @@ object testMLE {
 
   private def compoundMLE() = {
 
-    val data = DataFileLoader.loadImmutableDataSet("datasets/ferjorosaData/sprinklerData720000.arff")
+    val data = DataFileLoader.loadImmutableDataSet("datasets/ferjorosaData/sprinklerData300.arff")
 
     val parameterLearningAlgorithm: MaximumLikelihood = new MaximumLikelihood
 
