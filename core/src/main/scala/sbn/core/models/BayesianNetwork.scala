@@ -82,4 +82,25 @@ object BayesianNetwork {
 
     BayesianNetwork("BayesianNetwork", dag, distributions)
   }
+
+  // We use a Map for performance (O(1) vs O(N) in the contains call)
+  def initializeWithPriors(dag: DirectedGraph[ModelVariable], priorDistributions: Map[ModelVariable, Distribution]): BayesianNetwork = {
+    val distributions: Vector[Distribution] = dag.nodes.map(variable => {
+
+      //First we check if there is a prior distribution for this variable
+      if(priorDistributions.contains(variable))
+        priorDistributions(variable)
+
+      // If there is no prior, a random distribution is created
+      else {
+        val parents = dag.parents(variable).toVector
+        if (parents.isEmpty)
+          variable.newUnivariateDistribution
+        else
+          variable.newConditionalDistribution(parents)
+      }
+    }).toVector
+
+    BayesianNetwork("BayesianNetwork", dag, distributions)
+  }
 }
